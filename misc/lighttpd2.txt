@@ -1,0 +1,31 @@
+
+sudo pacman -S --needed lighttpd fcgi php php-cgi
+
+
+function setup_lighttpd() {
+	systemctl enable lighttpd
+
+	mkdir -p /etc/lighttpd/conf.d/
+
+	echo -e 'server.modules += ("mod_fastcgi")
+index-file.names += ("index.php")
+
+fastcgi.server = (
+    ".php" => (
+        "localhost" => (
+            "bin-path" => "/usr/bin/php-cgi",
+            "socket" => "/tmp/php-fastcgi.sock",
+            "broken-scriptfilename" => "enable",
+            "max-procs" => 4,
+            "bin-environment" => (
+                "PHP_FCGI_CHILDREN" => "1"
+            )
+        )
+    )
+)' > /etc/lighttpd/conf.d/fastcgi.conf
+
+	echo -e '\ninclude "conf.d/fastcgi.conf"\n' >>  /etc/lighttpd/lighttpd.conf
+
+	echo '<?php phpinfo(); ?>' > /srv/http/index.php
+	chmod 755 /srv/http/index.php
+}
