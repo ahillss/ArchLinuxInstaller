@@ -3,17 +3,16 @@
 grub_disk=/dev/sda
 boot_diskpart=${grub_disk}1
 root_diskpart=${grub_disk}2
-home_diskpart=${grub_disk}4
+home_diskpart=${grub_disk}3
 
-swap_diskpart=${grub_disk}3
+#swap_diskpart=${grub_disk}4
 
-#swap_filesize=4G
-#swap_filename=/swapfile
+swap_filesize=1G
+swap_filename=/swapfile
 
-mylogin=username
-mypass=password
-
-myhostname=${mylogin}-pc
+mylogin=user
+mypass=pass
+myhostname=comp
 rootpass=$mypass
 #autologin=$mylogin
 
@@ -39,17 +38,6 @@ function on_samba() {
 
 ###################################################
 
-err_report() {
-    echo "Error on line $1"
-}
-
-trap 'err_report $LINENO' ERR
-
-set -e
-
-installer=$(dirname $0)/$(basename $0)
-HOME=/home/$mylogin
-
 function os() {
 	#
 	format_partitions
@@ -61,11 +49,11 @@ function os() {
 	setup_swap
 	
 	#chroot
-	cp -f $installer /mnt
+	cp -f $(dirname $0)/$(basename $0) /mnt
 	arch-chroot /mnt /bin/bash -c "bash /$(basename $0) os2"
 	
 	#
-	#cleanup
+	cleanup
 }
 
 function os2() {
@@ -102,15 +90,10 @@ function os2() {
 	setup_samba
 	setup_memory_limit
 	setup_aur_script
-	setup_user_permissions
 	#disable_coredump
 	setup_acpi
 	setup_autologin
 	setup_resizeramdisk
-	
-	#
-	chown $mylogin $installer
-	chmod 700 $installer
 }
 
 function setup_resizeramdisk() {
@@ -337,8 +320,6 @@ function setup_user() {
 	
 	echo $mylogin:$mypass | chpasswd	
 	##passwd -ud $mylogin
-	
-	cp -f /etc/skel/.bash_profile $HOME/
 }
 
 function setup_power() {
@@ -368,13 +349,6 @@ function setup_samba() {
 	on_samba
 }
 
-function setup_user_permissions() {
-	chown -R $mylogin $HOME
-		
-	chown $mylogin $installer
-	chmod 700 $installer
-}
-
 function disable_coredump() {
 	ln -s /dev/null /etc/sysctl.d/50-coredump.conf
 	sysctl kernel.core_pattern=core
@@ -382,7 +356,7 @@ function disable_coredump() {
 
 function setup_memory_limit() {
 	echo 'vm.swappiness=0' >> /etc/sysctl.d/99-sysctl.conf
-	echo 'vm.min_free_kbytes=262144' >> /etc/sysctl.d/99-sysctl.conf
+	echo 'vm.min_free_kbytes=327680' >> /etc/sysctl.d/99-sysctl.conf
 	echo 'vm.vfs_cache_pressure=100' >> /etc/sysctl.d/99-sysctl.conf
 }
 
@@ -416,6 +390,14 @@ function setup_autologin() {
 		echo -e "[Service]\nExecStart=\nExecStart=-/usr/bin/agetty --autologin $autologin --noclear %I 38400 linux" > /etc/systemd/system/getty@tty1.service.d/autologin.conf
 	fi
 }
+
+err_report() {
+    echo "Error on line $1"
+}
+
+trap 'err_report $LINENO' ERR
+
+set -e
 
 if [ $1 ]; then
 	args=""

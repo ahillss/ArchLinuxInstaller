@@ -6,7 +6,13 @@ Bash script for installing arch linux.
 Edit top of file to specify paritions, swap, login, hostname etc. Then type ```arch_install_base.sh os``` to begin installation.
 
 ##arch_install_desktop.sh
-Edit top of file to specify what packages to install and comment/uncomment settings. Then Type ```arch_install_desktop.sh all```. Must be run as root.
+Installs an i3wm based desktop, it is split into two modes.
+
+First mode is to install the packages and setting up any config files that require root access. Run ```sudo ./arch_install_desktop.sh run_install```.
+
+The second mode is to setup the user config files. Run ```./arch_install_desktop.sh run_user```
+
+Make sure to run the script as the user you want to install to, it makes use of the ```HOME``` and ```USER``` variables.
 
 ##aur.sh
 Script for installing AUR packages. Type ```aur.sh package_name``` to run.
