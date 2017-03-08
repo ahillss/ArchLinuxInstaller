@@ -370,9 +370,9 @@ function setup_acpi() {
 	
 	mkdir -p /etc/acpi/actions
 	
-	echo -e '#!/bin/bash\nb="/sys/class/backlight/*/brightness"\nv=$(cat $(ls $b | head -n 1))\nd=$(ls $b | head -n 1)\n\nif [ "$1"x == "up"x ]; then\n\techo "$(($v + 1))" > "$d"\nfi\n\nif [ "$1"x == "down"x ]; then\n\techo "$(($v - 1))" > "$d"\nfi\n' > /etc/acpi/actions/brightness.sh
+	echo -e '#!/bin/bash\n\nb="/sys/class/backlight/*/brightness"\nv=$(cat $(ls $b | head -n 1))\nd=$(ls $b | head -n 1)\n\nif [ "$1"x == "up"x ]; then\n\techo "$(($v + 1))" > "$d"\nfi\n\nif [ "$1"x == "down"x ]; then\n\techo "$(($v - 1))" > "$d"\nfi\n' > /etc/acpi/actions/brightness.sh
 	
-	echo -e '#!/bin/bash\nexport PULSE_RUNTIME_PATH=`find /run/user/*/ -name pulse | head -n 1`\nuid=$(basename $(dirname $PULSE_RUNTIME_PATH))\nuname=`getent passwd "$uid" | cut -d: -f1`\n\nif [ "$1"x == "up"x ]; then\n\tsu $uname -c "amixer -q set Master 5%+ unmute"\nfi\n\nif [ "$1"x == "down"x ]; then\n\tsu $uname -c "amixer -q set Master 5%- unmute"\nfi\n\nif [ "$1"x == "mute"x ]; then\n\tsu $uname -c "amixer -q set Master toggle"\nfi\n' > /etc/acpi/actions/volume.sh
+	echo -e '#!/bin/bash\n\nexport PULSE_RUNTIME_PATH=`find /run/user/*/ -name pulse | head -n 1`\nuid=$(basename $(dirname $PULSE_RUNTIME_PATH))\nuname=`getent passwd "$uid" | cut -d: -f1`\n\nif [ "$1"x == "up"x ]; then\n\tsu $uname -c "amixer -q set Master 5%+ unmute"\nfi\n\nif [ "$1"x == "down"x ]; then\n\tsu $uname -c "amixer -q set Master 5%- unmute"\nfi\n\nif [ "$1"x == "mute"x ]; then\n\tsu $uname -c "amixer -q set Master toggle"\nfi\n' > /etc/acpi/actions/volume.sh
 	
 	chmod +rx /etc/acpi/actions/brightness.sh /etc/acpi/actions/volume.sh
 	
