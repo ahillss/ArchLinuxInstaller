@@ -157,6 +157,7 @@ function run_install() {
 	global_setup_lightdm $1
 	global_setup_mousepad
 	global_setup_theme
+	global_setup_x11vnc
 	global_setup_tigervnc
 	global_setup_cups
 }
