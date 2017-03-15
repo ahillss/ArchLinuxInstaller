@@ -308,7 +308,8 @@ function setup_lib_path() {
 
 function setup_host() {
 	echo $myhostname > /etc/hostname
-	sed -i '/^hosts:/ s/$/ wins/' /etc/nsswitch.conf
+	#sed -i '/^hosts:/ s/$/ wins/' /etc/nsswitch.conf
+	sed -i 's/\(hosts.*\)\(dns.*\)/\1wins \2/g' /etc/nsswitch.conf
 }
 
 function setup_user() {
@@ -345,6 +346,7 @@ function setup_samba() {
 	sed -i 's/MYGROUP/WORKGROUP/g' /etc/samba/smb.conf
 	sed -i 's/;\(  guest account = \)pcguest/\1nobody/g' /etc/samba/smb.conf
 	sed -i "/^\[global\]$/ a\ map to guest = Bad User" /etc/samba/smb.conf
+	sed -i 's/;\( name resolve order.*\)/\1 host/g' /etc/samba/smb.conf
 	
 	on_samba
 }
