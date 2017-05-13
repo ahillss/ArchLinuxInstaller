@@ -1,0 +1,93 @@
+	#sudo pacman -S --needed ifplugd
+	#sudo mkdir -p /etc/network.d
+	#echo -e 'CONNECTION="wireless"\nESSID="network_name"\nINTERFACE="wlan0"\nSCAN="yes"\nIP="dhcp"\nTIMEOUT="10"\nSECURITY="wpa"\nKEY="network_pass"' |  #sudo tee /etc/network.d/rhinocode  
+	#sudo systemctl enable netctl@rhinocode
+	
+	#sudo systemctl enable netctl-ifplugd@interface.service
+	
+	
+	
+	
+	
+	git clone https://github.com/abperiasamy/rtl8812AU_8821AU_linux.git
+#CONFIG_PLATFORM_I386_PC = n
+#CONFIG_PLATFORM_ARM_RPI = y
+	sudo make clean
+	sudo make
+	sudo make install
+	sudo modprobe -a rtl8812au
+	
+	
+	
+	sudo cp /etc/netctl/examples/ethernet-dhcp /etc/netctl/ethernet
+	sudo cp /etc/netctl/examples/wireless-wpa /etc/netctl/wireless
+	sudo sed -i 's/MyNetwork/network_name/g' /etc/netctl/wireless
+	sudo sed -i 's/WirelessKey/network_pass/g' /etc/netctl/wireless
+	
+	
+Description='mywifi'\nInterface=wlan0\nConnection=wireless\nSecurity=wpa\nIP=dhcp\nESSID='network_name'\nKey='network_pass'\n
+
+	
+	
+	WPAConfigSection=('pairwise=CCMP' 'group=CCMP')
+	
+	
+	
+	
+	
+	sudo pacman -Sy patch linux linux-headers fakeroot crda
+	aur.sh rtl8812au-rpi-dkms-git armv6h
+	
+	#sudo pacman -S --needed networkmanager
+	
+	
+	sudo sed -i 's/#\(WIRELESS_REGDOM="AU"\)/\1/g' /etc/conf.d/wireless-regdom
+	
+	#sudo find /lib/modules/$(uname -r) -type f -name \*.ko
+	#sudo journalctl -b
+	#dmesg -c
+	sudo iwconfig
+	
+sudo netctl start wireless
+sudo systemctl enable netctl@wireless.service
+sudo systemctl disable netctl@wireless.service
+sudo systemctl status netctl@wireless.service
+sudo systemctl start netctl@wireless.service
+
+sudo systemctl enable wpa_supplicant.service
+sudo systemctl status wpa_supplicant.service
+
+echo -e 'ctrl_interface=/run/wpa_supplicant\nupdate_config=1' > /etc/wpa_supplicant/example.conf
+
+ 
+wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant/example.conf -D wext
+wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant/example.conf -D nl80211
+ wpa_supplicant -B -i enp4s0 -D wire
+ip link
+
+wpa_cli
+
+#scan
+#scan_results
+#add_network
+#set_network 0 ssid "network_name"
+#set_network 0 psk "network_pass"
+#enable_network 0
+#save_config
+
+dhcpcd  wlan0
+
+
+
+echo -e 'ctrl_interface=/var/run/wpa_supplicant\nctrl_interface_group=wheel\nupdate_config=1\nfast_reauth=1\nap_scan=1\n' > /etc/wpa_supplicant/example.conf
+wpa_passphrase network_name network_pass >> /etc/wpa_supplicant/example.conf
+sed -i "/^network={$/ a\ \tpairwise=CCMP\n\tgroup=CCMP" /etc/wpa_supplicant/example.conf
+
+wpa_supplicant -D wext -B -i wlan0 -c <(wpa_passphrase network_name network_pass)
+
+systemctl enable wpa_supplicant@wlan0
+
+sudo systemctl disable wpa_supplicant@wlan0
+sudo systemctl disable wpa_supplicant.service
+
+sudo pacman -S --needed rfkill
