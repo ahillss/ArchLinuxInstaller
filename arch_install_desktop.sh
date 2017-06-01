@@ -41,6 +41,11 @@ function global_setup_cups() {
 	systemctl enable org.cups.cupsd.service
 }
 
+function user_setup_tigervnc() {
+	mkdir -p $HOME/.vnc
+	echo -e 'TigerVNC Configuration file Version 1.0\n\nDotWhenNoCursor=1\nRemoteResize=1\nMenuKey=' > $HOME/.vnc/default.tigervnc
+}
+
 function user_setup_xserver() {
 	echo -e '#!/bin/sh\n\nif [ -d /etc/X11/xinit/xinitrc.d ]; then\n\tfor f in /etc/X11/xinit/xinitrc.d/*; do\n\t\t[ -x "$f" ] && . "$f"\n\tdone\n\tunset f\nfi\n\n' > $HOME/.xinitrc
 	
@@ -163,6 +168,7 @@ function run_install() {
 }
 
 function run_user() {
+	user_setup_tigervnc
 	user_setup_xserver
 	user_setup_i3wm
 	user_setup_i3status
