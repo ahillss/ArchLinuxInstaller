@@ -100,8 +100,20 @@ function user_setup_vlc() {
 	echo -e '[MainWindow]\nstatus-bar-visible=true' > $HOME/.config/vlc/vlc-qt-interface.conf
 }
 
+function global_setup_scite() {
+    sudo sed -i "s/\(file\.patterns\.cpp=.*\)/\1;*.glsl/g" /usr/share/scite/cpp.properties
+    sudo sed -i "s/\(file\.patterns\.lisp=.*\)/\1;*.el/g" /usr/share/scite/lisp.properties
+    sudo sed -i "s/\(file\.patterns\.scheme=.*\)/\1;*.rkt/g" /usr/share/scite/lisp.properties
+}
+
 function user_setup_scite() {
-	echo -e 'load.on.activate=1\nquit.on.close.last=1\ncheck.if.already.open=1\nopen.filter=$(all.files)\nfile.patterns.lisp=$(file.patterns.lisp);.emacs;*.el\ntitle.full.path=1\ntoolbar.visible=1\nstatusbar.visible=1\nsave.session=1\nsave.recent=1\nsave.find=1\nwrap=1\noutput.wrap=1\nwrap.style=1\nline.margin.visible=1\nline.margin.width=1+\ncaret.line.back=#6BC9A8\ncaret.line.back.alpha=50\nselection.back=#f21b1b\nselection.alpha=75\nhighlight.current.word=1\nhighlight.current.word.colour=#2635DE\nhighlight.current.word.alpha=75\nhighlight.current.word.by.style=1\nindicators.alpha=100\nindicators.under=1\nstyle.*.34=fore:#000000,back:#A1A4ED,bold\nstyle.*.35=fore:#000000,back:#A1A4ED,bold\n#buffered.draw=1\nstatusbar.text.1=pos=$(CurrentPos), li=$(LineNumber), co=$(ColumnNumber) [$(EOLMode)]\next.lua.startup.script=$(SciteUserHome)/.SciTEStartup.lua' >> $HOME/.SciTEUser.properties	
+    echo -e 'check.if.already.open=1\nline.margin.visible=1\nline.margin.width=1+\nload.on.activate=1\nopen.filter=$(all.files)\noutput.wrap=1\nsave.session=1\nsave.recent=1\nsave.find=1\nstatusbar.visible=1\ntitle.full.path=1\ntoolbar.visible=1\nquit.on.close.last=1\nwrap=1' > $HOME/.SciTEUser.properties
+    
+    echo -e '\ncaret.line.back=#D8D8FF\nselection.back=#000000\nselection.alpha=80\nhighlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#00CC00,fillalpha:100\nstyle.*.34=fore:#000000,back:#51DAFF\nstyle.*.35=fore:#FF0000,back:#51DAFF' >> $HOME/.SciTEUser.properties
+    
+    echo -e '\nindent.size=4\ntabsize=4\nuse.tabs=0\nuse.tabs.$(file.patterns.make)=1' >> $HOME/.SciTEUser.properties
+    
+    echo -e '\nstatusbar.text.1=pos=$(CurrentPos),li=$(LineNumber), co=$(ColumnNumber) [$(EOLMode)]\next.lua.startup.script=$(SciteUserHome)/.SciTEStartup.lua' >> $HOME/.SciTEUser.properties
 	echo -e 'function OnUpdateUI() props["CurrentPos"]=editor.CurrentPos end' > $HOME/.SciTEStartup.lua
 }
 
@@ -165,6 +177,7 @@ function run_install() {
 	global_setup_x11vnc
 	global_setup_tigervnc
 	global_setup_cups
+	global_setup_scite
 }
 
 function run_user() {
