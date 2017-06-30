@@ -65,6 +65,7 @@ function os2() {
 	packages+=" ntfs-3g fuse-exfat exfat-utils dosfstools"
 	packages+=" samba"
 	packages+=" acpid"
+	packages+=" avahi nss-mdns"
 	
 	#dirmngr < /dev/null
 	#pacman-key --init && pacman-key --populate archlinux
@@ -88,6 +89,7 @@ function os2() {
 	setup_power
 	setup_pulseaudio
 	setup_samba
+    setup_avahi
 	setup_memory_limit
 	setup_aur_script
 	#disable_coredump
@@ -349,6 +351,12 @@ function setup_samba() {
 	sed -i 's/;\( name resolve order.*\)/\1 host/g' /etc/samba/smb.conf
 	
 	on_samba
+}
+
+function setup_avahi() {
+    sed -i 's/\(host.*\)\(dns.*\)/\1mdns_minimal [NOTFOUND=return] \2/g' /etc/nsswitch.conf
+    echo -e '<?xml version="1.0" standalone='"'"'no'"'"'?>\n<!DOCTYPE service-group SYSTEM "avahi-service.dtd">\n<service-group>\n\t<name replace-wildcards="yes">%h SMB</name>\n\t<service>\n\t\t<type>_smb._tcp</type>\n\t\t<port>445</port>\n\t</service>\n</service-group>' > /etc/avahi/services/samba.service
+    systemctl enable avahi-daemon.service 
 }
 
 function disable_coredump() {
