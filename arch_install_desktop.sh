@@ -109,12 +109,15 @@ function global_setup_scite() {
 function user_setup_scite() {
     echo -e 'check.if.already.open=1\nline.margin.visible=1\nline.margin.width=1+\nload.on.activate=1\nopen.filter=$(all.files)\noutput.wrap=1\nsave.session=1\nsave.recent=1\nsave.find=1\nstatusbar.visible=1\ntitle.full.path=1\ntoolbar.visible=1\nquit.on.close.last=1\nwrap=1' > $HOME/.SciTEUser.properties
     
-    echo -e '\ncaret.line.back=#D8D8FF\nselection.back=#000000\nselection.alpha=80\nhighlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#00CC00,fillalpha:100\nstyle.*.34=fore:#000000,back:#51DAFF\nstyle.*.35=fore:#FF0000,back:#51DAFF' >> $HOME/.SciTEUser.properties
+    echo -e 'selection.back=#000000\nselection.alpha=50' >> $HOME/.SciTEUser.properties
+    echo -e 'caret.line.back=#CCDDFF' >> $HOME/.SciTEUser.properties
+    echo -e 'highlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#FEE155,fillalpha:190,under' >> $HOME/.SciTEUser.properties
+    echo -e 'style.*.34=back:#51DAEA' >> $HOME/.SciTEUser.properties
     
     echo -e '\nindent.size=4\ntabsize=4\nuse.tabs=0\nuse.tabs.$(file.patterns.make)=1' >> $HOME/.SciTEUser.properties
     
     echo -e '\nstatusbar.text.1=pos=$(CurrentPos),li=$(LineNumber), co=$(ColumnNumber) [$(EOLMode)]\next.lua.startup.script=$(SciteUserHome)/.SciTEStartup.lua' >> $HOME/.SciTEUser.properties
-	echo -e 'function OnUpdateUI() props["CurrentPos"]=editor.CurrentPos end' > $HOME/.SciTEStartup.lua
+    echo -e 'function OnUpdateUI() props["CurrentPos"]=editor.CurrentPos end' > $HOME/.SciTEStartup.lua
 }
 
 function user_setup_gtk() {
