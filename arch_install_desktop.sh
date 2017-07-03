@@ -94,6 +94,11 @@ function user_setup_thunar() {
 	echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<channel name="thunar" version="1.0">\n\t<property name="last-show-hidden" type="bool"\nvalue="true"/>\n\t<property name="last-view" type="string" value="ThunarDetailsView"/>\n</channel>' >> $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml
 }
 
+function user_setup_nemo() {
+    gsettings set org.nemo.desktop show-desktop-icons false    
+    gsettings set org.cinnamon.desktop.default-applications.terminal exec terminator
+}
+
 function user_setup_vlc() {
 	mkdir -p $HOME/.config/vlc
 	echo -e "[qt4]\nqt-recentplay=0\nqt-privacy-ask=0\n\n[core]\nvideo-title-show=0\nplay-and-exit=1\none-instance-when-started-from-file=0\nsnapshot-path=$HOME/Pictures" > $HOME/.config/vlc/vlcrc
@@ -190,6 +195,7 @@ function run_user() {
 	user_setup_i3status
 	user_setup_terminator
 	user_setup_thunar
+	user_setup_nemo
 	user_setup_vlc
 	user_setup_scite
 	user_setup_gtk
