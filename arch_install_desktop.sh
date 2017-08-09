@@ -54,6 +54,8 @@ function user_setup_xserver() {
 	
 	echo "#xmodmap -e 'pointer = 1 10 3 4 5 6 7 8 9 2 11 12 13 14 15 16 17 18 19 20 21 22 23 24' &" >> $HOME/.xprofile
 	echo '#xrandr --output HDMI1 --auto --primary --output HDMI2 --auto --right-of HDMI1 &' >> $HOME/.xprofile
+    echo '#xrandr --output HDMI-2 --auto --primary --output HDMI-1 --auto --right-of HDMI-2 --rotate inverted &' >> $HOME/.xprofile
+    echo '#xrandr -s 0 &' >> $HOME/.xprofile
 	echo "#xautolock -detectsleep -time 45 -locker 'systemctl hybrid-sleep' &" >> $HOME/.xprofile
 	echo '#system-config-printer-applet &' >> $HOME/.xprofile
 	echo '#nm-applet &' >> $HOME/.xprofile
