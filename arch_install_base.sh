@@ -246,12 +246,7 @@ function add_grub_boot() {
 	u=`get_uuid $part`
 	old=`echo $part | sed 's/[/a-zA-Z]\+\([0-9]\+\)/\1/'`
 	
-	echo "
-menuentry \"$title\" {
-	search --fs-uuid --no-floppy --set=root $u	
-	#set root=(hd0,$old)
-	chainloader +1
-}" >> /etc/grub.d/40_custom;
+	echo -e "menuentry \"$title\" {\n\tsearch --fs-uuid --no-floppy --set=root $u\n\t#set root=(hd0,$old)\n\tchainloader +1\n}" >> /etc/grub.d/40_custom;
 }
 
 function setup_grub() {
