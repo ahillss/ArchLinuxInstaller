@@ -96,6 +96,12 @@ function os2() {
 	setup_acpi
 	setup_autologin
 	setup_resizeramdisk
+    setup_misc_scripts
+}
+
+function setup_misc_scripts() {
+    echo -e '#!/bin/bash\n\ncmp -l $1 $2 | gawk '"'"'{printf "%08X %02X %02X\\n", $1, strtonum(0$2), strtonum(0$3)}'"'" > /usr/local/bin/bdiff.sh
+    chmod +xr /usr/local/bin/bdiff.sh
 }
 
 function setup_resizeramdisk() {

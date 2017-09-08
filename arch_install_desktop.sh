@@ -75,6 +75,7 @@ function user_setup_i3wm() {
 	sed -i 's/# \(bindsym Mod1+\)\(d exec --no-startup-id i3-dmenu-desktop\)/\1Shift+\2/g' $HOME/.config/i3/config
 	sed -i 's/\(set \$mod\) Mod4/\1 Mod1/g' $HOME/.config/i3/config
 	sed -i "/^bar {$/ a\\\t#tray_output primary" $HOME/.config/i3/config
+    #sed -i 's/^\(font pango:\).*/\1Ubuntu Mono 14/g' $HOME/.config/i3/config
 	echo -e '\n#\nworkspace_layout stacking\ndefault_orientation vertical' >> $HOME/.config/i3/config
 	echo 'for_window [window_role="pop-up"] floating enable' >> $HOME/.config/i3/config
 }
