@@ -75,7 +75,7 @@ function user_setup_i3wm() {
 	sed -i 's/# \(bindsym Mod1+\)\(d exec --no-startup-id i3-dmenu-desktop\)/\1Shift+\2/g' $HOME/.config/i3/config
 	sed -i 's/\(set \$mod\) Mod4/\1 Mod1/g' $HOME/.config/i3/config
 	sed -i "/^bar {$/ a\\\t#tray_output primary" $HOME/.config/i3/config
-    #sed -i 's/^\(font pango:\).*/\1Ubuntu Mono 14/g' $HOME/.config/i3/config
+	#sed -i 's/^\(font pango:\).*/\1Ubuntu Mono 14/g' $HOME/.config/i3/config
 	echo -e '\n#\nworkspace_layout stacking\ndefault_orientation vertical' >> $HOME/.config/i3/config
 	echo 'for_window [window_role="pop-up"] floating enable' >> $HOME/.config/i3/config
 }
@@ -98,8 +98,8 @@ function user_setup_thunar() {
 }
 
 function user_setup_nemo() {
-    gsettings set org.nemo.desktop show-desktop-icons false    
-    gsettings set org.cinnamon.desktop.default-applications.terminal exec terminator
+	gsettings set org.nemo.desktop show-desktop-icons false
+	gsettings set org.cinnamon.desktop.default-applications.terminal exec terminator
 }
 
 function user_setup_vlc() {
@@ -109,23 +109,23 @@ function user_setup_vlc() {
 }
 
 function global_setup_scite() {
-    sudo sed -i "s/\(file\.patterns\.cpp=.*\)/\1;*.glsl/g" /usr/share/scite/cpp.properties
-    sudo sed -i "s/\(file\.patterns\.lisp=.*\)/\1;*.el/g" /usr/share/scite/lisp.properties
-    sudo sed -i "s/\(file\.patterns\.scheme=.*\)/\1;*.rkt/g" /usr/share/scite/lisp.properties
+	sudo sed -i "s/\(file\.patterns\.cpp=.*\)/\1;*.glsl/g" /usr/share/scite/cpp.properties
+	sudo sed -i "s/\(file\.patterns\.lisp=.*\)/\1;*.el/g" /usr/share/scite/lisp.properties
+	sudo sed -i "s/\(file\.patterns\.scheme=.*\)/\1;*.rkt/g" /usr/share/scite/lisp.properties
 }
 
 function user_setup_scite() {
-    echo -e 'check.if.already.open=1\nline.margin.visible=1\nline.margin.width=1+\nload.on.activate=1\nopen.filter=$(all.files)\noutput.wrap=1\nsave.session=1\nsave.recent=1\nsave.find=1\nstatusbar.visible=1\ntitle.full.path=1\ntoolbar.visible=1\nquit.on.close.last=1\nwrap=1' > $HOME/.SciTEUser.properties
-    
-    echo -e 'selection.back=#000000\nselection.alpha=50' >> $HOME/.SciTEUser.properties
-    echo -e 'caret.line.back=#CCDDFF' >> $HOME/.SciTEUser.properties
-    echo -e 'highlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#FEE155,fillalpha:190,under' >> $HOME/.SciTEUser.properties
-    echo -e 'style.*.34=back:#51DAEA' >> $HOME/.SciTEUser.properties
-    
-    echo -e '\nindent.size=4\ntabsize=4\nuse.tabs=0\nuse.tabs.$(file.patterns.make)=1' >> $HOME/.SciTEUser.properties
-    
-    echo -e '\nstatusbar.text.1=pos=$(CurrentPos),li=$(LineNumber), co=$(ColumnNumber) [$(EOLMode)]\next.lua.startup.script=$(SciteUserHome)/.SciTEStartup.lua' >> $HOME/.SciTEUser.properties
-    echo -e 'function OnUpdateUI() props["CurrentPos"]=editor.CurrentPos end' > $HOME/.SciTEStartup.lua
+	echo -e 'check.if.already.open=1\nline.margin.visible=1\nline.margin.width=1+\nload.on.activate=1\nopen.filter=$(all.files)\noutput.wrap=1\nsave.session=1\nsave.recent=1\nsave.find=1\nstatusbar.visible=1\ntitle.full.path=1\ntoolbar.visible=1\nquit.on.close.last=1\nwrap=1' > $HOME/.SciTEUser.properties
+
+	echo -e 'selection.back=#000000\nselection.alpha=50' >> $HOME/.SciTEUser.properties
+	echo -e 'caret.line.back=#CCDDFF' >> $HOME/.SciTEUser.properties
+	echo -e 'highlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#FEE155,fillalpha:190,under' >> $HOME/.SciTEUser.properties
+	echo -e 'style.*.34=back:#51DAEA' >> $HOME/.SciTEUser.properties
+
+	echo -e '\nindent.size=4\ntabsize=4\nuse.tabs=0\nuse.tabs.$(file.patterns.make)=1' >> $HOME/.SciTEUser.properties
+
+	echo -e '\nstatusbar.text.1=pos=$(CurrentPos),li=$(LineNumber), co=$(ColumnNumber) [$(EOLMode)]\next.lua.startup.script=$(SciteUserHome)/.SciTEStartup.lua' >> $HOME/.SciTEUser.properties
+	echo -e 'function OnUpdateUI() props["CurrentPos"]=editor.CurrentPos end' > $HOME/.SciTEStartup.lua
 }
 
 function user_setup_gtk() {
@@ -206,7 +206,7 @@ function run_user() {
 }
 
 err_report() {
-    echo "Error on line $1"
+	echo "Error on line $1"
 }
 
 trap 'err_report $LINENO' ERR

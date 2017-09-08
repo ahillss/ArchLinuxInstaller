@@ -89,19 +89,19 @@ function os2() {
 	setup_power
 	setup_pulseaudio
 	setup_samba
-    setup_avahi
+	setup_avahi
 	setup_memory_limit
 	setup_aur_script
 	#disable_coredump
 	setup_acpi
 	setup_autologin
 	setup_resizeramdisk
-    setup_misc_scripts
+	setup_misc_scripts
 }
 
 function setup_misc_scripts() {
-    echo -e '#!/bin/bash\n\ncmp -l $1 $2 | gawk '"'"'{printf "%08X %02X %02X\\n", $1, strtonum(0$2), strtonum(0$3)}'"'" > /usr/local/bin/bdiff.sh
-    chmod +xr /usr/local/bin/bdiff.sh
+	echo -e '#!/bin/bash\n\ncmp -l $1 $2 | gawk '"'"'{printf "%08X %02X %02X\\n", $1, strtonum(0$2), strtonum(0$3)}'"'" > /usr/local/bin/bdiff.sh
+	chmod +xr /usr/local/bin/bdiff.sh
 }
 
 function setup_resizeramdisk() {
@@ -360,9 +360,9 @@ function setup_samba() {
 }
 
 function setup_avahi() {
-    sed -i 's/\(host.*\)\(dns.*\)/\1mdns_minimal [NOTFOUND=return] \2/g' /etc/nsswitch.conf
-    echo -e '<?xml version="1.0" standalone='"'"'no'"'"'?>\n<!DOCTYPE service-group SYSTEM "avahi-service.dtd">\n<service-group>\n\t<name replace-wildcards="yes">%h SMB</name>\n\t<service>\n\t\t<type>_smb._tcp</type>\n\t\t<port>445</port>\n\t</service>\n</service-group>' > /etc/avahi/services/samba.service
-    systemctl enable avahi-daemon.service 
+	sed -i 's/\(host.*\)\(dns.*\)/\1mdns_minimal [NOTFOUND=return] \2/g' /etc/nsswitch.conf
+	echo -e '<?xml version="1.0" standalone='"'"'no'"'"'?>\n<!DOCTYPE service-group SYSTEM "avahi-service.dtd">\n<service-group>\n\t<name replace-wildcards="yes">%h SMB</name>\n\t<service>\n\t\t<type>_smb._tcp</type>\n\t\t<port>445</port>\n\t</service>\n</service-group>' > /etc/avahi/services/samba.service
+	systemctl enable avahi-daemon.service 
 }
 
 function disable_coredump() {
@@ -408,7 +408,7 @@ function setup_autologin() {
 }
 
 err_report() {
-    echo "Error on line $1"
+	echo "Error on line $1"
 }
 
 trap 'err_report $LINENO' ERR
