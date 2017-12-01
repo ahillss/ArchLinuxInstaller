@@ -16,7 +16,7 @@ myhostname=comp
 rootpass=$mypass
 #autologin=$mylogin
 
-#ramdisk=1G
+#ramdisk=512M
 #disable_swap='#'
 #multilib=1
 
@@ -68,8 +68,10 @@ function os2() {
 	packages+=" avahi nss-mdns"
 	
 	#dirmngr < /dev/null
-	#pacman-key --init && pacman-key --populate archlinux
+    
 	#pacman-key --refresh-keys
+    
+	#pacman-key --init && pacman-key --populate archlinux
 	
 	pacman -S --needed --noconfirm $packages
 		
@@ -345,11 +347,7 @@ function setup_samba() {
 	systemctl enable smbd
 	systemctl enable nmbd
 	
-	cp -f /etc/samba/smb.conf.default /etc/samba/smb.conf
-	sed -i 's/MYGROUP/WORKGROUP/g' /etc/samba/smb.conf
-	sed -i 's/;\(  guest account = \)pcguest/\1nobody/g' /etc/samba/smb.conf
-	sed -i "/^\[global\]$/ a\ map to guest = Bad User" /etc/samba/smb.conf
-	sed -i 's/;\( name resolve order.*\)/\1 host/g' /etc/samba/smb.conf
+    echo -e '[global]\n unix extensions = no\n map to guest = Bad User\n workgroup = WORKGROUP\n guest account = nobody\n security = user' > /etc/samba/smb.conf
 	
 	on_samba
 }

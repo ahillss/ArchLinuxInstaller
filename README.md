@@ -3,9 +3,11 @@
 Bash script for installing arch linux.
 
 ## arch_install_base.sh
+
 Edit top of file to specify paritions, swap, login, hostname etc. Then type ```arch_install_base.sh os``` to begin installation.
 
 ## arch_install_desktop.sh
+
 Installs an i3wm based desktop, it is split into two modes.
 
 First mode is to install the packages and setting up any config files that require root access. Run ```sudo ./arch_install_desktop.sh run_install```.

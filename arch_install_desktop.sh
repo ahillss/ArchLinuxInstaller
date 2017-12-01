@@ -41,6 +41,19 @@ function global_setup_cups() {
 	systemctl enable org.cups.cupsd.service
 }
 
+function global_setup_tmpcache() {
+	if [ $1 ]; then
+		USER=$1
+        HOME=/home/$USER
+        mkdir -p $HOME/.cache $HOME/.thumbnails $HOME/.local/share/gvfs-metadata
+
+        echo -e "\n#" >> /etc/fstab
+        echo "/tmp /home/$USER/.cache none defaults,bind 0 0" >> /etc/fstab
+        echo "/tmp /home/$USER/.thumbnails none defaults,bind 0 0" >> /etc/fstab
+        echo "/tmp /home/$USER/.local/share/gvfs-metadata none defaults,bind 0 0" >> /etc/fstab
+    fi
+}
+
 function user_setup_tigervnc() {
 	mkdir -p $HOME/.vnc
 	echo -e 'TigerVNC Configuration file Version 1.0\n\nDotWhenNoCursor=1\nRemoteResize=1\nMenuKey=' > $HOME/.vnc/default.tigervnc
@@ -166,28 +179,23 @@ function run_install() {
 	packages+=" i3 dmenu"
 	packages+=" lxtask terminator scite"
 	packages+=" thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman"
-	packages+=" nemo nemo-fileroller nemo-share nemo-preview"
 	packages+=" ffmpegthumbnailer tumbler gamin gvfs-smb polkit-gnome"
-	packages+=" file-roller viewnior pinta fbreader evince chromium vlc"
+	packages+=" file-roller viewnior fbreader evince chromium vlc"
+    
+    #packages+=" pinta"
 	#packages+=" libreoffice-writer libreoffice-en-GB"
-
-	packages+=" cups system-config-printer foomatic-db-nonfree splix gutenprint hplip"
-
-	#packages+=" winetricks zenity wine mpg123 wmctrl lib32-ncurses"
-	#packages+=" python swi-prolog racket emacs emacs-php-mode emacs-lua-mode"
-	#packages+=" git mercurial svn cvs bzr premake cmake scons"
-	#packages+=" texlive-most erlang ocaml ghc emacs-haskell-mode lua sbt scala apache-ant sbcl bigloo boost clang chicken"
-
-	#packages+= " ht radare2 binutils"
+	#packages+=" cups system-config-printer foomatic-db-nonfree splix gutenprint hplip"
+	#packages+=" nemo nemo-fileroller nemo-share nemo-preview"
 	
 	pacman -S --needed --noconfirm $packages
 	
 	global_setup_lightdm $1
+    #global_setup_tmpcache $1
 	global_setup_mousepad
 	global_setup_theme
 	global_setup_x11vnc
 	global_setup_tigervnc
-	global_setup_cups
+	#global_setup_cups
 	global_setup_scite
 }
 
@@ -198,7 +206,7 @@ function run_user() {
 	user_setup_i3status
 	user_setup_terminator
 	user_setup_thunar
-	user_setup_nemo
+	#user_setup_nemo
 	user_setup_vlc
 	user_setup_scite
 	user_setup_gtk
