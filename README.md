@@ -8,7 +8,7 @@ Edit top of file to specify paritions, swap, login, hostname, mounts, samba shar
 
 ## arch_inst_desktop.sh
 
-Installs an i3wm based desktop. Run with sudo under user you want to install it to (uses the ```SUDO_USER``` value), ```sudo bash arch_inst_desktop.sh```.
+Installs an i3wm based desktop. Run with sudo under the user you want to install to (it uses the ```SUDO_USER``` value), ```sudo bash arch_inst_desktop.sh```.
 
 ## usbboot_grub.cfg
 
