@@ -1,20 +1,14 @@
 # Arch Linux Installer
 
-Bash script for installing arch linux.
+Bash scripts for installing Arch Linux.
 
-## arch_install_base.sh
+## arch_inst_base.sh
 
-Edit top of file to specify paritions, swap, login, hostname etc. Then type ```arch_install_base.sh os``` to begin installation.
+Edit top of file to specify paritions, swap, login, hostname, mounts, samba shares etc. Then run ```arch_inst_base.sh``` to begin installation.
 
-## arch_install_desktop.sh
+## arch_inst_desktop.sh
 
-Installs an i3wm based desktop, it is split into two modes.
-
-First mode is to install the packages and setting up any config files that require root access. Run ```sudo ./arch_install_desktop.sh run_install```.
-
-The second mode is to setup the user config files. Run ```./arch_install_desktop.sh run_user```
-
-Make sure to run the script as the user you want to install to, it makes use of the ```HOME``` and ```USER``` variables.
+Installs an i3wm based desktop. Run with sudo under user you want to install it to (uses the ```SUDO_USER``` value), ```sudo bash arch_inst_desktop.sh```.
 
 ## usbboot_grub.cfg
 

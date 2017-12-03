@@ -7,7 +7,7 @@ home_diskpart=${grub_disk}3
 
 #swap_diskpart=${grub_disk}4
 
-swap_filesize=1G
+swap_filesize=8G
 swap_filename=/swapfile
 
 mylogin=archer
@@ -38,7 +38,7 @@ function on_samba() {
 
 ###################################################
 
-function os() {
+function install_os() {
 	#
 	format_partitions
 	mount_partitions
@@ -50,13 +50,13 @@ function os() {
 	
 	#chroot
 	cp -f $(dirname $0)/$(basename $0) /mnt
-	arch-chroot /mnt /bin/bash -c "bash /$(basename $0) os2"
+	arch-chroot /mnt /bin/bash -c "bash /$(basename $0) install_os2"
 	
 	#
 	cleanup
 }
 
-function os2() {
+function install_os2() {
 	packages=""
 	packages+=" grub memtest86+"
 	packages+=" networkmanager openssh ntp"
@@ -65,12 +65,10 @@ function os2() {
 	packages+=" ntfs-3g fuse-exfat exfat-utils dosfstools"
 	packages+=" samba"
 	packages+=" acpid"
-	packages+=" avahi nss-mdns"
+	#packages+=" avahi nss-mdns"
 	
 	#dirmngr < /dev/null
-    
 	#pacman-key --refresh-keys
-    
 	#pacman-key --init && pacman-key --populate archlinux
 	
 	pacman -S --needed --noconfirm $packages
@@ -91,7 +89,7 @@ function os2() {
 	setup_power
 	setup_pulseaudio
 	setup_samba
-	setup_avahi
+	#setup_avahi
 	setup_memory_limit
 	setup_aur_script
 	#disable_coredump
@@ -347,7 +345,7 @@ function setup_samba() {
 	systemctl enable smbd
 	systemctl enable nmbd
 	
-    echo -e '[global]\n unix extensions = no\n map to guest = Bad User\n workgroup = WORKGROUP\n guest account = nobody\n security = user' > /etc/samba/smb.conf
+	echo -e '[global]\n unix extensions = no\n map to guest = Bad User\n workgroup = WORKGROUP\n guest account = nobody\n security = user' > /etc/samba/smb.conf
 	
 	on_samba
 }
@@ -412,7 +410,8 @@ if [ $1 ]; then
 	args=""
 	for (( i=2;$i<=$#;i=$i+1 )); do args+=" ${!i}"; done
 	eval $1 $args
-	echo "install completed successfully!"
+	echo "$1 completed successfully!"
 else
-	echo "No option entered (to begin installation enter the option: os)."
+	eval install_os
+	echo "install completed successfully!"
 fi
