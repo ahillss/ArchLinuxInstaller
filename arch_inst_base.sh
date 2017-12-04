@@ -10,9 +10,9 @@ home_diskpart=${grub_disk}3
 swap_filesize=8G
 swap_filename=/swapfile
 
-mylogin=archer
+mylogin=arch
 mypass=pass
-myhostname=comp
+myhostname=archpc
 rootpass=$mypass
 #autologin=$mylogin
 
@@ -66,8 +66,11 @@ function install_os2() {
 	packages+=" samba"
 	packages+=" acpid"
 	#packages+=" avahi nss-mdns"
-	
+    #packages+=" archlinux-keyring"
+	    
 	#dirmngr < /dev/null
+	#pacman -Scc
+	#rm -rf /etc/pacman.d/gnupg
 	#pacman-key --refresh-keys
 	#pacman-key --init && pacman-key --populate archlinux
 	
@@ -226,7 +229,7 @@ function setup_fstab() {
 		ramdisk_size=$ramdisk
 	else
 		ramdisk_commented="#"
-		ramdisk_size="1G"
+		ramdisk_size="512M"
 	fi
 	
 	echo -e "\n# ramdisk\n${ramdisk_commented}none /tmp tmpfs defaults,size=$ramdisk_size 0 0" >> /etc/fstab
