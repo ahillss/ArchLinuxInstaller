@@ -61,8 +61,9 @@ function setup_xserver_local() {
 	echo "#xautolock -detectsleep -time 45 -locker 'systemctl hybrid-sleep' &" >> $HOME/.xprofile
 	echo '#system-config-printer-applet &' >> $HOME/.xprofile
 	echo '#nm-applet &' >> $HOME/.xprofile
-	echo '#x11vnc_start.sh &' >> $HOME/.xprofile	
-	echo 'start-pulseaudio-x11 &' >> $HOME/.xprofile
+	echo '#x11vnc_start.sh &' >> $HOME/.xprofile
+	echo '#autocutsel -fork &' >> $HOME/.xprofile
+	echo '#start-pulseaudio-x11 &' >> $HOME/.xprofile
 }
 
 function setup_i3wm_local() {

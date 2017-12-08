@@ -65,10 +65,10 @@ function install_os2() {
 	packages+=" ntfs-3g fuse-exfat exfat-utils dosfstools"
 	packages+=" samba"
 	packages+=" acpid"
-    #packages+=" alsa-plugins ladspa swh-plugins"
+	#packages+=" alsa-plugins ladspa swh-plugins"
 	#packages+=" avahi nss-mdns"
-    #packages+=" archlinux-keyring"
-	    
+	#packages+=" archlinux-keyring"
+
 	#dirmngr < /dev/null
 	#pacman -Scc
 	#rm -rf /etc/pacman.d/gnupg
@@ -101,11 +101,11 @@ function install_os2() {
 	setup_resizeramdisk
 	setup_misc_scripts
 	#disable_coredump
-    #setup_pulse_audio_eql
+	#setup_pulse_audio_eql
 }
 
 function setup_pulse_audio_eql() {
-    echo -e 'pcm.eq {\n\ttype ladspa\n\n\t#slave.pcm "plughw:0,0"\n\tslave.pcm "plug:dmix"\n\n\t#path "/usr/lib/ladspa"\n\n\tplugins [\n\t{\n\t\tlabel mbeq\n\t\tid 1197\n\t\tinput {\n\t\t\t# bands: 50hz, 100hz, 156hz, 220hz, 311hz, 440hz, 622hz, 880hz, 1250hz, 1750hz, 25000hz, 50000hz, 10000hz, 20000hz\n\t\t\tcontrols [ -5 -5 -5 -5 -5 -10 -20 -15 -10 -10 -10 -10 -10 -3 -2 ]\n\t\t\t}\n\t\t}\n\t]\n}\n\npcm.!default {\n\ttype plug\n\tslave.pcm "eq"\n}\n\n\npcm.dsp0 {\n\ttype plug\n\tslave.pcm "eq"\n}' > /etc/asound.conf
+	echo -e 'pcm.eq {\n\ttype ladspa\n\n\t#slave.pcm "plughw:0,0"\n\tslave.pcm "plug:dmix"\n\n\t#path "/usr/lib/ladspa"\n\n\tplugins [\n\t{\n\t\tlabel mbeq\n\t\tid 1197\n\t\tinput {\n\t\t\t# bands: 50hz, 100hz, 156hz, 220hz, 311hz, 440hz, 622hz, 880hz, 1250hz, 1750hz, 25000hz, 50000hz, 10000hz, 20000hz\n\t\t\tcontrols [ -5 -5 -5 -5 -5 -10 -20 -15 -10 -10 -10 -10 -10 -3 -2 ]\n\t\t\t}\n\t\t}\n\t]\n}\n\npcm.!default {\n\ttype plug\n\tslave.pcm "eq"\n}\n\n\npcm.dsp0 {\n\ttype plug\n\tslave.pcm "eq"\n}' > /etc/asound.conf
 }
 
 function setup_misc_scripts() {
