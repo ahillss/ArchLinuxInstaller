@@ -160,7 +160,7 @@ function install_all() {
 	packages+=" xclip numlockx xautolock xcursor-vanilla-dmz gksu pavucontrol xbindkeys"
 
 	packages+=" tigervnc"
-	packages+=" x11vnc tk"
+	packages+=" x11vnc tk autocutsel"
 
 	packages+=" ttf-dejavu ttf-sazanami"
 	packages+=" unrar unzip unace lrzip"
