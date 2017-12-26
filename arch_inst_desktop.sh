@@ -79,6 +79,8 @@ function setup_i3wm_local() {
 	sed -i 's/\(set \$mod\) Mod4/\1 Mod1/g' $HOME/.config/i3/config
 	sed -i "/^bar {$/ a\\\t#tray_output primary" $HOME/.config/i3/config
 	#sed -i 's/^\(font pango:\).*/\1Ubuntu Mono 14/g' $HOME/.config/i3/config
+	sed -i '/^font pango.*/a#font pango:Ubuntu Mono 14' $HOME/.config/i3/config
+
 	echo -e '\n#\nworkspace_layout stacking\ndefault_orientation vertical' >> $HOME/.config/i3/config
 	echo 'for_window [window_role="pop-up"] floating enable' >> $HOME/.config/i3/config
 }
@@ -144,7 +146,6 @@ function setup_shortcuts_local() {
 
 function setup_viewnior_local() {
 	mkdir -p $HOME/.config/viewnior
-
 	echo -e '[prefs]\nzoom-mode=3\nfit-on-fullscreen=true\nshow-hidden=true\nsmooth-images=true\nconfirm-delete=true\nreload-on-save=true\nshow-menu-bar=false\nshow-toolbar=true\nstart-maximized=false\nslideshow-timeout=5\nauto-resize=false\nbehavior-wheel=2\nbehavior-click=0\nbehavior-modify=2\njpeg-quality=100\npng-compression=9\ndesktop=1\n' > $HOME/.config/viewnior/viewnior.conf
 }
 
@@ -157,7 +158,7 @@ function install_all() {
 	#packages+=" xf86-video-nouveau"
 	#packages+=" xf86-video-ati"
 
-	packages+=" xclip numlockx xautolock xcursor-vanilla-dmz gksu pavucontrol xbindkeys"
+	packages+=" xorg-xprop xclip numlockx xautolock xcursor-vanilla-dmz gksu pavucontrol xbindkeys"
 
 	packages+=" tigervnc"
 	packages+=" x11vnc tk autocutsel"

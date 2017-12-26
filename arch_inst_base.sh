@@ -114,7 +114,7 @@ function setup_misc_scripts() {
 }
 
 function setup_resizeramdisk() {
-	echo '#!/bin/bash\n\nsudo mount -o remount,size=$1 /tmp' > /usr/local/bin/resizeramdisk.sh
+	echo -e '#!/bin/bash\n\nsudo mount -o remount,size=$1 /tmp' > /usr/local/bin/resizeramdisk.sh
 	chmod +rx /usr/local/bin/resizeramdisk.sh
 }
 
