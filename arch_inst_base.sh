@@ -17,7 +17,7 @@ rootpass=$mypass
 #autologin=$mylogin
 
 #ramdisk=512M
-#sudo_nopassw=1
+#sudonopassw=1
 multilib=1
 
 function on_grub() {
@@ -310,7 +310,7 @@ function setup_sudoers() {
 	groupadd sudo
 	sed -i 's/# \(%sudo.*\)/\1/g' /etc/sudoers
 	
-	if [ $sudo_nopassw ] && [ $sudo_nopassw -ne 0 ]; then
+	if [ $sudonopassw ] && [ $sudonopassw -ne 0 ]; then
 		echo -e "\n$mylogin  ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 	fi
 }
@@ -321,7 +321,6 @@ function setup_lib_path() {
 
 function setup_host() {
 	echo $myhostname > /etc/hostname
-	#sed -i '/^hosts:/ s/$/ wins/' /etc/nsswitch.conf
 	sed -i 's/\(hosts.*\)\(dns.*\)/\1wins \2/g' /etc/nsswitch.conf
 }
 
