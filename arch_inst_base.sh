@@ -7,18 +7,18 @@ home_diskpart=${grub_disk}3
 
 #swap_diskpart=${grub_disk}4
 
-swap_filesize=8G
-swap_filename=/swapfile
+#swap_filesize=8G
+#swap_filename=/swapfile
 
 mylogin=arch
-mypass=pass
+mypass=arch
 myhostname=archpc
 rootpass=$mypass
 #autologin=$mylogin
 
 #ramdisk=512M
-#disable_swap='#'
-#multilib=1
+#sudo_nopassw=1
+multilib=1
 
 function on_grub() {
 	echo ''
@@ -49,11 +49,13 @@ function install_os() {
 	setup_swap
 	
 	#chroot
-	cp -f $(dirname $0)/$(basename $0) /mnt
-	arch-chroot /mnt /bin/bash -c "bash /$(basename $0) install_os2"
-	
+	cp -f $0 /mnt/
+	arch-chroot /mnt /bin/bash $(basename $0) install_os2
+	rm /mnt/$(basename $0)
+		
 	#
-	cleanup
+	free_swap
+	umount -R /mnt
 }
 
 function install_os2() {
@@ -118,11 +120,6 @@ function setup_resizeramdisk() {
 	chmod +rx /usr/local/bin/resizeramdisk.sh
 }
 
-function cleanup() {
-	free_swap
-	umount -R /mnt
-}
-
 function get_uuid() {
 	echo `blkid -s UUID $1 | sed -n 's/.*UUID=\"\([^\"]*\)\".*/\1/p'`
 }
@@ -151,7 +148,7 @@ function mount_partitions() {
 	mount $root_diskpart /mnt
 	
 	#
-	mkdir /mnt/home /mnt/boot
+	mkdir -p /mnt/home /mnt/boot
 
 	#boot
 	if [ $boot_diskpart ]; then
@@ -225,9 +222,9 @@ function setup_ntp() {
 function setup_fstab() {
 	#swap
 	if [ $swap_filename ] && [ $swap_filesize ]; then
-		echo -e "\n# \n${disable_swap}$swap_filename none swap defaults 0 0" >> /etc/fstab
+		echo -e "\n# \n$swap_filename none swap defaults 0 0" >> /etc/fstab
 	elif [ $swap_diskpart ]; then
-		echo -e "\n# $swap_diskpart\n${disable_swap}UUID=$(get_uuid $swap_diskpart) none swap defaults 0 0" >> /etc/fstab
+		echo -e "\n# $swap_diskpart\nUUID=$(get_uuid $swap_diskpart) none swap defaults 0 0" >> /etc/fstab
 	fi
 
 	#ramdisk
@@ -312,6 +309,10 @@ function setup_pacman() {
 function setup_sudoers() {
 	groupadd sudo
 	sed -i 's/# \(%sudo.*\)/\1/g' /etc/sudoers
+	
+	if [ $sudo_nopassw ] && [ $sudo_nopassw -ne 0 ]; then
+		echo -e "\n$mylogin  ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+	fi
 }
 
 function setup_lib_path() {
@@ -348,6 +349,8 @@ function setup_pulseaudio() {
 
 function add_samba_share() {
 	echo -e "\n[$(basename $1)]\n path = $1\n guest ok = yes\n guest only = yes\n guest account = nobody\n writeable = yes\n browsable = yes\n create mask = 777\n force directory mode = 777"  >> /etc/samba/smb.conf
+	#setfacl -R -d -m o::rwx "$1"
+	#setfacl -R -d -m g::rwx "$1"
 }
 
 function setup_samba() {
