@@ -95,7 +95,7 @@ function install_os2() {
 	setup_power
 	setup_pulseaudio
 	setup_samba
-	#setup_avahi
+	setup_avahi
 	setup_memory_limit
 	setup_aur_script
 	setup_acpi
@@ -209,6 +209,8 @@ function add_fstab_win_mount() {
 
 function setup_networkmanager() {
 	systemctl enable NetworkManager
+	systemctl enable systemd-resolved
+	systemctl enable dhcpcd.service
 }
 
 function setup_ssh() {
@@ -321,7 +323,6 @@ function setup_lib_path() {
 
 function setup_host() {
 	echo $myhostname > /etc/hostname
-	sed -i 's/\(hosts.*\)\(dns.*\)/\1wins \2/g' /etc/nsswitch.conf
 }
 
 function setup_user() {
@@ -362,9 +363,13 @@ function setup_samba() {
 }
 
 function setup_avahi() {
-	sed -i 's/\(host.*\)\(dns.*\)/\1mdns_minimal [NOTFOUND=return] \2/g' /etc/nsswitch.conf
+	#sed -i 's/\(host.*\)\(dns.*\)/\1mdns_minimal [NOTFOUND=return] \2/g' /etc/nsswitch.conf
+	#sed -i 's/\(host.*\)\(resolve.*\)/\1mdns_minimal [NOTFOUND=return] \2/g' /etc/nsswitch.conf
+	sed -i 's/\(host.*resolve \)\(.*\)/\1mdns_minimal [NOTFOUND=return] \2/g' /etc/nsswitch.conf
+	
 	echo -e '<?xml version="1.0" standalone='"'"'no'"'"'?>\n<!DOCTYPE service-group SYSTEM "avahi-service.dtd">\n<service-group>\n\t<name replace-wildcards="yes">%h SMB</name>\n\t<service>\n\t\t<type>_smb._tcp</type>\n\t\t<port>445</port>\n\t</service>\n</service-group>' > /etc/avahi/services/samba.service
-	systemctl enable avahi-daemon.service 
+	
+	systemctl enable avahi-daemon.service
 }
 
 function disable_coredump() {
