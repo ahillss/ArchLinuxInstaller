@@ -1,3 +1,4 @@
+#!/bin/bash
 
 function setup_lightdm() {
 	systemctl enable lightdm
