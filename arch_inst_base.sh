@@ -6,7 +6,7 @@ root_diskpart=${grub_disk}2
 home_diskpart=${grub_disk}3
 
 #swap_diskpart=${grub_disk}4
-
+# --- or ---
 #swap_filesize=8G
 #swap_filename=/swapfile
 
@@ -14,11 +14,6 @@ mylogin=arch
 mypass=arch
 myhostname=archpc
 rootpass=$mypass
-#autologin=$mylogin
-
-#ramdisk=512M
-#sudonopassw=1
-multilib=1
 
 function on_grub() {
 	echo ''
@@ -99,7 +94,7 @@ function install_os2() {
 	setup_memory_limit
 	setup_aur_script
 	setup_acpi
-	setup_autologin
+	#setup_autologin
 	setup_resizeramdisk
 	setup_misc_scripts
 	#disable_coredump
@@ -229,15 +224,7 @@ function setup_fstab() {
 		echo -e "\n# $swap_diskpart\nUUID=$(get_uuid $swap_diskpart) none swap defaults 0 0" >> /etc/fstab
 	fi
 
-	#ramdisk
-	if [ $ramdisk ]; then
-		ramdisk_size=$ramdisk
-	else
-		ramdisk_commented="#"
-		ramdisk_size="512M"
-	fi
-	
-	echo -e "\n# ramdisk\n${ramdisk_commented}none /tmp tmpfs defaults,size=$ramdisk_size 0 0" >> /etc/fstab
+	echo -e "\n# ramdisk\n#none /tmp tmpfs defaults,size=512M 0 0" >> /etc/fstab
 	
 	#
 	on_fstab
@@ -253,7 +240,6 @@ function add_grub_boot() {
 	title=$2
 	u=`get_uuid $part`
 	old=`echo $part | sed 's/[/a-zA-Z]\+\([0-9]\+\)/\1/'`
-	
 	echo -e "menuentry \"$title\" {\n\tsearch --fs-uuid --no-floppy --set=root $u\n\t#set root=(hd0,$old)\n\tchainloader +1\n}" >> /etc/grub.d/40_custom;
 }
 
@@ -301,20 +287,14 @@ function setup_locale() {
 }
 
 function setup_pacman() {
-	if [ $multilib ] && [ $multilib -ne 0 ]; then
-		sed -i 'N;N;s/#\(\[multilib\]\)\n#/\1\n/g' /etc/pacman.conf
-	fi
-	
+	sed -i 'N;N;s/#\(\[multilib\]\)\n#/\1\n/g' /etc/pacman.conf
 	sed -i '/^# Misc options$/ a\ILoveCandy' /etc/pacman.conf
 }
 
 function setup_sudoers() {
 	groupadd sudo
 	sed -i 's/# \(%sudo.*\)/\1/g' /etc/sudoers
-	
-	if [ $sudonopassw ] && [ $sudonopassw -ne 0 ]; then
-		echo -e "\n$mylogin  ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-	fi
+	#echo -e "\n$mylogin  ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 }
 
 function setup_lib_path() {
@@ -332,8 +312,7 @@ function setup_user() {
 	#user
 	useradd -m -U -G sudo,users -s /bin/bash $mylogin
 	
-	echo $mylogin:$mypass | chpasswd	
-	##passwd -ud $mylogin
+	echo $mylogin:$mypass | chpasswd
 }
 
 function setup_power() {
@@ -408,10 +387,8 @@ function setup_acpi() {
 }
 
 function setup_autologin() {
-	if [ $autologin ]; then
-		mkdir -p /etc/systemd/system/getty@tty1.service.d
-		echo -e "[Service]\nExecStart=\nExecStart=-/usr/bin/agetty --autologin $autologin --noclear %I 38400 linux" > /etc/systemd/system/getty@tty1.service.d/autologin.conf
-	fi
+	mkdir -p /etc/systemd/system/getty@tty1.service.d
+	echo -e "[Service]\nExecStart=\nExecStart=-/usr/bin/agetty --autologin $mylogin --noclear %I 38400 linux" > /etc/systemd/system/getty@tty1.service.d/autologin.conf
 }
 
 err_report() {
