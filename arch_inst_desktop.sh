@@ -151,8 +151,9 @@ function setup_viewnior_local() {
 	echo -e '[prefs]\nzoom-mode=3\nfit-on-fullscreen=true\nshow-hidden=true\nsmooth-images=true\nconfirm-delete=true\nreload-on-save=true\nshow-menu-bar=false\nshow-toolbar=true\nstart-maximized=false\nslideshow-timeout=5\nauto-resize=false\nbehavior-wheel=2\nbehavior-click=0\nbehavior-modify=2\njpeg-quality=100\npng-compression=9\ndesktop=1\n' > $HOME/.config/viewnior/viewnior.conf
 }
 
-function install_all() {
-	packages="xorg-server xorg-xinit xcursor-themes"
+function setup_packages() {
+	packages=""
+	packages+=" xorg-server xorg-xinit xcursor-themes"
 	packages+=" xf86-video-vesa xf86-video-fbdev"
 	packages+=" xf86-input-synaptics network-manager-applet"
 
@@ -181,7 +182,10 @@ function install_all() {
 	packages+=" libreoffice-en-GB"
 	
 	pacman -S --needed --noconfirm $packages
-	
+}
+
+function install_all() {
+	setup_packages
 	setup_lightdm
 	setup_mousepad
 	setup_theme
@@ -203,12 +207,7 @@ function install_all() {
 	#setup_tmpcache
 }
 
-err_report() {
-	echo "Error on line $1"
-}
-
-trap 'err_report $LINENO' ERR
-
+trap 'echo "Error on line $LINENO"' ERR
 set -e
 
 if [ $SUDO_USER ]; then
@@ -217,10 +216,8 @@ if [ $SUDO_USER ]; then
 fi
 
 if [ $1 ]; then
-	args=""
-	for (( i=2;$i<=$#;i=$i+1 )); do args+=" ${!i}"; done
-	eval $1 $args
-	echo "$1 run successfully!"
+	eval $1
+	echo "'$1' run successfully!"
 else
 	install_all
 	echo "install completed successfully!"

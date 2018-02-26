@@ -53,7 +53,7 @@ function install_os() {
 	umount -R /mnt
 }
 
-function install_os2() {
+function setup_packages() {
 	packages=""
 	packages+=" grub memtest86+"
 	packages+=" networkmanager openssh ntp"
@@ -73,7 +73,10 @@ function install_os2() {
 	#pacman-key --init && pacman-key --populate archlinux
 	
 	pacman -S --needed --noconfirm $packages
-		
+}
+
+function install_os2() {
+	setup_packages
 	setup_networkmanager
 	setup_ssh
 	setup_ntp
@@ -98,11 +101,6 @@ function install_os2() {
 	setup_resizeramdisk
 	setup_misc_scripts
 	#disable_coredump
-	#setup_pulse_audio_eql
-}
-
-function setup_pulse_audio_eql() {
-	echo -e 'pcm.eq {\n\ttype ladspa\n\n\t#slave.pcm "plughw:0,0"\n\tslave.pcm "plug:dmix"\n\n\t#path "/usr/lib/ladspa"\n\n\tplugins [\n\t{\n\t\tlabel mbeq\n\t\tid 1197\n\t\tinput {\n\t\t\t# bands: 50hz, 100hz, 156hz, 220hz, 311hz, 440hz, 622hz, 880hz, 1250hz, 1750hz, 25000hz, 50000hz, 10000hz, 20000hz\n\t\t\tcontrols [ -5 -5 -5 -5 -5 -10 -20 -15 -10 -10 -10 -10 -10 -3 -2 ]\n\t\t\t}\n\t\t}\n\t]\n}\n\npcm.!default {\n\ttype plug\n\tslave.pcm "eq"\n}\n\n\npcm.dsp0 {\n\ttype plug\n\tslave.pcm "eq"\n}' > /etc/asound.conf
 }
 
 function setup_misc_scripts() {
@@ -294,7 +292,7 @@ function setup_pacman() {
 function setup_sudoers() {
 	groupadd sudo
 	sed -i 's/# \(%sudo.*\)/\1/g' /etc/sudoers
-	#echo -e "\n$mylogin  ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+	echo -e "\n#$mylogin  ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 }
 
 function setup_lib_path() {
@@ -318,12 +316,14 @@ function setup_user() {
 function setup_power() {
 	sed -i 's/#\(HandlePowerKey=\).*/\1suspend/g' /etc/systemd/logind.conf
 	sed -i 's/#\(HandleLidSwitch=\).*/\1hybrid-sleep/g' /etc/systemd/logind.conf
-	echo -e '# Suspend the system when battery level drops to 2% or lower\nSUBSYSTEM=="power_supply", ATTR{status}=="Discharging", ATTR{capacity}=="2", RUN+="/usr/bin/systemctl hibernate"\nSUBSYSTEM=="power_supply", ATTR{status}=="Discharging", ATTR{capacity}=="1", RUN+="/usr/bin/systemctl hibernate"\nSUBSYSTEM=="power_supply", ATTR{status}=="Discharging", ATTR{capacity}=="0", RUN+="/usr/bin/systemctl hibernate"' > /etc/udev/rules.d/99-lowbat.rules
+	echo -e 'SUBSYSTEM=="power_supply", ATTR{status}=="Discharging", ATTR{capacity}=="[0-3]", RUN+="/usr/bin/systemctl hibernate"' > /etc/udev/rules.d/99-lowbat.rules
 }
 
 function setup_pulseaudio() {
 	echo -e "\n###\n#load-module module-alsa-sink device=hw:0,0\n#load-module module-combine-sink sink_name=combined\n#set-default-sink combined" >> /etc/pulse/default.pa
-	echo -e "\n###\n#set-card-profile 0 	output:analog-stereo\n#set-default-sink 1" >> /etc/pulse/default.pa	
+	echo -e "\n###\n#set-card-profile 0 	output:analog-stereo\n#set-default-sink 1" >> /etc/pulse/default.pa
+	
+	#echo -e 'pcm.eq {\n\ttype ladspa\n\n\t#slave.pcm "plughw:0,0"\n\tslave.pcm "plug:dmix"\n\n\t#path "/usr/lib/ladspa"\n\n\tplugins [\n\t{\n\t\tlabel mbeq\n\t\tid 1197\n\t\tinput {\n\t\t\t# bands: 50hz, 100hz, 156hz, 220hz, 311hz, 440hz, 622hz, 880hz, 1250hz, 1750hz, 25000hz, 50000hz, 10000hz, 20000hz\n\t\t\tcontrols [ -5 -5 -5 -5 -5 -10 -20 -15 -10 -10 -10 -10 -10 -3 -2 ]\n\t\t\t}\n\t\t}\n\t]\n}\n\npcm.!default {\n\ttype plug\n\tslave.pcm "eq"\n}\n\n\npcm.dsp0 {\n\ttype plug\n\tslave.pcm "eq"\n}' > /etc/asound.conf
 }
 
 function add_samba_share() {
@@ -343,11 +343,8 @@ function setup_samba() {
 
 function setup_avahi() {
 	#sed -i 's/\(host.*\)\(dns.*\)/\1mdns_minimal [NOTFOUND=return] \2/g' /etc/nsswitch.conf
-	#sed -i 's/\(host.*\)\(resolve.*\)/\1mdns_minimal [NOTFOUND=return] \2/g' /etc/nsswitch.conf
 	sed -i 's/\(host.*resolve \)\(.*\)/\1mdns_minimal [NOTFOUND=return] \2/g' /etc/nsswitch.conf
-	
-	echo -e '<?xml version="1.0" standalone='"'"'no'"'"'?>\n<!DOCTYPE service-group SYSTEM "avahi-service.dtd">\n<service-group>\n\t<name replace-wildcards="yes">%h SMB</name>\n\t<service>\n\t\t<type>_smb._tcp</type>\n\t\t<port>445</port>\n\t</service>\n</service-group>' > /etc/avahi/services/samba.service
-	
+	echo -e '<?xml version="1.0" standalone="no" ?>\n<!DOCTYPE service-group SYSTEM "avahi-service.dtd">\n<service-group>\n\t<name replace-wildcards="yes">%h SMB</name>\n\t<service>\n\t\t<type>_smb._tcp</type>\n\t\t<port>445</port>\n\t</service>\n</service-group>' > /etc/avahi/services/samba.service
 	systemctl enable avahi-daemon.service
 }
 
@@ -391,20 +388,13 @@ function setup_autologin() {
 	echo -e "[Service]\nExecStart=\nExecStart=-/usr/bin/agetty --autologin $mylogin --noclear %I 38400 linux" > /etc/systemd/system/getty@tty1.service.d/autologin.conf
 }
 
-err_report() {
-	echo "Error on line $1"
-}
-
-trap 'err_report $LINENO' ERR
-
+trap 'echo "Error on line $LINENO"' ERR
 set -e
 
 if [ $1 ]; then
-	args=""
-	for (( i=2;$i<=$#;i=$i+1 )); do args+=" ${!i}"; done
-	eval $1 $args
-	echo "$1 completed successfully!"
+	eval $1
+	echo "'$1' completed successfully!"
 else
 	eval install_os
-	echo "install completed successfully!"
+	echo "'install_os' completed successfully!"
 fi
