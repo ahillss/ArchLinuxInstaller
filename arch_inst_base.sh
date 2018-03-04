@@ -62,6 +62,7 @@ function setup_packages() {
 	packages+=" ntfs-3g fuse-exfat exfat-utils dosfstools"
 	packages+=" samba"
 	packages+=" acpid"
+	packages+=" bluez bluez-plugins bluez-utils"
 	#packages+=" alsa-plugins ladspa swh-plugins"
 	#packages+=" avahi nss-mdns"
 	#packages+=" archlinux-keyring"
@@ -91,6 +92,7 @@ function install_os2() {
 	setup_lib_path
 	setup_host
 	setup_power
+	#setup_bluetooth
 	setup_pulseaudio
 	setup_samba
 	setup_avahi
@@ -317,6 +319,12 @@ function setup_power() {
 	sed -i 's/#\(HandlePowerKey=\).*/\1suspend/g' /etc/systemd/logind.conf
 	sed -i 's/#\(HandleLidSwitch=\).*/\1hybrid-sleep/g' /etc/systemd/logind.conf
 	echo -e 'SUBSYSTEM=="power_supply", ATTR{status}=="Discharging", ATTR{capacity}=="[0-3]", RUN+="/usr/bin/systemctl hibernate"' > /etc/udev/rules.d/99-lowbat.rules
+}
+
+function setup_bluetooth() {
+	sudo systemctl enable bluetooth.service
+	echo 1 > /sys/module/bluetooth/parameters/disable_ertm  
+	sed -i "s/#\(AutoEnable=\)false/\1true/g" /etc/bluetooth/main.conf
 }
 
 function setup_pulseaudio() {

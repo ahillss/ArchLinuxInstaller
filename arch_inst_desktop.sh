@@ -65,6 +65,7 @@ function setup_xserver_local() {
 	echo '#x11vnc_start.sh &' >> $HOME/.xprofile
 	echo '#autocutsel -fork &' >> $HOME/.xprofile
 	echo '#start-pulseaudio-x11 &' >> $HOME/.xprofile
+	echo '#blueberry-tray &' >> $HOME/.xprofile
 }
 
 function setup_i3wm_local() {
@@ -87,10 +88,25 @@ function setup_i3wm_local() {
 	echo '#for_window [class="Chromium"] floating disable' >> $HOME/.config/i3/config
 }
 
-function setup_i3status_local() {
-	mkdir -p $HOME/.config/i3status
-	
-	echo -e 'general {\n\tcolors = true\n\tinterval = 10\n}\n\ncpu_usage {\n\tformat = "%usage"\n}\n\ncpu_temperature 0 {\n\tformat = "%degrees\\xc2\\xb0C"\n#\tpath = "/sys/devices/platform/coretemp.0/temp3_input"\n}\n\nbattery 0 {\n\tlast_full_capacity = true\n\tformat="%percentage %remaining"\n\tpath="/sys/class/power_supply/BAT1/uevent"\n\tlow_threshold=5\n\tthreshold_type=percentage\n\thide_seconds = true\n\tinteger_battery_capacity=true\n}\n\ntime {\n\tformat = "%a %d %b, %I:%M %p"\n}\n\nvolume master {\n\tformat = "\\xE2\\x99\\xAA %volume"\n\tformat_muted = "\\xE2\\x99\\xAA %volume"\n\tdevice = "default"\n\tmixer = "Master"\n\tmixer_idx = 0\n}\n\n\norder += "cpu_usage"\n\n#order += "cpu_temperature 0"\n\n#order += "battery 0"\n\norder += "time"\n\norder += "volume master"\n' >> $HOME/.config/i3status/config
+function setup_i3blocks_local() {
+	sed -i 's/\(status_command \)i3status/\1i3blocks/g' $HOME/.config/i3/config
+
+	mkdir -p $HOME/.config/i3blocks
+	echo -n '' >  $HOME/.config/i3blocks/config
+
+	echo -e '\n[cpu_usage]\ncolor=#FFEEAD\ncommand=mpstat -P ALL 1 1 |  awk '"'"'/Average:/ && $2 ~ /[0-9]/ {printf "%.0f\\x25 ",$3}'"'"'|awk '"'"'$1=$1'"'"'\ninterval=10' >> $HOME/.config/i3blocks/config
+
+	echo -e '\n[memory]\ncommand=awk '"'"'/MemFree/ {printf("%.0f\\xd0\\xbc\\xd0\\xb2", ($2/1000))}'"'"' /proc/meminfo\ninterval=2' >> $HOME/.config/i3blocks/config
+
+	echo -e '\n#[swap]\n#color=#FFEEAD\n#command=awk '"'"'/SwapFree/ {printf("%.0f\\xd0\\xbc\\xd0\\xb2", ($2/1000))}'"'"' /proc/meminfo\n#interval=2' >> $HOME/.config/i3blocks/config
+
+	echo -e '\n[cpu_temp]\ncolor=#85C1E9\ncommand=cat /sys/class/thermal/thermal_zone*/temp | awk '"'"'$1 {printf "%.0f\\xc2\\xb0 ",$1/1000}'"'"'|awk '"'"'$1=$1'"'"'\ninterval=2' >> $HOME/.config/i3blocks/config
+
+	echo -e '\n[time]\ncommand=date "+%a %d %b, %I:%M %p"\ninterval=5' >> $HOME/.config/i3blocks/config
+
+	echo -e '\n#[battery]\n#color=#58D68D\n#command=cat /sys/class/power_supply/BAT1/status /sys/class/power_supply/BAT1/capacity | tr "\\n" " " | awk '"'"'$1 $2 {printf "<span color=\\"%s\\">\\xe2\\x9a\\xa1</span>%s%%", $1=="Charging"?"yellow":"light grey",$2}'"'"'\n#interval=2\n#markup=pango' >> $HOME/.config/i3blocks/config
+
+	echo -e '\n[volume]\ncommand=amixer -c 0 -M -D pulse get Master | awk '"'"'/Front Left:.+/ {printf "<span color=\\"%s\\">\\xE2\\x99\\xAA</span>%s", $6=="[off]"?"grey":"#FFFFFF",$5}'"'"'|sed "s/[][]//g"\ninterval=5\nmarkup=pango' >> $HOME/.config/i3blocks/config
 }
 
 function setup_terminator_local() {
@@ -170,7 +186,7 @@ function setup_packages() {
 	packages+=" unrar unzip unace lrzip"
 
 	packages+=" lightdm lightdm-gtk-greeter"
-	packages+=" i3 dmenu"
+	packages+=" i3 dmenu i3blocks sysstat"
 	packages+=" lxtask terminator scite"
 	packages+=" thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman"
 	packages+=" ffmpegthumbnailer tumbler gamin gvfs-smb polkit-gnome"
@@ -180,6 +196,8 @@ function setup_packages() {
 	#packages+=" foomatic-db-nonfree splix gutenprint hplip"
 	#packages+=" pinta"
 	packages+=" libreoffice-en-GB"
+	
+	#packages+=" blueberry"
 	
 	pacman -S --needed --noconfirm $packages
 }
@@ -196,7 +214,7 @@ function install_all() {
 	setup_scite_local
 	setup_xserver_local
 	setup_i3wm_local
-	setup_i3status_local
+	setup_i3blocks_local
 	setup_terminator_local
 	setup_thunar_local
 	setup_vlc_local
