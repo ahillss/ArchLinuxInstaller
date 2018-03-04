@@ -94,13 +94,13 @@ function setup_i3blocks_local() {
 	mkdir -p $HOME/.config/i3blocks
 	echo -n '' >  $HOME/.config/i3blocks/config
 
-	echo -e '\n[cpu_usage]\ncolor=#FFEEAD\ncommand=mpstat -P ALL 1 1 |  awk '"'"'/Average:/ && $2 ~ /[0-9]/ {printf "%.0f\\x25 ",$3}'"'"'|awk '"'"'$1=$1'"'"'\ninterval=10' >> $HOME/.config/i3blocks/config
+	echo -e '\n[cpu]\ncolor=#FFEEAD\ncommand=mpstat -P ALL 1 1 |  awk '"'"'/Average:/ && $2 ~ /[0-9]/ {printf "%.0f\\x25 ",$3}'"'"'|awk '"'"'$1=$1'"'"'\ninterval=10' >> $HOME/.config/i3blocks/config
 
 	echo -e '\n[memory]\ncommand=awk '"'"'/MemFree/ {printf("%.0f\\xd0\\xbc\\xd0\\xb2", ($2/1000))}'"'"' /proc/meminfo\ninterval=2' >> $HOME/.config/i3blocks/config
 
 	echo -e '\n#[swap]\n#color=#FFEEAD\n#command=awk '"'"'/SwapFree/ {printf("%.0f\\xd0\\xbc\\xd0\\xb2", ($2/1000))}'"'"' /proc/meminfo\n#interval=2' >> $HOME/.config/i3blocks/config
 
-	echo -e '\n[cpu_temp]\ncolor=#85C1E9\ncommand=cat /sys/class/thermal/thermal_zone*/temp | awk '"'"'$1 {printf "%.0f\\xc2\\xb0 ",$1/1000}'"'"'|awk '"'"'$1=$1'"'"'\ninterval=2' >> $HOME/.config/i3blocks/config
+	echo -e '\n[temp]\ncolor=#85C1E9\ncommand=cat /sys/class/thermal/thermal_zone*/temp | awk '"'"'$1 {printf "%.0f\\xc2\\xb0 ",$1/1000}'"'"'|awk '"'"'$1=$1'"'"'\ninterval=2' >> $HOME/.config/i3blocks/config
 
 	echo -e '\n[time]\ncommand=date "+%a %d %b, %I:%M %p"\ninterval=5' >> $HOME/.config/i3blocks/config
 
