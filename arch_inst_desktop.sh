@@ -31,9 +31,7 @@ function setup_x11vnc() {
 function setup_tigervnc() {
 	echo -e '#!/bin/bash\n\nif [ $1 ]; then\n\tmkdir -p ~/.vnc\n\techo $1 | vncpasswd -f > ~/.vnc/client_passwd\nfi\n\nvncviewer passwd=~/.vnc/client_passwd' > /usr/local/bin/tigervnc.sh
 	chmod +xr /usr/local/bin/tigervnc.sh
-}
-
-function setup_tigervnc_local() {
+	
 	mkdir -p $HOME/.vnc
 	echo -e 'TigerVNC Configuration file Version 1.0\n\nDotWhenNoCursor=1\nRemoteResize=1\nMenuKey=' > $HOME/.vnc/default.tigervnc
 }
@@ -50,7 +48,7 @@ function setup_tmpcache() {
 	echo "/tmp /$HOME/.local/share/gvfs-metadata none defaults,bind 0 0" >> /etc/fstab
 }
 
-function setup_xserver_local() {
+function setup_xserver() {
 	echo -e '#!/bin/sh\n\nif [ -d /etc/X11/xinit/xinitrc.d ]; then\n\tfor f in /etc/X11/xinit/xinitrc.d/*; do\n\t\t[ -x "$f" ] && . "$f"\n\tdone\n\tunset f\nfi\n\n' > $HOME/.xinitrc
 	
 	echo -e '[[ -f ~/.bashrc ]] && . ~/.bashrc\n#[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx' > $HOME/.bash_profile
@@ -68,7 +66,7 @@ function setup_xserver_local() {
 	echo '#blueberry-tray &' >> $HOME/.xprofile
 }
 
-function setup_i3wm_local() {
+function setup_i3wm() {
 	echo -e "#exec i3" >> $HOME/.xinitrc
 	echo -e "[Desktop]\nSession=i3\n" > $HOME/.dmrc
 	
@@ -88,7 +86,7 @@ function setup_i3wm_local() {
 	echo '#for_window [class="Chromium"] floating disable' >> $HOME/.config/i3/config
 }
 
-function setup_i3blocks_local() {
+function setup_i3blocks() {
 	sed -i 's/\(status_command \)i3status/\1i3blocks/g' $HOME/.config/i3/config
 
 	mkdir -p $HOME/.config/i3blocks
@@ -103,18 +101,18 @@ function setup_i3blocks_local() {
 	echo -e '\n[volume]\ncommand=amixer -c 0 -M -D pulse get Master | awk '"'"'/Front Left:.+/ {printf "<span color=\\"%s\\">\\xE2\\x99\\xAA</span>%s", $6=="[off]"?"grey":"#FFFFFF",$5}'"'"'|sed "s/[][]//g"\ninterval=5\nmarkup=pango' >> $HOME/.config/i3blocks/config
 }
 
-function setup_terminator_local() {
+function setup_terminator() {
 	mkdir -p $HOME/.config/terminator $HOME/.config/xfce4
 	echo -e "[config]\n  inactive_color_offset = 1.0\n[profiles]\n [[default]]\n  show_titlebar = False\n  scrollbar_position = disabled" > $HOME/.config/terminator/config
 	echo 'TerminalEmulator=terminator' >> $HOME/.config/xfce4/helpers.rc
 }
 
-function setup_thunar_local() {
+function setup_thunar() {
 	mkdir -p $HOME/.config/xfce4/xfconf/xfce-perchannel-xml
 	echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<channel name="thunar" version="1.0">\n\t<property name="last-show-hidden" type="bool"\nvalue="true"/>\n\t<property name="last-view" type="string" value="ThunarDetailsView"/>\n</channel>' >> $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml
 }
 
-function setup_vlc_local() {
+function setup_vlc() {
 	mkdir -p $HOME/.config/vlc
 	echo -e "[qt4]\nqt-recentplay=0\nqt-privacy-ask=0\n\n[core]\nvideo-title-show=0\nplay-and-exit=1\none-instance-when-started-from-file=0\nsnapshot-path=$HOME/Pictures\nkey-vol-up=Ctrl+Up\nkey-vol-down=Ctrl+Down\nkey-vol-mute=m" > $HOME/.config/vlc/vlcrc
 	echo -e '[MainWindow]\nstatus-bar-visible=true' > $HOME/.config/vlc/vlc-qt-interface.conf
@@ -124,9 +122,7 @@ function setup_scite() {
 	sed -i "s/\(file\.patterns\.cpp=.*\)/\1;*.glsl/g" /usr/share/scite/cpp.properties
 	sed -i "s/\(file\.patterns\.lisp=.*\)/\1;*.el/g" /usr/share/scite/lisp.properties
 	sed -i "s/\(file\.patterns\.scheme=.*\)/\1;*.rkt/g" /usr/share/scite/lisp.properties
-}
-
-function setup_scite_local() {
+	
 	echo -e 'check.if.already.open=1\nline.margin.visible=1\nline.margin.width=1+\nload.on.activate=1\nopen.filter=$(all.files)\noutput.wrap=1\nsave.session=1\nsave.recent=1\nsave.find=1\nstatusbar.visible=1\ntitle.full.path=1\ntoolbar.visible=1\nquit.on.close.last=1\nwrap=1' > $HOME/.SciTEUser.properties
 
 	echo -e 'selection.back=#000000\nselection.alpha=50' >> $HOME/.SciTEUser.properties
@@ -140,7 +136,7 @@ function setup_scite_local() {
 	echo -e 'function OnUpdateUI() props["CurrentPos"]=editor.CurrentPos end' > $HOME/.SciTEStartup.lua
 }
 
-function setup_gtk_local() {
+function setup_gtk() {
 	mkdir -p  $HOME/.config/gtk-2.0 $HOME/.config/gtk-3.0
 	mkdir -p $HOME/Desktop $HOME/Documents $HOME/Downloads $HOME/Pictures $HOME/Videos
 	
@@ -151,12 +147,12 @@ function setup_gtk_local() {
 	echo -e '[Filechooser Settings]\nLocationMode=path-bar\nShowHidden=true\nShowSizeColumn=true\nSortColumn=name\nSortOrder=ascending\nStartupMode=recent' > $HOME/.config/gtk-2.0/gtkfilechooser.ini
 }
 
-function setup_shortcuts_local() {
+function setup_shortcuts() {
 	echo 'xbindkeys -p &' >> $HOME/.xprofile
 	echo -e '"chromium"\nMod4+b\n\n"thunar"\nMod4+g\n\n"nemo --no-desktop"\nMod4+f\n\n"scite"\nMod4+s\n\n"lxtask"\nControl+Shift+Escape' > $HOME/.xbindkeysrc
 }
 
-function setup_viewnior_local() {
+function setup_viewnior() {
 	mkdir -p $HOME/.config/viewnior
 	echo -e '[prefs]\nzoom-mode=3\nfit-on-fullscreen=true\nshow-hidden=true\nsmooth-images=true\nconfirm-delete=true\nreload-on-save=true\nshow-menu-bar=false\nshow-toolbar=true\nstart-maximized=false\nslideshow-timeout=5\nauto-resize=false\nbehavior-wheel=2\nbehavior-click=0\nbehavior-modify=2\njpeg-quality=100\npng-compression=9\ndesktop=1\n' > $HOME/.config/viewnior/viewnior.conf
 }
@@ -203,18 +199,16 @@ function install_all() {
 	setup_theme
 	setup_x11vnc
 	setup_tigervnc
-	setup_tigervnc_local
 	setup_scite
-	setup_scite_local
-	setup_xserver_local
-	setup_i3wm_local
-	setup_i3blocks_local
-	setup_terminator_local
-	setup_thunar_local
-	setup_vlc_local
-	setup_gtk_local
-	setup_shortcuts_local
-	setup_viewnior_local
+	setup_xserver
+	setup_i3wm
+	setup_i3blocks
+	setup_terminator
+	setup_thunar
+	setup_vlc
+	setup_gtk
+	setup_shortcuts
+	setup_viewnior
 	setup_cups
 	#setup_tmpcache
 }
