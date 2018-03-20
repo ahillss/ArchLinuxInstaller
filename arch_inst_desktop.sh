@@ -189,6 +189,11 @@ function setup_packages() {
 	
 	#packages+=" blueberry"
 	
+	#packages+=" winetricks zenity wine mpg123 wmctrl lib32-ncurses wine-staging wine_gecko wine-mono"
+	#packages+=" qemu qemu-arch-extra gnome-boxes"
+	
+	#packages+=" emacs python racket chicken swi-prolog texlive-most"
+	
 	pacman -S --needed --noconfirm $packages
 }
 

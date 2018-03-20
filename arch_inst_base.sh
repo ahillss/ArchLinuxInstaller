@@ -323,7 +323,8 @@ function setup_power() {
 
 function setup_bluetooth() {
 	systemctl enable bluetooth.service
-	echo 1 > /sys/module/bluetooth/parameters/disable_ertm  
+	#echo 1 > /sys/module/bluetooth/parameters/disable_ertm  
+	echo 'options bluetooth disable_ertm=Y' > /etc/modprobe.d/mybluetooth.conf
 	sed -i "s/#\(AutoEnable=\)false/\1true/g" /etc/bluetooth/main.conf
 }
 
