@@ -62,7 +62,7 @@ function setup_packages() {
 	packages+=" ntfs-3g fuse-exfat exfat-utils dosfstools"
 	packages+=" samba"
 	packages+=" acpid"
-	packages+=" bluez bluez-plugins bluez-utils"
+	#packages+=" bluez bluez-plugins bluez-utils"
 	#packages+=" alsa-plugins ladspa swh-plugins"
 	#packages+=" avahi nss-mdns"
 	#packages+=" archlinux-keyring"
@@ -323,9 +323,11 @@ function setup_power() {
 
 function setup_bluetooth() {
 	systemctl enable bluetooth.service
+	
 	#echo 1 > /sys/module/bluetooth/parameters/disable_ertm  
 	echo 'options bluetooth disable_ertm=Y' > /etc/modprobe.d/mybluetooth.conf
-	sed -i "s/#\(AutoEnable=\)false/\1true/g" /etc/bluetooth/main.conf
+	
+	#sed -i "s/#\(AutoEnable=\)false/\1true/g" /etc/bluetooth/main.conf
 }
 
 function setup_pulseaudio() {
