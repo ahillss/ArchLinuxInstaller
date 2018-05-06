@@ -295,7 +295,7 @@ function setup_sudoers() {
 	groupadd sudo
 	sed -i 's/# \(%sudo.*\)/\1/g' /etc/sudoers
 	echo -e "\n#$mylogin  ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-	#echo -e '\n#\nDefaults !env_reset' > /etc/sudoers
+	echo -e '\n#\n#Defaults !env_reset' >> /etc/sudoers
 }
 
 function setup_lib_path() {
