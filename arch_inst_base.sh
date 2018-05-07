@@ -351,9 +351,9 @@ function add_samba_share() {
 }
 
 function setup_samba() {
-	systemctl enable smbd
-	systemctl enable nmbd
-	
+	systemctl enable smb.service
+	systemctl enable nmb.service
+
 	echo -e '[global]\n unix extensions = no\n map to guest = Bad User\n workgroup = WORKGROUP\n guest account = nobody\n security = user' > /etc/samba/smb.conf
 	
 	on_samba
