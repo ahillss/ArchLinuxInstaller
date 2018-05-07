@@ -162,6 +162,26 @@ function setup_viewnior() {
 	echo -e '[prefs]\nzoom-mode=3\nfit-on-fullscreen=true\nshow-hidden=true\nsmooth-images=true\nconfirm-delete=true\nreload-on-save=true\nshow-menu-bar=false\nshow-toolbar=true\nstart-maximized=false\nslideshow-timeout=5\nauto-resize=false\nbehavior-wheel=2\nbehavior-click=0\nbehavior-modify=2\njpeg-quality=100\npng-compression=9\ndesktop=1\n' > $HOME/.config/viewnior/viewnior.conf
 }
 
+function setup_wine() {
+	useradd -m -U -G users -s /bin/bash wineuser
+	#sed -i 's/\(wineuser:\)[^:]*\(.*\)/\1U6aMy0wojraho\2/g' /etc/shadow
+	echo wineuser:wineuser | chpasswd
+
+	mkdir -p /home/wineuser/.wine/drive_c/users/wineuser
+	rm -r /home/wineuser/.wine/drive_c/users/wineuser/Temp
+	ln -s /tmp/ /home/wineuser/.wine/drive_c/users/wineuser/Temp
+
+	echo -e '\n#\nload-module module-native-protocol-unix auth-anonymous=1 socket=/tmp/pulse-socket' >> /etc/pulse/default.pa
+	mkdir -p /home/wineuser/.config/pulse
+	echo 'default-server = unix:/tmp/pulse-socket' >> /home/wineuser/.config/pulse/client.conf
+
+	echo -e '#!/bin/bash\nxhost +SI:localuser:wineuser\necho wineuser | su wineuser -c "wine start /unix '"'"'$@'"'"'"' > /usr/local/bin/runaswine
+	echo -e '#!/bin/bash\nxhost +SI:localuser:wineuser\necho wineuser | su wineuser -c "winecfg"' > /usr/local/bin/runaswinecfg
+	chmod +xr /usr/local/bin/runaswine /usr/local/bin/runaswinecfg
+
+	sed -i 's/\(Exec=\).*/\1runaswine %f/g' /usr/share/applications/wine.desktop
+}
+
 function setup_packages() {
 	packages=""
 	packages+=" xorg-server xorg-xinit xcursor-themes"
@@ -194,7 +214,7 @@ function setup_packages() {
 	
 	#packages+=" blueberry"
 	
-	#packages+=" winetricks zenity wine mpg123 wmctrl lib32-ncurses wine-staging wine_gecko wine-mono"
+	packages+=" winetricks zenity wine mpg123 wmctrl lib32-ncurses wine_gecko wine-mono xorg-xhost lib32-libpulse"
 	#packages+=" qemu qemu-arch-extra gnome-boxes"
 	
 	#packages+=" emacs python racket chicken swi-prolog texlive-most"
@@ -220,6 +240,7 @@ function install_all() {
 	setup_shortcuts
 	setup_viewnior
 	setup_cups
+	setup_wine
 	#setup_tmpcache
 }
 
