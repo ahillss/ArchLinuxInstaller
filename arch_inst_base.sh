@@ -210,6 +210,12 @@ function setup_networkmanager() {
 
 function setup_ssh() {
 	systemctl enable sshd
+	
+	sed -i 's/#\(PermitRootLogin \)prohibit-password/\1no/g' /etc/ssh/sshd_config
+
+	echo -e '\n#\nAllowGroups ssh' >> /etc/ssh/sshd_config
+
+	groupadd ssh
 }
 
 function setup_ntp() {
@@ -311,7 +317,7 @@ function setup_user() {
 	echo root:$rootpass | chpasswd
 
 	#user
-	useradd -m -U -G sudo,users -s /bin/bash $mylogin
+	useradd -m -U -G sudo,users,ssh -s /bin/bash $mylogin
 	
 	echo $mylogin:$mypass | chpasswd
 }

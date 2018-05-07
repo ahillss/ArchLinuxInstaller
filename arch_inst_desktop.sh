@@ -214,7 +214,7 @@ function setup_packages() {
 	
 	#packages+=" blueberry"
 	
-	packages+=" winetricks zenity wine mpg123 wmctrl lib32-ncurses wine_gecko wine-mono xorg-xhost lib32-libpulse"
+	packages+=" wine winetricks wine_gecko wine-mono lib32-mpg123 lib32-ncurses lib32-libpulse xorg-xhost lib32-gnutls wmctrl zenity"
 	#packages+=" qemu qemu-arch-extra gnome-boxes"
 	
 	#packages+=" emacs python racket chicken swi-prolog texlive-most"
