@@ -167,9 +167,9 @@ function setup_wine() {
 	#sed -i 's/\(wineuser:\)[^:]*\(.*\)/\1U6aMy0wojraho\2/g' /etc/shadow
 	echo wineuser:wineuser | chpasswd
 
-	mkdir -p /home/wineuser/.wine/drive_c/users/wineuser
-	rm -r /home/wineuser/.wine/drive_c/users/wineuser/Temp
-	ln -s /tmp/ /home/wineuser/.wine/drive_c/users/wineuser/Temp
+	#mkdir -p /home/wineuser/.wine/drive_c/users/wineuser
+	#rm -r /home/wineuser/.wine/drive_c/users/wineuser/Temp
+	#ln -s /tmp/ /home/wineuser/.wine/drive_c/users/wineuser/Temp
 
 	echo -e '\n#\nload-module module-native-protocol-unix auth-anonymous=1 socket=/tmp/pulse-socket' >> /etc/pulse/default.pa
 	mkdir -p /home/wineuser/.config/pulse
