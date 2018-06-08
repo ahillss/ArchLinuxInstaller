@@ -66,6 +66,8 @@ function setup_packages() {
 	#packages+=" alsa-plugins ladspa swh-plugins"
 	#packages+=" avahi nss-mdns"
 	#packages+=" archlinux-keyring"
+	
+	#packages+=" lighttpd fcgi php php-cgi"
 
 	#dirmngr < /dev/null
 	#pacman -Scc
@@ -103,6 +105,8 @@ function install_os2() {
 	setup_resizeramdisk
 	setup_misc_scripts
 	#disable_coredump
+	#setup_lighttpd
+	
 }
 
 function setup_misc_scripts() {
@@ -404,6 +408,29 @@ function setup_acpi() {
 function setup_autologin() {
 	mkdir -p /etc/systemd/system/getty@tty1.service.d
 	echo -e "[Service]\nExecStart=\nExecStart=-/usr/bin/agetty --autologin $mylogin --noclear %I 38400 linux" > /etc/systemd/system/getty@tty1.service.d/autologin.conf
+}
+
+function setup_lighttpd() {
+	systemctl enable lighttpd
+
+	mkdir -p /etc/lighttpd/conf.d/
+
+	echo 'server.modules += ("mod_fastcgi")' >> /etc/lighttpd/conf.d/fastcgi.conf
+	echo 'index-file.names += ("index.php")' >> /etc/lighttpd/conf.d/fastcgi.conf
+	echo '' > /etc/lighttpd/conf.d/fastcgi.conf
+	echo 'fastcgi.server = (' >> /etc/lighttpd/conf.d/fastcgi.conf
+	echo '    ".php" => ("localhost" => ("bin-path" => "/usr/bin/php-cgi", "socket" => "/tmp/php-fastcgi.sock", "broken-scriptfilename" => "enable", "max-procs" => 4, "bin-environment" => ("PHP_FCGI_CHILDREN" => "1")))' >> /etc/lighttpd/conf.d/fastcgi.conf
+	echo ')' >> /etc/lighttpd/conf.d/fastcgi.conf
+
+	echo '' >>  /etc/lighttpd/lighttpd.conf
+	echo 'include "conf.d/fastcgi.conf"' >>  /etc/lighttpd/lighttpd.conf
+
+	echo '<?php phpinfo(); ?>' > /srv/http/index.php
+	chmod 755 /srv/http/index.php
+	
+	
+	#sed -i 's/;\(extension=mysql.so\)/\1/g' /etc/php/php.ini
+	#sed -i "s/\(open_basedir = .*\)/\1:\/bin\/:\/usr\/bin\//g" /etc/php/php.ini
 }
 
 trap 'echo "Error on line $LINENO"' ERR
