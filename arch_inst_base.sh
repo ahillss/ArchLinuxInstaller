@@ -64,7 +64,7 @@ function setup_packages() {
 	packages+=" acpid"
 	#packages+=" bluez bluez-plugins bluez-utils"
 	#packages+=" alsa-plugins ladspa swh-plugins"
-	#packages+=" avahi nss-mdns"
+	packages+=" avahi nss-mdns"
 	#packages+=" archlinux-keyring"
 	
 	#packages+=" lighttpd fcgi php php-cgi"
