@@ -135,10 +135,11 @@ function setup_scite() {
 
 	echo -e '\nstatusbar.text.1=pos=$(CurrentPos),li=$(LineNumber), co=$(ColumnNumber) [$(EOLMode)]\next.lua.startup.script=$(SciteUserHome)/.SciTEStartup.lua' >> $HOME/.SciTEUser.properties
 	echo -e 'function OnUpdateUI() props["CurrentPos"]=editor.CurrentPos end' > $HOME/.SciTEStartup.lua
-		
-	echo -e '[Desktop Entry]\nName=SciTE New Window\nType=Application\nExec=SciTE -check.if.already.open=0 %F\nIcon=Sci48M\nMimeType=text/plain;' > /usr/share/applications/scitenew.desktop
 
-	echo -e '[Desktop Entry]\nName=SciTE as Root\nType=Application\nExec=gksudo -k "SciTE -check.if.already.open=0 %F"\nIcon=Sci48M\nMimeType=text/plain;' > /usr/share/applications/sciteroot.desktop
+	mkdir -p /usr/local/share/applications
+	echo -e '[Desktop Entry]\nName=SciTE New Window\nType=Application\nExec=SciTE -check.if.already.open=0 %F\nIcon=Sci48M\nMimeType=text/plain;' > /usr/local/share/applications/scitenew.desktop
+
+	echo -e '[Desktop Entry]\nName=SciTE as Root\nType=Application\nExec=gksudo -k "SciTE -check.if.already.open=0 %F"\nIcon=Sci48M\nMimeType=text/plain;' > /usr/local/share/applications/sciteroot.desktop
 }
 
 function setup_gtk() {
@@ -179,7 +180,12 @@ function setup_wine() {
 	echo -e '#!/bin/bash\nxhost +SI:localuser:wineuser\necho wineuser | su wineuser -c "winecfg"' > /usr/local/bin/runaswinecfg
 	chmod +xr /usr/local/bin/runaswine /usr/local/bin/runaswinecfg
 
-	sed -i 's/\(Exec=\).*/\1runaswine %f/g' /usr/share/applications/wine.desktop
+	#sed -i 's/\(Exec=\).*/\1runaswine %f/g' /usr/share/applications/wine.desktop
+	
+	mkdir -p /usr/local/share/applications
+
+	echo -e '[Desktop Entry]\nType=Application\nName=Run as wine\nExec=/usr/local/bin/runaswine "%f"\nMimeType=application/x-ms-dos-executable;application/x-msi;application/x-ms-shortcut;\nIcon=wine' > /usr/local/share/applications/runaswine.desktop
+
 }
 
 function setup_packages() {
