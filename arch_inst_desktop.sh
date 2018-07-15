@@ -178,7 +178,8 @@ function setup_wine() {
 
 	echo -e '#!/bin/bash\nxhost +SI:localuser:wineuser\necho wineuser | su wineuser -c "wine start /unix '"'"'$@'"'"'"' > /usr/local/bin/runaswine
 	echo -e '#!/bin/bash\nxhost +SI:localuser:wineuser\necho wineuser | su wineuser -c "winecfg"' > /usr/local/bin/runaswinecfg
-	chmod +xr /usr/local/bin/runaswine /usr/local/bin/runaswinecfg
+	echo -e '#!/bin/bash\nxhost +SI:localuser:wineuser\necho wineuser | su wineuser -c "wineserver -k '"'"'$@'"'"'"' > /usr/local/bin/runaswineserverkill
+	chmod +xr /usr/local/bin/runaswine /usr/local/bin/runaswinecfg /usr/local/bin/runaswineserverkill
 
 	#sed -i 's/\(Exec=\).*/\1runaswine %f/g' /usr/share/applications/wine.desktop
 	
