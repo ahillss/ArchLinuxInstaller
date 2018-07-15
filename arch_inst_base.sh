@@ -102,7 +102,6 @@ function install_os2() {
 	setup_aur_script
 	setup_acpi
 	#setup_autologin
-	setup_resizeramdisk
 	setup_misc_scripts
 	#disable_coredump
 	#setup_lighttpd
@@ -112,10 +111,8 @@ function install_os2() {
 function setup_misc_scripts() {
 	echo -e '#!/bin/bash\n\ncmp -l $1 $2 | gawk '"'"'{printf "%08X %02X %02X\\n", $1, strtonum(0$2), strtonum(0$3)}'"'" > /usr/local/bin/bdiff.sh
 	chmod +xr /usr/local/bin/bdiff.sh
-}
-
-function setup_resizeramdisk() {
-	echo -e '#!/bin/bash\n\nsudo mount -o remount,size=$1 /tmp' > /usr/local/bin/resizeramdisk.sh
+	
+	echo -e '#!/bin/bash\n\nif [ $1 ]; then\n    s=$1\nelse\n    s=512M\nfi\n\nsudo mount -o remount,size=$s /tmp' > /usr/local/bin/resizeramdisk.sh
 	chmod +rx /usr/local/bin/resizeramdisk.sh
 }
 
