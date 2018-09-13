@@ -176,10 +176,12 @@ function setup_wine() {
 	mkdir -p /home/wineuser/.config/pulse
 	echo 'default-server = unix:/tmp/pulse-socket' >> /home/wineuser/.config/pulse/client.conf
 
-	echo -e '#!/bin/bash\nxhost +SI:localuser:wineuser\necho wineuser | su wineuser -c "wine start /unix '"'"'$@'"'"'"' > /usr/local/bin/runaswine
-	echo -e '#!/bin/bash\nxhost +SI:localuser:wineuser\necho wineuser | su wineuser -c "winecfg"' > /usr/local/bin/runaswinecfg
-	echo -e '#!/bin/bash\nxhost +SI:localuser:wineuser\necho wineuser | su wineuser -c "wineserver -k' > /usr/local/bin/runaswineserverkill
-	chmod +xr /usr/local/bin/runaswine /usr/local/bin/runaswinecfg /usr/local/bin/runaswineserverkill
+	echo -e '#!/bin/bash\nxhost +SI:localuser:wineuser\necho wineuser | su wineuser -c "wine start /unix '"'"'$@'"'"'";echo' > /usr/local/bin/runaswine
+	echo -e '#!/bin/bash\nxhost +SI:localuser:wineuser\necho wineuser | su wineuser -c "winecfg";echo' > /usr/local/bin/runaswinecfg
+	echo -e '#!/bin/bash\nxhost +SI:localuser:wineuser\necho wineuser | su wineuser -c "wineserver -k";echo' > /usr/local/bin/runaswinekillserver
+	echo -e '#!/bin/bash\necho wineuser | su wineuser -c "pkill -u wineuser";echo' > /usr/local/bin/runaswinekillall
+
+	chmod +xr /usr/local/bin/runaswine /usr/local/bin/runaswinecfg /usr/local/bin/runaswinekillserver /usr/local/bin/runaswinekillall
 
 	#sed -i 's/\(Exec=\).*/\1runaswine %f/g' /usr/share/applications/wine.desktop
 	
