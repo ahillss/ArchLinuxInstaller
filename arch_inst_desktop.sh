@@ -21,17 +21,14 @@ function setup_theme() {
 	sed -i 's/\(Inherits=\).*/\1Vanilla-DMZ/g' /usr/share/icons/default/index.theme
 }
 
-function setup_x11vnc() {	
-	echo -e '#!/bin/bash\n\nx11vnc -many -display :0 -rfbauth ~/.vnc/x11vnc_passwd -noscr -noxrecord -gui tray -o ~/.vnc/x11vnc_log.%VNCDISPLAY' > /usr/local/bin/x11vnc_start.sh
-	echo -e '#!/bin/bash\n\nif [ $1 ]; then\n\tmkdir -p ~/.vnc\n\tx11vnc -storepasswd $1 ~/.vnc/x11vnc_passwd\nfi' > /usr/local/bin/x11vnc_passwd.sh
-	chmod +xr /usr/local/bin/x11vnc_start.sh
-	chmod +xr /usr/local/bin/x11vnc_passwd.sh
+function setup_x11vnc() {
+	echo -e 'many\ndisplay :0\nnoscr\nnoxrecord\ngui icon\n#o .x11vnc.%VNCDISPLAY.log\nrfbport 5900\n\n#use: x11vnc -storepasswd YOURPASS ~/.x11vnc_passwd\nrfbauth .x11vnc_passwd\n\n#or:\n#passwd YOURPASS' > $HOME/.x11vncrc
 }
 
 function setup_tigervnc() {
-	echo -e '#!/bin/bash\n\nif [ $1 ]; then\n\tmkdir -p ~/.vnc\n\techo $1 | vncpasswd -f > ~/.vnc/client_passwd\nfi\n\nvncviewer passwd=~/.vnc/client_passwd' > /usr/local/bin/tigervnc.sh
+	echo -e '#!/bin/bash\n\nPASSWD_FILE=~/.vnc/passwd\n\nif [ $1 ]; then\n\techo $1 | vncpasswd -f > $PASSWD_FILE\nfi\n\nvncviewer passwd=$PASSWD_FILE' > /usr/local/bin/tigervnc.sh
 	chmod +xr /usr/local/bin/tigervnc.sh
-	
+
 	mkdir -p $HOME/.vnc
 	echo -e 'TigerVNC Configuration file Version 1.0\n\nDotWhenNoCursor=1\nRemoteResize=1\nMenuKey=' > $HOME/.vnc/default.tigervnc
 }
@@ -60,7 +57,7 @@ function setup_xserver() {
 	echo "#xautolock -detectsleep -time 45 -locker 'systemctl hybrid-sleep' &" >> $HOME/.xprofile
 	echo '#system-config-printer-applet &' >> $HOME/.xprofile
 	echo '#nm-applet &' >> $HOME/.xprofile
-	echo '#x11vnc_start.sh &' >> $HOME/.xprofile
+	echo '#x11vnc &' >> $HOME/.xprofile
 	echo '#autocutsel -fork &' >> $HOME/.xprofile
 	echo '#start-pulseaudio-x11 &' >> $HOME/.xprofile
 	echo '#blueberry-tray &' >> $HOME/.xprofile
@@ -214,12 +211,11 @@ function setup_packages() {
 	packages+=" lxtask terminator scite"
 	packages+=" thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman"
 	packages+=" ffmpegthumbnailer tumbler gamin gvfs-smb polkit-gnome"
-	packages+=" file-roller viewnior fbreader evince chromium vlc"
+	packages+=" file-roller viewnior evince chromium vlc"
+	#packages+=" fbreader mcomix pinta libreoffice-en-GB"
 
 	packages+=" cups system-config-printer"
 	#packages+=" foomatic-db-nonfree splix gutenprint hplip"
-	#packages+=" pinta"
-	packages+=" libreoffice-en-GB"
 	
 	#packages+=" blueberry"
 	
