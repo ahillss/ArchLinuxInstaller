@@ -22,7 +22,7 @@ function setup_theme() {
 }
 
 function setup_x11vnc() {
-	echo -e 'many\ndisplay :0\nnoscr\nnoxrecord\ngui icon\n#o .x11vnc.%VNCDISPLAY.log\nrfbport 5900\n\n#use: x11vnc -storepasswd YOURPASS ~/.x11vnc_passwd\nrfbauth .x11vnc_passwd\n\n#or:\n#passwd YOURPASS' > $HOME/.x11vncrc
+	echo -e 'many\ndisplay :0\nnoscr\nnoxrecord\ngui tray\n#o .x11vnc.%VNCDISPLAY.log\nrfbport 5900\n\n#use: x11vnc -storepasswd YOURPASS ~/.x11vnc_passwd\nrfbauth .x11vnc_passwd\n\n#or:\n#passwd YOURPASS' > $HOME/.x11vncrc
 }
 
 function setup_tigervnc() {
@@ -173,10 +173,10 @@ function setup_wine() {
 	mkdir -p /home/wineuser/.config/pulse
 	echo 'default-server = unix:/tmp/pulse-socket' >> /home/wineuser/.config/pulse/client.conf
 
-	echo -e '#!/bin/bash\nxhost +SI:localuser:wineuser\necho wineuser | su wineuser -c "wine start /unix '"'"'$@'"'"'";echo' > /usr/local/bin/runaswine
-	echo -e '#!/bin/bash\nxhost +SI:localuser:wineuser\necho wineuser | su wineuser -c "winecfg";echo' > /usr/local/bin/runaswinecfg
-	echo -e '#!/bin/bash\nxhost +SI:localuser:wineuser\necho wineuser | su wineuser -c "wineserver -k";echo' > /usr/local/bin/runaswinekillserver
-	echo -e '#!/bin/bash\necho wineuser | su wineuser -c "pkill -u wineuser";echo' > /usr/local/bin/runaswinekillall
+	echo -e '#!/bin/bash\n\nxhost +SI:localuser:wineuser\necho wineuser | su wineuser -c "wine start /unix '"'"'$@'"'"'"\necho' > /usr/local/bin/runaswine
+	echo -e '#!/bin/bash\n\nxhost +SI:localuser:wineuser\necho wineuser | su wineuser -c "winecfg"\necho' > /usr/local/bin/runaswinecfg
+	echo -e '#!/bin/bash\n\nxhost +SI:localuser:wineuser\necho wineuser | su wineuser -c "wineserver -k"\necho' > /usr/local/bin/runaswinekillserver
+	echo -e '#!/bin/bash\n\necho wineuser | su wineuser -c "pkill -u wineuser"\necho' > /usr/local/bin/runaswinekillall
 
 	chmod +xr /usr/local/bin/runaswine /usr/local/bin/runaswinecfg /usr/local/bin/runaswinekillserver /usr/local/bin/runaswinekillall
 
