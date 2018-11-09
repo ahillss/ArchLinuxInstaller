@@ -165,10 +165,6 @@ function setup_wine() {
 	#sed -i 's/\(wineuser:\)[^:]*\(.*\)/\1U6aMy0wojraho\2/g' /etc/shadow
 	echo wineuser:wineuser | chpasswd
 
-	#mkdir -p /home/wineuser/.wine/drive_c/users/wineuser
-	#rm -r /home/wineuser/.wine/drive_c/users/wineuser/Temp
-	#ln -s /tmp/ /home/wineuser/.wine/drive_c/users/wineuser/Temp
-
 	echo -e '\n#\nload-module module-native-protocol-unix auth-anonymous=1 socket=/tmp/pulse-socket' >> /etc/pulse/default.pa
 	mkdir -p /home/wineuser/.config/pulse
 	echo 'default-server = unix:/tmp/pulse-socket' >> /home/wineuser/.config/pulse/client.conf
@@ -180,12 +176,11 @@ function setup_wine() {
 
 	chmod +xr /usr/local/bin/runaswine /usr/local/bin/runaswinecfg /usr/local/bin/runaswinekillserver /usr/local/bin/runaswinekillall
 
-	#sed -i 's/\(Exec=\).*/\1runaswine %f/g' /usr/share/applications/wine.desktop
-	
 	mkdir -p /usr/local/share/applications
-
 	echo -e '[Desktop Entry]\nType=Application\nName=Run as wine\nExec=/usr/local/bin/runaswine "%f"\nMimeType=application/x-ms-dos-executable;application/x-msi;application/x-ms-shortcut;\nIcon=wine' > /usr/local/share/applications/runaswine.desktop
 
+	chmod -R o=rwx /home/wineuser
+	setfacl -R -d -m o::rwx /home/wineuser
 }
 
 function setup_packages() {
