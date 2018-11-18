@@ -348,7 +348,6 @@ function setup_pulseaudio() {
 function add_samba_share() {
 	echo -e "\n[$(basename $1)]\n path = $1\n guest ok = yes\n guest only = yes\n guest account = nobody\n writeable = yes\n browsable = yes\n create mask = 777\n force directory mode = 777"  >> /etc/samba/smb.conf
 	#setfacl -R -d -m o::rwx "$1"
-	#setfacl -R -d -m g::rwx "$1"
 }
 
 function setup_samba() {
