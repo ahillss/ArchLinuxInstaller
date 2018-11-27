@@ -152,7 +152,7 @@ function setup_gtk() {
 
 function setup_shortcuts() {
 	echo 'xbindkeys -p &' >> $HOME/.xprofile
-	echo -e '"chromium"\nMod4+b\n\n"thunar"\nMod4+g\n\n"nemo --no-desktop"\nMod4+f\n\n"scite"\nMod4+s\n\n"lxtask"\nControl+Shift+Escape' > $HOME/.xbindkeysrc
+	echo -e '"chromium"\nMod4+b\n\n"thunar"\nMod4+g\n\n"nemo --no-desktop"\nMod4+f\n\n"scite"\nMod4+s\n\n"lxtask"\nControl+Shift+Escape\n\n"xdotool getwindowfocus windowkill"\nControl+Alt+x' > $HOME/.xbindkeysrc
 }
 
 function setup_viewnior() {
@@ -215,7 +215,7 @@ function setup_packages() {
 	
 	#packages+=" blueberry"
 	
-	packages+=" wine winetricks wine_gecko wine-mono lib32-mpg123 lib32-ncurses lib32-libpulse xorg-xhost lib32-gnutls wmctrl zenity"
+	packages+=" wine winetricks wine_gecko wine-mono lib32-mpg123 lib32-ncurses lib32-libpulse xorg-xhost lib32-gnutls wmctrl zenity lib32-openal"
 	#packages+=" qemu qemu-arch-extra gnome-boxes"
 	
 	#packages+=" emacs python racket chicken swi-prolog texlive-most"
