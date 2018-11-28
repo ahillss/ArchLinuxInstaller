@@ -81,6 +81,8 @@ function setup_i3wm() {
 	echo -e '\n#\nworkspace_layout stacking\ndefault_orientation vertical' >> $HOME/.config/i3/config
 	echo 'for_window [window_role="pop-up"] floating enable' >> $HOME/.config/i3/config
 	echo '#for_window [class="Chromium"] floating disable' >> $HOME/.config/i3/config
+	
+	sed -i '/^# kill focused window/abindsym Mod1+Shift+x exec xdotool getwindowfocus windowkill'
 }
 
 function setup_i3blocks() {
@@ -152,7 +154,7 @@ function setup_gtk() {
 
 function setup_shortcuts() {
 	echo 'xbindkeys -p &' >> $HOME/.xprofile
-	echo -e '"chromium"\nMod4+b\n\n"thunar"\nMod4+g\n\n"nemo --no-desktop"\nMod4+f\n\n"scite"\nMod4+s\n\n"lxtask"\nControl+Shift+Escape\n\n"xdotool getwindowfocus windowkill"\nControl+Alt+x' > $HOME/.xbindkeysrc
+	echo -e '"chromium"\nMod4+b\n\n"thunar"\nMod4+g\n\n"nemo --no-desktop"\nMod4+f\n\n"scite"\nMod4+s\n\n"lxtask"\nControl+Shift+Escape' > $HOME/.xbindkeysrc
 }
 
 function setup_viewnior() {
