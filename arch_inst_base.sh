@@ -95,6 +95,7 @@ function install_os2() {
 	setup_host
 	setup_power
 	#setup_bluetooth
+	setup_runasuser
 	setup_pulseaudio
 	setup_samba
 	setup_avahi
@@ -338,11 +339,14 @@ function setup_bluetooth() {
 	#sed -i "s/#\(AutoEnable=\)false/\1true/g" /etc/bluetooth/main.conf
 }
 
+
+function setup_runasuser() {
+	echo -e '#!/bin/bash\n\nif [ $1 ] && [ $2 ]; then\n\tsudo -u $1 env HOME=/home/$1 USER=$1 USERNAME=$1 LOGNAME=$1 "${@:2}"\nfi' > /usr/local/bin/runasuser
+	chmod +xr /usr/local/bin/runasuser
+}
+
 function setup_pulseaudio() {
-	echo -e "\n###\n#load-module module-alsa-sink device=hw:0,0\n#load-module module-combine-sink sink_name=combined\n#set-default-sink combined" >> /etc/pulse/default.pa
-	echo -e "\n###\n#set-card-profile 0 	output:analog-stereo\n#set-default-sink 1" >> /etc/pulse/default.pa
-	
-	#echo -e 'pcm.eq {\n\ttype ladspa\n\n\t#slave.pcm "plughw:0,0"\n\tslave.pcm "plug:dmix"\n\n\t#path "/usr/lib/ladspa"\n\n\tplugins [\n\t{\n\t\tlabel mbeq\n\t\tid 1197\n\t\tinput {\n\t\t\t# bands: 50hz, 100hz, 156hz, 220hz, 311hz, 440hz, 622hz, 880hz, 1250hz, 1750hz, 25000hz, 50000hz, 10000hz, 20000hz\n\t\t\tcontrols [ -5 -5 -5 -5 -5 -10 -20 -15 -10 -10 -10 -10 -10 -3 -2 ]\n\t\t\t}\n\t\t}\n\t]\n}\n\npcm.!default {\n\ttype plug\n\tslave.pcm "eq"\n}\n\n\npcm.dsp0 {\n\ttype plug\n\tslave.pcm "eq"\n}' > /etc/asound.conf
+	echo -e '\nload-module module-native-protocol-unix auth-anonymous=1 socket=/tmp/pulse-socket' >> /etc/pulse/default.pa
 }
 
 function add_samba_share() {
@@ -423,7 +427,6 @@ function setup_lighttpd() {
 
 	echo '<?php phpinfo(); ?>' > /srv/http/index.php
 	chmod 755 /srv/http/index.php
-	
 	
 	#sed -i 's/;\(extension=mysql.so\)/\1/g' /etc/php/php.ini
 	#sed -i "s/\(open_basedir = .*\)/\1:\/bin\/:\/usr\/bin\//g" /etc/php/php.ini

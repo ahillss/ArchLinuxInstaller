@@ -164,23 +164,15 @@ function setup_viewnior() {
 
 function setup_wine() {
 	useradd -m -U -G users -s /bin/bash wineuser
-	#sed -i 's/\(wineuser:\)[^:]*\(.*\)/\1U6aMy0wojraho\2/g' /etc/shadow
-	#echo wineuser:wineuser | chpasswd
+		
 	echo -e '\n#\nALL ALL=(wineuser) NOPASSWD: ALL' >> /etc/sudoers
+	echo -e 'xhost +SI:localuser:wineuser &' >> $HOME/.xprofile
 
-	echo -e '\n#\nload-module module-native-protocol-unix auth-anonymous=1 socket=/tmp/pulse-socket' >> /etc/pulse/default.pa
 	mkdir -p /home/wineuser/.config/pulse
 	echo 'default-server = unix:/tmp/pulse-socket' >> /home/wineuser/.config/pulse/client.conf
 
-	echo -e '#!/bin/bash\n\nxhost +SI:localuser:wineuser\nsudo -u wineuser env HOME=/home/wineuser USER=wineuser USERNAME=wineuser LOGNAME=wineuser wine "$@"' > /usr/local/bin/runaswine
-	echo -e '#!/bin/bash\n\nxhost +SI:localuser:wineuser\nsudo -u wineuser env HOME=/home/wineuser USER=wineuser USERNAME=wineuser LOGNAME=wineuser winecfg' > /usr/local/bin/runaswinecfg
-	echo -e '#!/bin/bash\n\nsudo -u wineuser env HOME=/home/wineuser USER=wineuser USERNAME=wineuser LOGNAME=wineuser winetricks "$@"' > /usr/local/bin/runaswinetricks
-	echo -e '#!/bin/bash\n\nsudo -u wineuser env HOME=/home/wineuser USER=wineuser USERNAME=wineuser LOGNAME=wineuser wineserver -k' > /usr/local/bin/runaswinekill
-	echo -e '#!/bin/bash\n\nsudo -u wineuser env HOME=/home/wineuser USER=wineuser USERNAME=wineuser LOGNAME=wineuser pkill -u wineuser' > /usr/local/bin/runaswinepkill
-	chmod +xr /usr/local/bin/runaswine /usr/local/bin/runaswinecfg /usr/local/bin/runaswinetricks /usr/local/bin/runaswinekill /usr/local/bin/runaswinepkill
-    
 	mkdir -p /usr/local/share/applications
-	echo -e '[Desktop Entry]\nType=Application\nName=Run as wine\nExec=/usr/local/bin/runaswine start /unix %f\nMimeType=application/x-ms-dos-executable;application/x-msi;application/x-ms-shortcut;\nIcon=wine' > /usr/local/share/applications/runaswine.desktop
+	echo -e '[Desktop Entry]\nType=Application\nName=Run as wine\nExec=/usr/local/bin/runasuser wineuser wine start /unix %f\nMimeType=application/x-ms-dos-executable;application/x-msi;application/x-ms-shortcut;\nIcon=wine' > /usr/local/share/applications/runaswine.desktop
 	
 	chmod -R o=rwx /home/wineuser
 	setfacl -R -d -m o::rwx /home/wineuser
@@ -217,7 +209,7 @@ function setup_packages() {
 	
 	#packages+=" blueberry"
 	
-	packages+=" wine winetricks wine_gecko wine-mono lib32-mpg123 lib32-ncurses lib32-libpulse xorg-xhost lib32-gnutls wmctrl zenity lib32-openal"
+	packages+=" wine winetricks wine_gecko wine-mono lib32-mpg123 lib32-ncurses lib32-libpulse xorg-xhost lib32-gnutls wmctrl zenity lib32-openal lib32-libldap"
 	#packages+=" qemu qemu-arch-extra gnome-boxes"
 	
 	#packages+=" emacs python racket chicken swi-prolog texlive-most"
