@@ -178,6 +178,12 @@ function setup_wine() {
 	setfacl -R -d -m o::rwx /home/wineuser
 }
 
+function setup_mount_iso_shortcut() {
+	echo -e '[Desktop Entry]\nType=Application\nName=Mount ISO\nExec=/usr/bin/udisksctl loop-setup --no-user-interaction -r -f %f\nMimeType=application/octetstream;\nIcon=package-x-generic' > /usr/local/share/applications/mountiso.desktop
+
+	#udisksctl mount -b $( | grep -Po '/dev/loop[0-9]+')
+}
+
 function setup_packages() {
 	packages=""
 	packages+=" xorg-server xorg-xinit xcursor-themes"
@@ -236,6 +242,7 @@ function install_all() {
 	setup_viewnior
 	setup_cups
 	setup_wine
+	setup_mount_iso_shortcut
 	#setup_tmpcache
 }
 
