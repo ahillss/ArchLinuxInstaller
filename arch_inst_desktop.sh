@@ -103,7 +103,7 @@ function setup_i3blocks() {
 
 function setup_terminator() {
 	mkdir -p $HOME/.config/terminator $HOME/.config/xfce4
-	echo -e "[config]\n  inactive_color_offset = 1.0\n[profiles]\n [[default]]\n  show_titlebar = False\n  scrollbar_position = disabled" > $HOME/.config/terminator/config
+	echo -e '[global_config]\n  inactive_color_offset = 1.0\n[keybindings]\n  full_screen = ""\n   help = ""\n[profiles]\n [[default]]\n  show_titlebar = False\n  scrollbar_position = disabled' > $HOME/.config/terminator/config
 	echo 'TerminalEmulator=terminator' >> $HOME/.config/xfce4/helpers.rc
 }
 
@@ -209,6 +209,7 @@ function setup_packages() {
 	packages+=" ffmpegthumbnailer tumbler gamin gvfs-smb polkit-gnome"
 	packages+=" file-roller viewnior evince chromium vlc"
 	#packages+=" fbreader mcomix pinta libreoffice-en-GB"
+	#packages+=" vbindiff"
 
 	packages+=" cups system-config-printer"
 	#packages+=" foomatic-db-nonfree splix gutenprint hplip"
