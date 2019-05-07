@@ -216,7 +216,7 @@ function setup_packages() {
 	
 	#packages+=" blueberry"
 	
-	packages+=" wine winetricks wine_gecko wine-mono lib32-mpg123 lib32-ncurses lib32-libpulse xorg-xhost lib32-gnutls wmctrl zenity lib32-openal lib32-libldap"
+	packages+=" wine winetricks wine_gecko wine-mono lib32-mpg123 lib32-ncurses lib32-libpulse xorg-xhost lib32-gnutls wmctrl zenity lib32-openal lib32-libldap lib32-gstreamer"
 	#packages+=" qemu qemu-arch-extra gnome-boxes"
 	
 	#packages+=" emacs python racket chicken swi-prolog texlive-most"
