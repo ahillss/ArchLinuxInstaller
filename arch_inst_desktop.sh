@@ -91,7 +91,7 @@ function setup_i3blocks() {
 	mkdir -p $HOME/.config/i3blocks
 	echo -n '' >  $HOME/.config/i3blocks/config
 	
-	echo -e '\n[cpu]\ncolor=#FFEEAD\ncommand=mpstat -P ALL 1 1 |  awk '"'"'/Average:/ && $2 ~ /[0-9]/ {printf "%.0f\\x25 ",$3}'"'"'|awk '"'"'$1=$1'"'"'\ninterval=10' >> $HOME/.config/i3blocks/config
+	echo -e '\n[cpu]\ncolor=#FFEEAD\ncommand=mpstat -P ALL 1 1 |  awk '"'"'/Average:/ && $2 ~ /[0-9]/ {printf "%.0f\\x25 ",100-$12}'"'"'|awk '"'"'$1=$1'"'"'\ninterval=10' >> $HOME/.config/i3blocks/config
 	echo -e '\n#[memoryfree]\n#command=awk '"'"'/MemFree/ {printf("%.0f\\xd0\\xbc\\xd0\\xb2", ($2/1000))}'"'"' /proc/meminfo\ninterval=2' >> $HOME/.config/i3blocks/config
 	echo -e '\n[memoryavail]\ncommand=awk '"'"'/MemAvailable/ {printf("%.0f\\xd0\\xbc\\xd0\\xb2", ($2/1000))}'"'"' /proc/meminfo\ninterval=2' >> $HOME/.config/i3blocks/config
 	echo -e '\n#[swap]\n#color=#FFEEAD\n#command=awk '"'"'/SwapFree/ {printf("%.0f\\xd0\\xbc\\xd0\\xb2", ($2/1000))}'"'"' /proc/meminfo\n#interval=2' >> $HOME/.config/i3blocks/config
