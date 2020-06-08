@@ -60,7 +60,8 @@ function setup_xserver() {
 	echo '#x11vnc &' >> $HOME/.xprofile
 	echo '#autocutsel -fork &' >> $HOME/.xprofile
 	echo '#start-pulseaudio-x11 &' >> $HOME/.xprofile
-	echo '#blueberry-tray &' >> $HOME/.xprofile
+	echo '#blueberry-tray &' >> $HOME/.xprofile	
+	echo '#setxkbmap -option caps:ctrl_modifier &' >> $HOME/.xprofile
 }
 
 function setup_i3wm() {
