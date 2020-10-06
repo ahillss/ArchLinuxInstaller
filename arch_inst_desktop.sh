@@ -155,7 +155,14 @@ function setup_gtk() {
 
 function setup_shortcuts() {
 	echo 'xbindkeys -p &' >> $HOME/.xprofile
-	echo -e '"chromium"\nMod4+b\n\n"thunar"\nMod4+g\n\n"nemo --no-desktop"\nMod4+f\n\n"scite"\nMod4+s\n\n"lxtask"\nControl+Shift+Escape' > $HOME/.xbindkeysrc
+	
+	echo -e '"chromium"\nMod4+b\n' >> $HOME/.xbindkeysrc
+	echo -e '"thunar"\nMod4+f\n' >> $HOME/.xbindkeysrc
+	echo -e '"scite"\nMod4+s\n' >> $HOME/.xbindkeysrc
+	echo -e '"lxtask"\nControl+Shift+Escape\n' >> $HOME/.xbindkeysrc
+	
+	echo -e '"moonlight"\nMod4+m\n' >> $HOME/.xbindkeysrc	
+	echo -e '"imlib2_grab ~/Pictures/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nMod4+p\n' >> $HOME/.xbindkeysrc
 }
 
 function setup_viewnior() {
@@ -208,7 +215,7 @@ function setup_packages() {
 	packages+=" lxtask terminator scite"
 	packages+=" thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman"
 	packages+=" ffmpegthumbnailer tumbler gamin gvfs-smb polkit-gnome"
-	packages+=" file-roller viewnior evince chromium vlc"
+	packages+=" file-roller viewnior evince chromium vlc imlib2"
 	#packages+=" fbreader mcomix pinta libreoffice-en-GB"
 	#packages+=" vbindiff"
 
