@@ -382,7 +382,9 @@ function setup_memory_limit() {
 }
 
 function setup_aur_script() {
-	echo -e '#!/bin/bash\n\nset -e\n\nif [ -z "$1" ]; then\n\techo "No package name specified."\n\texit\nfi\n\nmkdir -p $1\ncd $1\n\nwget -q "https://aur.archlinux.org/cgit/aur.git/snapshot/$1.tar.gz"\n\ntar xzf $1.tar.gz\n\ncd $1\n\nif [ -n "$2" ]; then\n\tsed -i "s/\\(arch=\\).*/\\1('"'"'$2'"'"')/g" PKGBUILD\nfi\n\nmakepkg -s\n\nread -n 1 -s -p "Press any key to continue..."\necho -e "\\n"\n\nsudo pacman -U --noconfirm --needed $1*pkg.*' > /usr/local/bin/aur.sh
+	echo -e '#!/bin/bash\n\nset -e\n\nif [ -z "$1" ]; then\n\techo "No package name specified."\n\texit\nfi\n\nmkdir -p $1\ncd $1\n\nwget -q "https://aur.archlinux.org/cgit/aur.git/snapshot/$1.tar.gz"\n\ntar xzf $1.tar.gz\n\ncd $1\n\nmakepkg -s\n\nread -n 1 -s -p "Press any key to continue..."\necho -e "\\n"\n\nsudo pacman -U --noconfirm --needed $1*pkg.*' > /usr/local/bin/aur.sh
+	#\n\nif [ -n "$2" ]; then\n\tsed -i "s/\\(arch=\\).*/\\1('"'"'$2'"'"')/g" PKGBUILD\nfi
+	
 	chmod +rx /usr/local/bin/aur.sh
 }
 
