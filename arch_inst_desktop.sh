@@ -100,9 +100,9 @@ function setup_i3blocks() {
 	echo -n '' >  $HOME/.config/i3blocks/config
 	
 	echo -e '\n[cpu]\ncolor=#FFEEAD\ncommand=mpstat -P ALL 1 1 |  awk '"'"'/Average:/ && $2 ~ /[0-9]/ {printf "%.0f\\x25 ",100-$12}'"'"'|awk '"'"'$1=$1'"'"'\ninterval=10' >> $HOME/.config/i3blocks/config
-	echo -e '\n#[memoryfree]\n#command=awk '"'"'/MemFree/ {printf("%.0f\\xd0\\xbc\\xd0\\xb2\\n", ($2/1000))}'"'"' /proc/meminfo\ninterval=2' >> $HOME/.config/i3blocks/config
-	echo -e '\n[memoryavail]\ncommand=awk '"'"'/MemAvailable/ {printf("%.0f\\xd0\\xbc\\xd0\\xb2\\n", ($2/1000))}'"'"' /proc/meminfo\ninterval=2' >> $HOME/.config/i3blocks/config
-	echo -e '\n#[swap]\n#color=#FFEEAD\n#command=awk '"'"'/SwapFree/ {printf("%.0f\\xd0\\xbc\\xd0\\xb2\\n", ($2/1000))}'"'"' /proc/meminfo\n#interval=2' >> $HOME/.config/i3blocks/config
+	echo -e '\n#[memoryfree]\n#command=awk '"'"'/MemFree/ {printf("%d\\xd0\\xbc\\xd0\\xb2\\n", ($2/1000))}'"'"' /proc/meminfo\ninterval=2' >> $HOME/.config/i3blocks/config
+	echo -e '\n[memoryavail]\ncommand=awk '"'"'/MemAvailable/ {printf("%d\\xd0\\xbc\\xd0\\xb2\\n", ($2/1000))}'"'"' /proc/meminfo\ninterval=2' >> $HOME/.config/i3blocks/config
+	echo -e '\n#[swap]\n#color=#FFEEAD\n#command=awk '"'"'/SwapFree/ {printf("%d\\xd0\\xbc\\xd0\\xb2\\n", ($2/1000))}'"'"' /proc/meminfo\n#interval=2' >> $HOME/.config/i3blocks/config
 	echo -e '\n[temp]\ncolor=#85C1E9\ncommand=cat /sys/class/thermal/thermal_zone*/temp | awk '"'"'$1 {printf "%.0f\\xc2\\xb0 ",$1/1000}'"'"'|awk '"'"'$1=$1'"'"'\ninterval=2' >> $HOME/.config/i3blocks/config
 	echo -e '\n[time]\ncommand=date "+%a %d %b, %I:%M %p"\ninterval=5' >> $HOME/.config/i3blocks/config
 	echo -e '\n#[battery]\n#color=#58D68D\n#command=cat /sys/class/power_supply/BAT1/status /sys/class/power_supply/BAT1/capacity | tr "\\n" " " | awk '"'"'$1 $2 {printf "<span color=\\"%s\\">\\xe2\\x9a\\xa1</span>%s%%", $1=="Charging"?"yellow":"light grey",$2}'"'"'\n#interval=2\n#markup=pango' >> $HOME/.config/i3blocks/config
