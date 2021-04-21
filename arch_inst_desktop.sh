@@ -132,15 +132,17 @@ function setup_scite() {
 	sed -i "s/\(file\.patterns\.lisp=.*\)/\1;*.el/g" /usr/share/scite/lisp.properties
 	sed -i "s/\(file\.patterns\.scheme=.*\)/\1;*.rkt/g" /usr/share/scite/lisp.properties
 	
-	echo -e 'check.if.already.open=1\nload.on.activate=1\nopen.filter=$(all.files)\nquit.on.close.last=1\n' > $HOME/.SciTEUser.properties
-	echo -e 'statusbar.visible=1\ntitle.full.path=1\ntoolbar.visible=1\n' > $HOME/.SciTEUser.properties
-	echo -e 'line.margin.visible=1\nline.margin.width=1+\noutput.wrap=1\nwrap=1\n' > $HOME/.SciTEUser.properties
-	echo -e 'save.session=1\nsave.recent=0\nsave.find=1\nsave.position=1\n' > $HOME/.SciTEUser.properties
+	echo '' > $HOME/.SciTEUser.properties
+	
+	echo -e 'check.if.already.open=1\nload.on.activate=1\nquit.on.close.last=1\n' >> $HOME/.SciTEUser.properties
+	echo -e 'open.filter=$(all.files)\n' >> $HOME/.SciTEUser.properties
+	echo -e 'statusbar.visible=1\ntitle.full.path=1\ntoolbar.visible=1\n' >> $HOME/.SciTEUser.properties
+	echo -e 'line.margin.visible=1\nline.margin.width=1+\noutput.wrap=1\nwrap=1\n' >> $HOME/.SciTEUser.properties
+	echo -e 'save.session=1\nsave.recent=0\nsave.find=1\nsave.position=1\n' >> $HOME/.SciTEUser.properties
 
 	echo -e 'selection.back=#000000\nselection.alpha=50\n' >> $HOME/.SciTEUser.properties
 	echo -e 'caret.line.back=#CCDDFF\n' >> $HOME/.SciTEUser.properties
-	echo -e 'highlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#FEE155,fillalpha:190,under\n' >> $HOME/.SciTEUser.properties
-	echo -e 'style.*.34=back:#51DAEA\n' >> $HOME/.SciTEUser.properties
+	echo -e 'highlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#FEE155,fillalpha:190,under\nstyle.*.34=back:#51DAEA\n' >> $HOME/.SciTEUser.properties
 
 	echo -e '\nindent.size=4\ntabsize=4\nuse.tabs=0\n' >> $HOME/.SciTEUser.properties
 	echo -e 'use.tabs.$(file.patterns.make)=1\n' >> $HOME/.SciTEUser.properties
