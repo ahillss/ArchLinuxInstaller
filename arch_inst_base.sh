@@ -376,9 +376,9 @@ function disable_coredump() {
 }
 
 function setup_memory_limit() {
-	echo 'vm.swappiness=0' >> /etc/sysctl.d/99-sysctl.conf
-	echo 'vm.min_free_kbytes=327680' >> /etc/sysctl.d/99-sysctl.conf
-	echo 'vm.vfs_cache_pressure=100' >> /etc/sysctl.d/99-sysctl.conf
+	echo 'vm.swappiness=50' >> /etc/sysctl.d/99-sysctl.conf
+	echo 'vm.min_free_kbytes=131072' >> /etc/sysctl.d/99-sysctl.conf
+	echo 'vm.vfs_cache_pressure=10' >> /etc/sysctl.d/99-sysctl.conf
 }
 
 function setup_aur_script() {
