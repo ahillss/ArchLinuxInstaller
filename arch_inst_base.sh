@@ -112,9 +112,6 @@ function install_os2() {
 function setup_misc_scripts() {
 	echo -e '#!/bin/bash\n\ncmp -l $1 $2 | gawk '"'"'{printf "%08X %02X %02X\\n", $1, strtonum(0$2), strtonum(0$3)}'"'" > /usr/local/bin/bdiff.sh
 	chmod +xr /usr/local/bin/bdiff.sh
-	
-	echo -e '#!/bin/bash\n\nif [ $1 ]; then\n    s=$1\nelse\n    s=512M\nfi\n\nsudo mount -o remount,size=$s /tmp' > /usr/local/bin/resizeramdisk.sh
-	chmod +rx /usr/local/bin/resizeramdisk.sh
 }
 
 function get_uuid() {
@@ -232,8 +229,6 @@ function setup_fstab() {
 		echo -e "\n# $swap_diskpart\nUUID=$(get_uuid $swap_diskpart) none swap defaults 0 0" >> /etc/fstab
 	fi
 
-	echo -e "\n# ramdisk\n#none /tmp tmpfs defaults,size=512M 0 0" >> /etc/fstab
-	
 	#
 	on_fstab
 }
