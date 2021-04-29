@@ -38,18 +38,16 @@ function setup_cups() {
 }
 
 function setup_tmpcache() {
-	mkdir -p $HOME/.cache $HOME/.thumbnails $HOME/.local/share/gvfs-metadata
+	mkdir -p $HOME/.local/share $HOME/.cache
+	
 	echo -e "\n#" >> /etc/fstab
 	
-	echo "#/tmp /$HOME/.cache none defaults,bind 0 0" >> /etc/fstab
-	echo "#/tmp /$HOME/.thumbnails none defaults,bind 0 0" >> /etc/fstab
+	echo "/tmp $HOME/.local/share/gvfs-metadata none defaults,bind 0 0" >> /etc/fstab	
+	echo "/tmp $HOME/.cache/thumbnails none defaults,bind 0 0" >> /etc/fstab
+	echo "/tmp $HOME/.cache/vlc none defaults,bind 0 0" >> /etc/fstab
 	
-	echo "/tmp /$HOME/.local/share/gvfs-metadata none defaults,bind 0 0" >> /etc/fstab
-	
-	echo "/tmp /$HOME/.cache/thumbnails none defaults,bind 0 0" >> /etc/fstab
-	echo "/tmp /$HOME/.cache/chromium none defaults,bind 0 0" >> /etc/fstab
-	echo "/tmp /$HOME/.cache/mozilla none defaults,bind 0 0" >> /etc/fstab
-	echo "/tmp /$HOME/.cache/vlc none defaults,bind 0 0" >> /etc/fstab
+	echo "#/tmp /$HOME/.cache/chromium none defaults,bind 0 0" >> /etc/fstab
+	echo "#/tmp /$HOME/.cache/mozilla none defaults,bind 0 0" >> /etc/fstab
 }
 
 function setup_xserver() {
