@@ -99,7 +99,7 @@ function install_os2() {
 	setup_pulseaudio
 	setup_samba
 	setup_avahi
-	setup_memory_limit
+	setup_swap_sysctl
 	setup_aur_script
 	setup_acpi
 	#setup_autologin
@@ -370,7 +370,7 @@ function disable_coredump() {
 	sysctl kernel.core_pattern=core
 }
 
-function setup_memory_limit() {
+function setup_swap_sysctl() {
 	echo 'vm.swappiness=50' >> /etc/sysctl.d/99-sysctl.conf
 	echo 'vm.min_free_kbytes=131072' >> /etc/sysctl.d/99-sysctl.conf
 	echo 'vm.vfs_cache_pressure=10' >> /etc/sysctl.d/99-sysctl.conf
