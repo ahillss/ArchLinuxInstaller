@@ -22,7 +22,7 @@ function setup_theme() {
 }
 
 function setup_x11vnc() {
-	echo -e 'many\ndisplay :0\nnoscr\nnoxrecord\ngui tray\n#o .x11vnc.%VNCDISPLAY.log\nrfbport 5900\n\n#use: x11vnc -storepasswd YOURPASS ~/.x11vnc_passwd\nrfbauth .x11vnc_passwd\n\n#or:\n#passwd YOURPASS' > $HOME/.x11vncrc
+	echo -e 'many\ndisplay :0\nnoscr\nnoxrecord\ngui tray\n#o .x11vnc.%VNCDISPLAY.log\nrfbport 5900\n\n#use: x11vnc -storepasswd YOURPASS ~/.x11vnc_passwd\nrfbauth .x11vnc_passwd\n\n#or:\n#passwd YOURPASS\n\n#or no pass\n#nopw' > $HOME/.x11vncrc
 }
 
 function setup_tigervnc() {
