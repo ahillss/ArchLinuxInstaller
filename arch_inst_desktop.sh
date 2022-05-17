@@ -67,6 +67,7 @@ function setup_xserver() {
 	echo '#start-pulseaudio-x11 &' >> $HOME/.xprofile
 	echo '#blueberry-tray &' >> $HOME/.xprofile	
 	echo '#setxkbmap -option caps:ctrl_modifier &' >> $HOME/.xprofile
+	echo '#unclutter -idle 2 -jitter 2 -root &' >> $HOME/.xprofile
 }
 
 function setup_i3wm() {
@@ -217,6 +218,7 @@ function setup_packages() {
 	#packages+=" xf86-video-ati"
 
 	packages+=" xorg-xprop xclip numlockx xautolock xcursor-vanilla-dmz gksu pavucontrol xbindkeys"
+	packages+=" unclutter"
 
 	packages+=" tigervnc"
 	packages+=" x11vnc tk autocutsel"
