@@ -260,7 +260,7 @@ function setup_grub() {
 		#
 		if [ $swap_filename ] && [ $swap_filesize ]; then
 			swap_diskpart2=`df -P $swap_filename | tail -1 | cut -d' ' -f 1`
-			resoff=`filefrag -v /swapfile | awk 'FNR == 4 {print $4}' | sed 's/\..//'`
+			resoff=`filefrag -v $swap_filename | awk 'FNR == 4 {print $4}' | sed 's/\..//'`
 			swapuuid=`get_uuid $swap_diskpart2`
 			sed -i "s/\(GRUB_CMDLINE_LINUX_DEFAULT=\"\)\([^\"]*\"\)/\1resume=UUID=$swapuuid resume_offset=$resoff \2/g" /etc/default/grub
 		elif [ $swap_diskpart ]; then
