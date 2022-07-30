@@ -342,6 +342,7 @@ function setup_runasuser() {
 
 function setup_pulseaudio() {
 	echo -e '\nload-module module-native-protocol-unix auth-anonymous=1 socket=/tmp/pulse-socket' >> /etc/pulse/default.pa
+	echo -e '\ncookie-file = /tmp/pulse-cookie.$user' >> /etc/pulse/client.conf
 }
 
 function add_samba_share() {
