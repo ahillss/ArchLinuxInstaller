@@ -161,7 +161,7 @@ function setup_gtk() {
 	mkdir -p  $HOME/.config/gtk-2.0 $HOME/.config/gtk-3.0
 	mkdir -p $HOME/Desktop $HOME/Documents $HOME/Downloads $HOME/Pictures $HOME/Videos
 	
-	echo 'gtk-recent-files-max-age=0' >> $HOME/.gtkrc-2.0
+	echo 'gtk-recent-files-max-age=0' >> $HOME/.config/gtk-2.0/gtkrc
 	echo -e '[Settings]\ngtk-recent-files-max-age=0\ngtk-recent-files-limit=0' > $HOME/.config/gtk-3.0/settings.ini
 	echo -e "file://$HOME/Documents Documents\nfile://$HOME/Downloads Downloads\nfile://$HOME/Pictures Pictures\nfile://$HOME/Videos Videos\nfile:///tmp tmp" >> $HOME/.config/gtk-3.0/bookmarks	
 	for d in /mnt/* ; do echo "file://$d $(basename "$d")" >> $HOME/.config/gtk-3.0/bookmarks; done
