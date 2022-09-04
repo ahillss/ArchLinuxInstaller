@@ -155,6 +155,8 @@ function setup_scite() {
 	echo -e '[Desktop Entry]\nName=SciTE New Window\nType=Application\nExec=SciTE -check.if.already.open=0 %F\nIcon=Sci48M\nMimeType=text/plain;' > /usr/local/share/applications/scitenew.desktop
 
 	echo -e '[Desktop Entry]\nName=SciTE as Root\nType=Application\nExec=gksudo -k "SciTE -check.if.already.open=0 %F"\nIcon=Sci48M\nMimeType=text/plain;' > /usr/local/share/applications/sciteroot.desktop
+	
+	sed -i 's/rust //g' /usr/share/scite/SciTEGlobal.properties
 }
 
 function setup_gtk() {
