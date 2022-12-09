@@ -92,6 +92,9 @@ function setup_i3wm() {
 	echo '#for_window [class="Chromium"] floating disable' >> $HOME/.config/i3/config
 	
 	sed -i '/^# kill focused window/abindsym Mod1+Shift+x exec xdotool getwindowfocus windowkill'
+	
+	echo 'bindsym Mod1+Control+Shift+s exec systemctl suspend' >> $HOME/.config/i3/config
+	echo 'bindsym Mod1+Control+Shift+h exec systemctl hibernate' >> $HOME/.config/i3/config
 }
 
 function setup_i3blocks() {
