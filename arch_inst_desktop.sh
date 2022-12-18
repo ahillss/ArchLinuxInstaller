@@ -89,6 +89,7 @@ function setup_i3wm() {
 	echo 'bindsym Mod1+Shift+h bar mode toggle' >> $HOME/.config/i3/config
 	echo -e '\n#\nworkspace_layout stacking\ndefault_orientation vertical' >> $HOME/.config/i3/config
 	echo 'for_window [window_role="pop-up"] floating enable' >> $HOME/.config/i3/config
+	echo 'for_window [title="File Operation Progress"] floating enable' >> $HOME/.config/i3/config
 	echo '#for_window [class="Chromium"] floating disable' >> $HOME/.config/i3/config
 	
 	sed -i '/^# kill focused window/abindsym Mod1+Shift+x exec xdotool getwindowfocus windowkill'
