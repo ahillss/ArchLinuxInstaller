@@ -354,8 +354,8 @@ function setup_samba() {
 	systemctl enable smb.service
 	systemctl enable nmb.service
 
-	echo -e '[global]\n workgroup = WORKGROUP\n unix extensions = no\n restrict anonymous = 0' > /etc/samba/smb.conf
-	#echo -e ' map to guest = Bad User\n guest account = nobody\n security = user\n hostname lookups = yes' >> /etc/samba/smb.conf
+	echo -e '[global]\n workgroup = WORKGROUP\n unix extensions = no\n restrict anonymous = 0\n map to guest = Bad User' > /etc/samba/smb.conf
+	#echo -e ' guest account = nobody\n security = user\n hostname lookups = yes' >> /etc/samba/smb.conf
 
 	on_samba
 }
