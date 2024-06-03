@@ -139,19 +139,6 @@ function setup_scite() {
 	
 	echo '' > $HOME/.SciTEUser.properties
 
-
-
-	#echo -e 'selection.back=#CCBDFF\nselection.alpha=50\nselection.layer=1\n' >> $HOME/.SciTEUser.properties
-	#echo -e 'caret.line.back=#CCDDFF\ncaret.fore=#FFFFFF\n' >> $HOME/.SciTEUser.properties
-	#echo -e 'highlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#FFBBDD,fillalpha:255,under\nstyle.*.34=back:#51DAEA\n' >> $HOME/.SciTEUser.properties
-
-
-	echo -e 'selection.back=#227733\nselection.alpha=50\nselection.layer=1\n' >> $HOME/.SciTEUser.properties
-	echo -e 'caret.line.back=#444444\n' >> $HOME/.SciTEUser.properties
-	echo -e 'highlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#777777,fillalpha:255,under\nstyle.*.34=back:#22AAFF\n' >> $HOME/.SciTEUser.properties
-	echo -e 'style.*.32=$(font.base),back:#101010,fore:#BBBBDD\nstyle.*.33=$(font.base),back:#101010\n' >> $HOME/.SciTEUser.properties
-	echo -e 'font.base=font:Verdana,size:16\nfont.small=font:Verdana,size:14\nfont.comment=font:Georgia,size:16\n' >> $HOME/.SciTEUser.properties
-
 	echo -e 'check.if.already.open=1\nload.on.activate=1\nquit.on.close.last=1\n' >> $HOME/.SciTEUser.properties
 	echo -e 'open.filter=$(all.files)\n' >> $HOME/.SciTEUser.properties
 	echo -e 'statusbar.visible=1\ntitle.full.path=1\ntoolbar.visible=0\n' >> $HOME/.SciTEUser.properties
@@ -162,14 +149,20 @@ function setup_scite() {
 	echo -e '\nstatusbar.text.1=pos=$(CurrentPos),li=$(LineNumber), co=$(ColumnNumber) [$(EOLMode)]\next.lua.startup.script=$(SciteUserHome)/.SciTEStartup.lua\n' >> $HOME/.SciTEUser.properties
 	echo -e 'function OnUpdateUI() props["CurrentPos"]=editor.CurrentPos end' > $HOME/.SciTEStartup.lua
 
+	#echo -e 'selection.back=#CCBDFF\nselection.alpha=50\nselection.layer=1\n' >> $HOME/.SciTEUser.properties
+	#echo -e 'caret.line.back=#CCDDFF\ncaret.fore=#FFFFFF\n' >> $HOME/.SciTEUser.properties
+	#echo -e 'highlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#FFBBDD,fillalpha:255,under\nstyle.*.34=back:#51DAEA\n' >> $HOME/.SciTEUser.properties
 
+	echo -e 'selection.back=#227733\nselection.alpha=50\nselection.layer=1\n' >> $HOME/.SciTEUser.properties
+	echo -e 'caret.line.back=#444444\n' >> $HOME/.SciTEUser.properties
+	echo -e 'highlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#777777,fillalpha:255,under\nstyle.*.34=back:#22AAFF\n' >> $HOME/.SciTEUser.properties
+	echo -e 'style.*.32=$(font.base),back:#101010,fore:#BBBBDD\nstyle.*.33=$(font.base),back:#101010\n' >> $HOME/.SciTEUser.properties
+	echo -e 'font.base=font:Verdana,size:16\nfont.small=font:Verdana,size:14\nfont.comment=font:Georgia,size:16\n' >> $HOME/.SciTEUser.properties
 
 	sed -i "s/\(file\.patterns\.cpp=.*\)/\1;*.glsl/g" /usr/share/scite/cpp.properties
 	sed -i "s/\(file\.patterns\.lisp=.*\)/\1;*.el/g" /usr/share/scite/lisp.properties
 	sed -i "s/\(file\.patterns\.scheme=.*\)/\1;*.rkt/g" /usr/share/scite/lisp.properties
 
-
- 
 	mkdir -p /usr/local/share/applications
 	echo -e '[Desktop Entry]\nName=SciTE New Window\nType=Application\nExec=SciTE -check.if.already.open=0 %F\nIcon=Sci48M\nMimeType=text/plain;' > /usr/local/share/applications/scitenew.desktop
 	echo -e '[Desktop Entry]\nName=SciTE as Root\nType=Application\nExec=gksudo -k "SciTE -check.if.already.open=0 %F"\nIcon=Sci48M\nMimeType=text/plain;' > /usr/local/share/applications/sciteroot.desktop
@@ -183,7 +176,9 @@ function setup_gtk() {
 	echo 'gtk-recent-files-max-age=0' >> $HOME/.config/gtk-2.0/gtkrc
 	echo -e '[Settings]\ngtk-recent-files-max-age=0\ngtk-recent-files-limit=0' > $HOME/.config/gtk-3.0/settings.ini
 	echo -e "file://$HOME/Documents Documents\nfile://$HOME/Downloads Downloads\nfile://$HOME/Pictures Pictures\nfile://$HOME/Videos Videos\nfile:///tmp tmp" >> $HOME/.config/gtk-3.0/bookmarks	
-	for d in /mnt/* ; do echo "file://$d $(basename "$d")" >> $HOME/.config/gtk-3.0/bookmarks; done
+	
+ 	#for d in /mnt/* ; do echo "file://$d $(basename "$d")" >> $HOME/.config/gtk-3.0/bookmarks; done
+	
 	echo -e '[Filechooser Settings]\nLocationMode=path-bar\nShowHidden=true\nShowSizeColumn=true\nSortColumn=name\nSortOrder=ascending\nStartupMode=recent' > $HOME/.config/gtk-2.0/gtkfilechooser.ini
 }
 
