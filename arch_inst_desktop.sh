@@ -85,11 +85,13 @@ function setup_i3wm() {
 	sed -i 's/\(set \$mod\) Mod4/\1 Mod1/g' $HOME/.config/i3/config
 	sed -i '/^bar {$/ a\\t#mode hide\n\t#hidden_state hide\n\tmodifier Mod1' $HOME/.config/i3/config
 	sed -i '/^bar {$/ a\\t#tray_output primary' $HOME/.config/i3/config
-	#sed -i 's/^\(font pango:\).*/\1Ubuntu Mono 14/g' $HOME/.config/i3/config
-	sed -i '/^font pango.*/a#font pango:Ubuntu Mono 14' $HOME/.config/i3/config
+	
+ 	#sed -i 's/^\(font pango:\).*/\1Ubuntu Mono 14/g' $HOME/.config/i3/config
+	#sed -i '/^font pango.*/a#font pango:Ubuntu Mono 14' $HOME/.config/i3/config
 	
 	echo 'bindsym Mod1+Shift+h bar mode toggle' >> $HOME/.config/i3/config
 	echo -e '\n#\nworkspace_layout tabbed\ndefault_orientation vertical' >> $HOME/.config/i3/config
+ 
 	echo 'for_window [window_role="pop-up"] floating enable' >> $HOME/.config/i3/config
 	echo 'for_window [title="File Operation Progress"] floating enable' >> $HOME/.config/i3/config
 	echo '#for_window [class="Chromium"] floating disable' >> $HOME/.config/i3/config
