@@ -10,6 +10,9 @@ function setup_lightdm() {
 	sed -i 's/#\(pam-service=lightdm\)/\1/g' /etc/lightdm/lightdm.conf
 	sed -i 's/#\(pam-autologin-service=lightdm-autologin\)/\1/g' /etc/lightdm/lightdm.conf
 	sed -i 's/#\(autologin-user-timeout=0\)/\1/g' /etc/lightdm/lightdm.conf
+    
+    
+	#sudo sed -i 's/\(autologin-session=\)\(.*\)/#\1\2\n\1i3/g' /etc/lightdm/lightdm.conf
 }
 
 function setup_mousepad() {
@@ -141,9 +144,11 @@ function setup_thunar() {
 
 function setup_vlc() {
 	mkdir -p $HOME/.config/vlc
-	echo -e "[qt4]\nqt-recentplay=0\nqt-privacy-ask=0\n\n[core]\nvideo-title-show=0\nplay-and-exit=1\none-instance-when-started-from-file=0\nsnapshot-path=$HOME/Pictures\nsnapshot-prefix=\$N_[\$T]_\nsnapshot-sequential=1\nkey-vol-up=Ctrl+Up\nkey-vol-down=Ctrl+Down\nkey-vol-mute=m\nkey-stop=\nkey-snapshot=s\nstats=0\nstereo-mode=1" > $HOME/.config/vlc/vlcrc
-	#echo -e "vout=xcb_xv" > $HOME/.config/vlc/vlcrc
 	echo -e '[MainWindow]\nstatus-bar-visible=true' > $HOME/.config/vlc/vlc-qt-interface.conf
+	echo -e "[qt4]\nqt-recentplay=0\nqt-privacy-ask=0\n\n[core]\nvideo-title-show=0\nplay-and-exit=1\none-instance-when-started-from-file=0\nsnapshot-path=$HOME/Pictures\nsnapshot-prefix=\$N_[\$T]_\nsnapshot-sequential=1\nkey-vol-up=Ctrl+Up\nkey-vol-down=Ctrl+Down\nkey-vol-mute=m\nkey-stop=\nkey-snapshot=s\nstats=0\nstereo-mode=1" > $HOME/.config/vlc/vlcrc
+	
+	#echo -e "vout=xcb_xv" > $HOME/.config/vlc/vlcrc
+	#echo 'export QT_SCALE_FACTOR=0.7' >> $HOME/.profile
 }
 
 function setup_scite() {
@@ -173,7 +178,7 @@ function setup_gtk() {
 	mkdir -p $HOME/Desktop $HOME/Documents $HOME/Downloads $HOME/Pictures $HOME/Videos $HOME/Music
 
 	#echo '' >> $HOME/.config/gtk-2.0/gtkrc
-	echo 'gtk-recent-files-max-age=0\n\ngtk-theme-name="Adwaita-dark"\ngtk-icon-theme-name="PiXflat"\ngtk-cursor-theme-name="Adwaita-dark"\n\ngtk-xft-antialias=1\ngtk-xft-hinting=1\ngtk-xft-hintstyle="hintslight"\ngtk-xft-rgba="rgb"\n\ngtk-font-name="Sans 12"\n' >> $HOME/.gtkrc-2.0
+	echo -e  'gtk-recent-files-max-age=0\n\ngtk-theme-name="Adwaita-dark"\ngtk-icon-theme-name="PiXflat"\ngtk-cursor-theme-name="Adwaita-dark"\n\ngtk-xft-antialias=1\ngtk-xft-hinting=1\ngtk-xft-hintstyle="hintslight"\ngtk-xft-rgba="rgb"\n\ngtk-font-name="Sans 12"\n' >> $HOME/.gtkrc-2.0
 
 	echo -e '[Settings]\n\ngtk-recent-files-max-age=0\ngtk-recent-files-limit=0\n\ngtk-theme-name=Adwaita-dark\ngtk-icon-theme-name=PiXflat\ngtk-cursor-theme-name=Adwaita-dark\n\ngtk-xft-antialias=1\ngtk-xft-hinting=1\ngtk-xft-hintstyle=hintfull\ngtk-xft-rgba=rgb\n\ngtk-font-name=Sans 12' > $HOME/.config/gtk-3.0/settings.ini
 
@@ -190,15 +195,15 @@ function setup_shortcuts() {
 	echo -e '"lxtask"\nControl+Shift+Escape\n' >> $HOME/.xbindkeysrc
 	
 	echo -e '"moonlight"\nMod4+m\n' >> $HOME/.xbindkeysrc
-	echo -e '"imlib2_grab ~/Pictures/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nMod4+p\n' >> $HOME/.xbindkeysrc
+	#echo -e '"imlib2_grab ~/Pictures/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nMod4+p\n' >> $HOME/.xbindkeysrc
 	
-	#echo -e '"scrot ~/Pictures/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nMod4+p\n' >> $HOME/.xbindkeysrc
-	#echo -e '"scrot ~/Pictures/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nControl+p\n' >> $HOME/.xbindkeysrc
+	echo -e '"scrot ~/Pictures/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nMod4+p\n' >> $HOME/.xbindkeysrc
+	echo -e '"scrot ~/Pictures/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nControl+p\n' >> $HOME/.xbindkeysrc
 }
 
 function setup_viewnior() {
 	mkdir -p $HOME/.config/viewnior
-	echo -e '[prefs]\nzoom-mode=3\nfit-on-fullscreen=true\nshow-hidden=true\nsmooth-images=true\nconfirm-delete=true\nreload-on-save=true\nshow-menu-bar=false\nshow-toolbar=true\nstart-maximized=false\nslideshow-timeout=5\nauto-resize=false\nbehavior-wheel=2\nbehavior-click=0\nbehavior-modify=2\njpeg-quality=100\npng-compression=9\ndesktop=1\n' > $HOME/.config/viewnior/viewnior.conf
+	echo -e '[prefs]\nzoom-mode=3\nfit-on-fullscreen=true\nshow-hidden=true\nsmooth-images=true\nconfirm-delete=false\nreload-on-save=true\nshow-menu-bar=false\nshow-toolbar=true\nstart-maximized=false\nslideshow-timeout=5\nauto-resize=false\nbehavior-wheel=2\nbehavior-click=0\nbehavior-modify=2\njpeg-quality=100\npng-compression=9\ndesktop=1\n' > $HOME/.config/viewnior/viewnior.conf
 }
 
 function setup_wine() {
@@ -224,6 +229,13 @@ function setup_mount_iso_shortcut() {
 	#udisksctl mount -b $( | grep -Po '/dev/loop[0-9]+')
 }
 
+function setup_chrome() {
+	echo -e '{\n\t"browser":{\n\t\t"custom_chrome_frame":false,\n\t\t"default_browser_infobar_last_declined":"1"\n\t},\n\t"search":{\n\t    "suggest_enabled":false\n\t},\n\t"bookmark_bar":{"show_on_all_tabs": true},\n\t"session" : { "restore_on_startup" : 1 },\n\t"browser" : { "theme": { "color_scheme": 2 } },\n\t"first_run_tabs":["chrome://newtab"]\n}' > /usr/lib/chromium/master_preferences
+
+	mkdir -p /$HOME/.config/chromium/Default
+	echo '{"browser":{"enabled_labs_experiments":["enable-force-dark@6"],"first_run_finished":true}}' > "/$HOME/.config/chromium/Local State"
+}
+
 function setup_packages() {
 	packages=""
 	packages+=" xorg-server xorg-xinit xcursor-themes"
@@ -245,7 +257,10 @@ function setup_packages() {
 	packages+=" lxtask terminator scite gnome-themes-extra"
 	packages+=" thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman"
 	packages+=" ffmpegthumbnailer tumbler gvfs-smb polkit-gnome"
-	packages+=" file-roller viewnior evince chromium vlc imlib2"
+	packages+=" file-roller viewnior evince chromium vlc"
+
+	#packages+=" imlib2"
+	packages+=" scrot"
 	
 	#packages+=" fbreader mcomix pinta libreoffice-en-GB"
 	#packages+=" vbindiff"
@@ -287,6 +302,8 @@ function install_all() {
 	#setup_wine
 	#setup_mount_iso_shortcut
 	#setup_tmpcache
+
+	chown -R $USER $HOME
 }
 
 trap 'echo "Error on line $LINENO"' ERR

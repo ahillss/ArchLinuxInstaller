@@ -55,7 +55,7 @@ function install_os() {
 
 function setup_packages() {
 	packages=""
-	packages+=" linux mkinitcpio dhcpcd"
+	packages+=" linux mkinitcpio dhcpcd nano"
 	packages+=" grub memtest86+"
 	packages+=" networkmanager openssh ntp"
 	packages+=" pulseaudio pulseaudio-alsa alsa-utils"
@@ -298,7 +298,7 @@ function setup_pacman() {
 function setup_sudoers() {
 	groupadd sudo
 	sed -i 's/# \(%sudo.*\)/\1/g' /etc/sudoers
-	echo -e "\n#$mylogin  ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+	echo -e "\n$mylogin  ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 	echo -e '\n#\n#Defaults !env_reset' >> /etc/sudoers
 }
 
