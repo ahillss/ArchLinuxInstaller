@@ -14,7 +14,7 @@ function setup_lightdm() {
 
 function setup_mousepad() {
 	cp -f /usr/share/X11/xorg.conf.d/*-synaptics.conf /etc/X11/xorg.conf.d/
-	echo -e '\n#\nSection "InputClass"\n        Identifier "Scrolling"\n        Option "VertEdgeScroll" "on"\n        Option "HorizEdgeScroll" "on"\nEndSection\n' >>  /etc/X11/xorg.conf.d/*-synaptics.conf
+	echo -e '\n#\nSection "InputClass"\n\t\tIdentifier "Scrolling"\n\t\tOption "VertEdgeScroll" "on"\n\t\tOption "HorizEdgeScroll" "on"\nEndSection\n' >>  /etc/X11/xorg.conf.d/*-synaptics.conf
 }
 
 function setup_theme() {
@@ -34,7 +34,7 @@ function setup_tigervnc() {
 }
 
 function setup_cups() {
-	systemctl enable org.cups.cupsd.service
+	systemctl enable cups.service
 }
 
 function setup_tmpcache() {
@@ -136,7 +136,7 @@ function setup_thunar() {
 
 	echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<channel name="thunar" version="1.0">\n  <property name="last-view" type="string" value="ThunarDetailsView"/>\n  <property name="misc-show-delete-action" type="bool" value="true"/>\n  <property name="misc-parallel-copy-mode" type="string" value="THUNAR_PARALLEL_COPY_MODE_NEVER"/>\n  <property name="last-show-hidden" type="bool" value="true"/>\n  <property name="last-view" type="string" value="ThunarDetailsView"/>\n</channel>' >> $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml
 
-	echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<actions>\n<action>\n    <icon>utilities-terminal</icon>\n    <name>Open Terminal Here</name>\n    <submenu></submenu>\n    <unique-id>1717698787285529-1</unique-id>\n    <command>exo-open --working-directory %f --launch TerminalEmulator</command>\n    <description>Example for a custom action</description>\n    <range></range>\n    <patterns>*</patterns>\n    <startup-notify/>\n    <directories/>\n</action>\n<action>\n    <icon></icon>\n    <name>Bash Run</name>\n    <submenu></submenu>\n    <unique-id>1718111091702025-1</unique-id>\n    <command>terminator -e &apos;bash %f &amp;&amp; (read -t 3 -p &quot;Done, closing in 3 seconds.&quot;; exit 0) || read -n1 -rsp &quot;Failed, press any key.&quot;&apos;</command>\n    <description></description>\n    <range>*</range>\n    <patterns>*</patterns>\n    <other-files/>\n    <text-files/>\n</action>\n<action>\n    <icon></icon>\n    <name>Run</name>\n    <submenu></submenu>\n    <unique-id>1718112833938847-2</unique-id>\n    <command>terminator -e &apos;%f &amp;&amp; (read -t 3 -p &quot;Done, closing in 3 seconds.&quot;; exit 0) || read -n1 -rsp &quot;Failed, press any key.&quot;&apos;</command>\n    <description></description>\n    <range>*</range>\n    <patterns>*</patterns>\n    <other-files/>\n    <text-files/>\n</action>\n</actions>\n' > $HOME/.config/Thunar/uca.xml
+	echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<actions>\n<action>\n\t<icon>utilities-terminal</icon>\n\t<name>Open Terminal Here</name>\n\t<submenu></submenu>\n\t<unique-id>1717698787285529-1</unique-id>\n\t<command>exo-open --working-directory %f --launch TerminalEmulator</command>\n\t<description>Example for a custom action</description>\n\t<range></range>\n\t<patterns>*</patterns>\n\t<startup-notify/>\n\t<directories/>\n</action>\n<action>\n\t<icon></icon>\n\t<name>Bash Run</name>\n\t<submenu></submenu>\n\t<unique-id>1718111091702025-1</unique-id>\n\t<command>terminator -e &apos;bash %f &amp;&amp; (read -t 3 -p &quot;Done, closing in 3 seconds.&quot;; exit 0) || read -n1 -rsp &quot;Failed, press any key.&quot;&apos;</command>\n\t<description></description>\n\t<range>*</range>\n\t<patterns>*</patterns>\n\t<other-files/>\n\t<text-files/>\n</action>\n<action>\n\t<icon></icon>\n\t<name>Run</name>\n\t<submenu></submenu>\n\t<unique-id>1718112833938847-2</unique-id>\n\t<command>terminator -e &apos;%f &amp;&amp; (read -t 3 -p &quot;Done, closing in 3 seconds.&quot;; exit 0) || read -n1 -rsp &quot;Failed, press any key.&quot;&apos;</command>\n\t<description></description>\n\t<range>*</range>\n\t<patterns>*</patterns>\n\t<other-files/>\n\t<text-files/>\n</action>\n</actions>\n' > $HOME/.config/Thunar/uca.xml
 }
 
 function setup_vlc() {
@@ -163,8 +163,9 @@ function setup_scite() {
 	echo -e '\nselection.back=#227733\nselection.inactive.back=#227733\nselection.layer=1' >> $HOME/.SciTEUser.properties
 	echo -e '\ncaret.line.back=#444444\ncaret.fore=#FFFFFF\ncaret.period=0\ncaret.width=2\n#caret.style=2' >> $HOME/.SciTEUser.properties
 	echo -e '\nhighlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#777777,fillalpha:255,under\nstyle.*.34=back:#22AAFF' >> $HOME/.SciTEUser.properties
-	echo -e '\nstyle.*.32=$(font.base),back:#101010,fore:#BBBBDD\nstyle.*.33=$(font.base),back:#101010' >> $HOME/.SciTEUser.properties
+	echo -e '\nstyle.*.32=$(font.base),back:#202020,fore:#DCDCDC\nstyle.*.33=$(font.base),back:#202020' >> $HOME/.SciTEUser.properties
 	echo -e '\nfont.base=font:Verdana,size:16\nfont.small=font:Verdana,size:14\nfont.comment=font:Georgia,size:16' >> $HOME/.SciTEUser.properties
+	echo -e '\nfold.margin.width=0' >> $HOME/.SciTEUser.properties
 }
 
 function setup_gtk() {
@@ -217,6 +218,7 @@ function setup_wine() {
 }
 
 function setup_mount_iso_shortcut() {
+	mkdir -p /usr/local/share/applications
 	echo -e '[Desktop Entry]\nType=Application\nName=Mount ISO\nExec=/usr/bin/udisksctl loop-setup --no-user-interaction -r -f %f\nMimeType=application/octetstream;\nIcon=package-x-generic' > /usr/local/share/applications/mountiso.desktop
 
 	#udisksctl mount -b $( | grep -Po '/dev/loop[0-9]+')
@@ -232,35 +234,36 @@ function setup_packages() {
 	#packages+=" xf86-video-nouveau"
 	#packages+=" xf86-video-ati"
 
-	packages+=" xorg-xprop xclip numlockx xautolock xcursor-vanilla-dmz gksu pavucontrol xbindkeys"
-	packages+=" unclutter"
+	packages+=" xorg-xprop xclip numlockx xautolock xcursor-vanilla-dmz pavucontrol xbindkeys unclutter"
 
 	packages+=" tigervnc"
-	packages+=" x11vnc tk autocutsel"
-
-	packages+=" ttf-dejavu ttf-sazanami"
+	packages+=" x11vnc tk"
 	packages+=" unrar unzip unace lrzip"
 
 	packages+=" lightdm lightdm-gtk-greeter"
 	packages+=" i3 dmenu i3blocks sysstat"
-	packages+=" lxtask terminator scite"
+	packages+=" lxtask terminator scite gnome-themes-extra"
 	packages+=" thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman"
-	packages+=" ffmpegthumbnailer tumbler gamin gvfs-smb polkit-gnome"
+	packages+=" ffmpegthumbnailer tumbler gvfs-smb polkit-gnome"
 	packages+=" file-roller viewnior evince chromium vlc imlib2"
+	
 	#packages+=" fbreader mcomix pinta libreoffice-en-GB"
 	#packages+=" vbindiff"
 
 	packages+=" cups system-config-printer"
 	#packages+=" foomatic-db-nonfree splix gutenprint hplip"
 	
-	#packages+=" blueberry"
-	
-	packages+=" wine winetricks wine_gecko wine-mono lib32-mpg123 lib32-ncurses lib32-libpulse xorg-xhost lib32-gnutls wmctrl zenity lib32-openal lib32-libldap lib32-gstreamer"
-	#packages+=" qemu qemu-arch-extra gnome-boxes"
-	
+	#packages+=" ttf-dejavu ttf-sazanami"
+	#packages+=" blueberry"	
+	#packages+=" qemu qemu-arch-extra gnome-boxes"	
 	#packages+=" emacs python racket chicken swi-prolog texlive-most"
 	
-	pacman -S --needed --noconfirm $packages
+	#broken
+	#packages+=" wine winetricks wine_gecko wine-mono lib32-mpg123 lib32-ncurses lib32-libpulse xorg-xhost lib32-gnutls wmctrl zenity lib32-openal lib32-libldap lib32-gstreamer"
+	#packages+=" gksu autocutsel gamin"
+	
+	#
+	pacman -Sy --needed --noconfirm $packages
 }
 
 function install_all() {
@@ -281,8 +284,8 @@ function install_all() {
 	setup_shortcuts
 	setup_viewnior
 	setup_cups
-	setup_wine
-	setup_mount_iso_shortcut
+	#setup_wine
+	#setup_mount_iso_shortcut
 	#setup_tmpcache
 }
 
