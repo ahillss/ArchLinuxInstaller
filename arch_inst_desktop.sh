@@ -178,7 +178,7 @@ function setup_scite() {
 	echo -e '\nselection.back=#227733\nselection.inactive.back=#227733\nselection.layer=1' >> $HOME/.SciTEUser.properties
 	echo -e '\ncaret.line.back=#444444\ncaret.fore=#FFFFFF\ncaret.period=0\ncaret.width=2\n#caret.style=2' >> $HOME/.SciTEUser.properties
 	echo -e '\nhighlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#777777,fillalpha:255,under\nstyle.*.34=back:#22AAFF' >> $HOME/.SciTEUser.properties
-	echo -e '\nstyle.*.32=$(font.base),back:#202020,fore:#DCDCDC\nstyle.*.33=$(font.base),back:#202020' >> $HOME/.SciTEUser.properties
+	echo -e '\nstyle.*.32=$(font.base),back:#202020,fore:#DCDCDC\nstyle.*.33=$(font.base),back:#303030' >> $HOME/.SciTEUser.properties
 	echo -e '\nfont.base=font:Verdana,size:16\nfont.small=font:Verdana,size:14\nfont.comment=font:Georgia,size:16' >> $HOME/.SciTEUser.properties
 	echo -e '\nfold.margin.width=0' >> $HOME/.SciTEUser.properties
 }
