@@ -159,18 +159,12 @@ function setup_scite() {
 	echo -e '\nstatusbar.text.1=pos=$(CurrentPos),li=$(LineNumber), co=$(ColumnNumber) [$(EOLMode)]\next.lua.startup.script=$(SciteUserHome)/.SciTEStartup.lua\n' >> $HOME/.SciTEUser.properties
 	echo -e 'function OnUpdateUI() props["CurrentPos"]=editor.CurrentPos end' > $HOME/.SciTEStartup.lua
 
-	echo -e '\n###darkmode' >> $HOME/.SciTEUser.properties
 	echo -e '\nimports.exclude=perl sql markdown conf cmake cpp lisp lua css html json python rust tcl yaml' >> $HOME/.SciTEUser.properties
 	echo -e '\nselection.back=#227733\nselection.inactive.back=#227733\nselection.layer=1' >> $HOME/.SciTEUser.properties
 	echo -e '\ncaret.line.back=#444444\ncaret.fore=#FFFFFF\ncaret.period=0\ncaret.width=2\n#caret.style=2' >> $HOME/.SciTEUser.properties
 	echo -e '\nhighlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#777777,fillalpha:255,under\nstyle.*.34=back:#22AAFF' >> $HOME/.SciTEUser.properties
 	echo -e '\nstyle.*.32=$(font.base),back:#101010,fore:#BBBBDD\nstyle.*.33=$(font.base),back:#101010' >> $HOME/.SciTEUser.properties
 	echo -e '\nfont.base=font:Verdana,size:16\nfont.small=font:Verdana,size:14\nfont.comment=font:Georgia,size:16' >> $HOME/.SciTEUser.properties
-
-	echo -e '\n###lightmode' >> $HOME/.SciTEUser.properties
-	echo -e '\n#selection.back=#CCBDFF\n#selection.alpha=250\n#selection.layer=1' >> $HOME/.SciTEUser.properties
-	echo -e '\n#caret.line.back=#CCDDFF\n#caret.fore=#FFFFFF' >> $HOME/.SciTEUser.properties
-	echo -e '\n#highlight.current.word=1\n#highlight.current.word.indicator=style:straightbox,colour:#FFBBDD,fillalpha:255,under\n#style.*.34=back:#51DAEA' >> $HOME/.SciTEUser.properties
 }
 
 function setup_gtk() {
