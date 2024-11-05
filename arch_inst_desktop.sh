@@ -3,7 +3,7 @@
 function setup_lightdm() {
 	systemctl enable lightdm
 	
-	groupadd autologin	
+	groupadd autologin
 	gpasswd -a $USER autologin
 		
 	sed -i "s/#\(autologin-user=\)/\1$USER/g" /etc/lightdm/lightdm.conf
@@ -42,7 +42,7 @@ function setup_tmpcache() {
 	
 	echo -e "\n#" >> /etc/fstab
 	
-	echo "/tmp $HOME/.local/share/gvfs-metadata none defaults,bind 0 0" >> /etc/fstab	
+	echo "/tmp $HOME/.local/share/gvfs-metadata none defaults,bind 0 0" >> /etc/fstab
 	echo "/tmp $HOME/.cache/thumbnails none defaults,bind 0 0" >> /etc/fstab
 	echo "/tmp $HOME/.cache/vlc none defaults,bind 0 0" >> /etc/fstab
 	
@@ -65,7 +65,7 @@ function setup_xserver() {
 	echo '#x11vnc &' >> $HOME/.xprofile
 	echo '#autocutsel -fork &' >> $HOME/.xprofile
 	echo '#start-pulseaudio-x11 &' >> $HOME/.xprofile
-	echo '#blueberry-tray &' >> $HOME/.xprofile	
+	echo '#blueberry-tray &' >> $HOME/.xprofile
 	echo '#setxkbmap -option caps:ctrl_modifier &' >> $HOME/.xprofile
 	echo '#unclutter -idle 2 -jitter 2 -root &' >> $HOME/.xprofile
 }
@@ -78,25 +78,28 @@ function setup_i3wm() {
 	cp -f /etc/i3/config $HOME/.config/i3/
 
 	sed -i 's/\(^exec --no-startup-id.*\)/#\1/g' $HOME/.config/i3/config
-
 	sed -i 's/\(bindsym Mod1+d exec\) \(dmenu_run\)/\1 --no-startup-id \2/g' $HOME/.config/i3/config
 	sed -i 's/\(exec i3-config-wizard\)/#\1/g' $HOME/.config/i3/config
 	sed -i 's/# \(bindsym Mod1+\)\(d exec --no-startup-id i3-dmenu-desktop\)/\1Shift+\2/g' $HOME/.config/i3/config
 	sed -i 's/\(set \$mod\) Mod4/\1 Mod1/g' $HOME/.config/i3/config
 	sed -i '/^bar {$/ a\\t#mode hide\n\t#hidden_state hide\n\tmodifier Mod1' $HOME/.config/i3/config
 	sed -i '/^bar {$/ a\\t#tray_output primary' $HOME/.config/i3/config
-	
- 	#sed -i 's/^\(font pango:\).*/\1Ubuntu Mono 14/g' $HOME/.config/i3/config
-	#sed -i '/^font pango.*/a#font pango:Ubuntu Mono 14' $HOME/.config/i3/config
-	
+	sed -i '/^# kill focused window/abindsym Mod1+Shift+x exec xdotool getwindowfocus windowkill' $HOME/.config/i3/config
+	sed -i 's/^\(font pango:.*\)/#\1\nfont pango:DejaVu Sans 18/g'  $HOME/.config/i3/config
+	sed -i 's/^\(bindsym Mod1+r.*\)/#\1/g'  $HOME/.config/i3/config
+
 	echo 'bindsym Mod1+Shift+h bar mode toggle' >> $HOME/.config/i3/config
 	echo -e '\n#\nworkspace_layout tabbed\ndefault_orientation vertical' >> $HOME/.config/i3/config
- 
+	echo -e '\n#' >> $HOME/.config/i3/config
 	echo 'for_window [window_role="pop-up"] floating enable' >> $HOME/.config/i3/config
 	echo 'for_window [title="File Operation Progress"] floating enable' >> $HOME/.config/i3/config
-	echo '#for_window [class="Chromium"] floating disable' >> $HOME/.config/i3/config
-	
-	sed -i '/^# kill focused window/abindsym Mod1+Shift+x exec xdotool getwindowfocus windowkill' $HOME/.config/i3/config
+	echo -e '\n#' >> $HOME/.config/i3/config
+	echo 'assign [class="Moonlight"] 3' >> $HOME/.config/i3/config
+	echo 'assign [class="Chromium"] 1' >> $HOME/.config/i3/config
+
+	echo -e '\n#\n#exec --no-startup-id ~/autostart.sh' >> $HOME/.config/i3/config
+
+	echo 'bindsym Mod1+Shift+s exec sleep 1 && xset dpms force off' >> $HOME/.config/i3/config
 	
 	echo 'bindsym Mod1+Control+Shift+s exec systemctl suspend' >> $HOME/.config/i3/config
 	echo 'bindsym Mod1+Control+Shift+h exec systemctl hibernate' >> $HOME/.config/i3/config
@@ -109,12 +112,14 @@ function setup_i3blocks() {
 	echo -n '' >  $HOME/.config/i3blocks/config
 
 	echo -e '\n[cpu_load]\ncolor=#FFFFFF\ncommand=mpstat -P ALL 1 1 |  awk '"'"'/Average:/ && $2 ~ /[0-9]/ {printf "%.0f\\x25 ",100-$12}'"'"'|xargs\ninterval=10' >> $HOME/.config/i3blocks/config
-	echo -e '\n[cpu_hertz]\ncolor=#FFBB66\ncommand=find /sys/devices/system/cpu/cpu[0-3]/cpufreq/scaling_cur_freq  -type f |xargs cat | awk '"'"'{printf "%.1f ",$1/1000000}'"'"'|xargs\ninterval=5' >> $HOME/.config/i3blocks/config
-	echo -e '\n[memory_free]\ncolor=#EEFF88\ncommand=awk '"'"'/MemAvailable/ {printf("%d\\xcb\\x96\\n", ($2/1000))}'"'"' /proc/meminfo\ninterval=2' >> $HOME/.config/i3blocks/config
+	echo -e '\n[cpu_hertz]\ncolor=#E9C5A1\ncommand=find /sys/devices/system/cpu/cpu[0-3]/cpufreq/scaling_cur_freq  -type f |xargs cat | awk '"'"'{printf "%.0f ",$1/100000}'"'"'|xargs\ninterval=5' >> $HOME/.config/i3blocks/config
+	echo -e '\n[memory_free]\ncolor=#E1E9A5\ncommand=awk '"'"'/MemAvailable/ {printf("%d\\xcb\\x96\\n", ($2/1000))}'"'"' /proc/meminfo\ninterval=2' >> $HOME/.config/i3blocks/config
 	echo -e '\n#[memory_used]\n#color=#FFDDCC\n#command=awk '"'"'/MemTotal|MemAvailable/ {print $2}'"'"' /proc/meminfo | paste -sd'"'"' '"'"' | awk '"'"'{printf "%d\\xcb\\x97\\n",($1-$2)/1000}'"'"'\n#interval=2' >> $HOME/.config/i3blocks/config
 	echo -e '\n#[swap_free]\n#command=awk '"'"'/SwapTotal|SwapFree/ {print $2}'"'"' /proc/meminfo | paste -sd'"'"' '"'"' | awk '"'"'{printf "<span color=\\"%s\\">%d\\xcb\\x96</span>\\n",$1=="0"?"#555555":"#FFDDCC",$2/1000}'"'"'\n#interval=2\n#markup=pango' >> $HOME/.config/i3blocks/config
-	echo -e '\n[swap_used]\ncommand=awk '"'"'/SwapTotal|SwapFree/ {print $2}'"'"' /proc/meminfo | paste -sd'"'"' '"'"' | awk '"'"'{printf "<span color=\\"%s\\">%d\\xcb\\x97</span>\\n",$1=="0"?"#555555":"#FFDDCC",($1-$2)/1000}'"'"'\ninterval=2\nmarkup=pango' >> $HOME/.config/i3blocks/config
+	echo -e '\n#[swap_used]\n#command=awk '"'"'/SwapTotal|SwapFree/ {print $2}'"'"' /proc/meminfo | paste -sd'"'"' '"'"' | awk '"'"'{printf "<span color=\\"%s\\">%d\\xcb\\x97</span>\\n",$1=="0"?"#555555":"#FFDDCC",($1-$2)/1000}'"'"'\n#interval=2\n#markup=pango' >> $HOME/.config/i3blocks/config
 	echo -e '\n[temp]\ncolor=#85C1E9\ncommand=cat /sys/class/thermal/thermal_zone*/temp | awk '"'"'$1 {printf "%.0f\\xc2\\xb0 ",$1/1000}'"'"'|awk '"'"'$1=$1'"'"'\ninterval=2' >> $HOME/.config/i3blocks/config
+	echo -e '\n[fan]\ncolor=#85E9C1\ncommand=cat /sys/devices/platform/cooling_fan/hwmon/*/fan1_input | xargs\ninterval=2' >> $HOME/.config/i3blocks/config
+
 	echo -e '\n[time]\ncommand=date "+%a %d %b, %I:%M %p"\ninterval=5' >> $HOME/.config/i3blocks/config
 	echo -e '\n#[battery]\n#color=#58D68D\n#command=cat /sys/class/power_supply/BAT1/status /sys/class/power_supply/BAT1/capacity | tr "\\n" " " | awk '"'"'$1 $2 {printf "<span color=\\"%s\\">\\xe2\\x9a\\xa1</span>%s%%", $1=="Charging"?"yellow":"light grey",$2}'"'"'\n#interval=2\n#markup=pango' >> $HOME/.config/i3blocks/config
 	echo -e '\n[volume]\ncommand=amixer -c 0 -M -D pulse get Master | sed "s/[][%]//g" | awk '"'"'/Front Left:.+/ {printf "<span color=\\"%s\\">%s\\xE2\\x99\\xAA</span>\\n",$6=="off"?"#333333":"#FFFFFF",$5}'"'"'\ninterval=5\nmarkup=pango' >> $HOME/.config/i3blocks/config
@@ -127,18 +132,21 @@ function setup_terminator() {
 }
 
 function setup_thunar() {
-	mkdir -p $HOME/.config/xfce4/xfconf/xfce-perchannel-xml
-	echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<channel name="thunar" version="1.0">\n\t<property name="last-show-hidden" type="bool"\nvalue="true"/>\n\t<property name="last-view" type="string" value="ThunarDetailsView"/>\n</channel>' >> $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml
+	mkdir -p $HOME/.config/xfce4/xfconf/xfce-perchannel-xml $HOME/.config/Thunar
+
+	echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<channel name="thunar" version="1.0">\n  <property name="last-view" type="string" value="ThunarDetailsView"/>\n  <property name="misc-show-delete-action" type="bool" value="true"/>\n  <property name="misc-parallel-copy-mode" type="string" value="THUNAR_PARALLEL_COPY_MODE_NEVER"/>\n  <property name="last-show-hidden" type="bool" value="true"/>\n  <property name="last-view" type="string" value="ThunarDetailsView"/>\n</channel>' >> $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml
+
+	echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<actions>\n<action>\n    <icon>utilities-terminal</icon>\n    <name>Open Terminal Here</name>\n    <submenu></submenu>\n    <unique-id>1717698787285529-1</unique-id>\n    <command>exo-open --working-directory %f --launch TerminalEmulator</command>\n    <description>Example for a custom action</description>\n    <range></range>\n    <patterns>*</patterns>\n    <startup-notify/>\n    <directories/>\n</action>\n<action>\n    <icon></icon>\n    <name>Bash Run</name>\n    <submenu></submenu>\n    <unique-id>1718111091702025-1</unique-id>\n    <command>terminator -e &apos;bash %f &amp;&amp; (read -t 3 -p &quot;Done, closing in 3 seconds.&quot;; exit 0) || read -n1 -rsp &quot;Failed, press any key.&quot;&apos;</command>\n    <description></description>\n    <range>*</range>\n    <patterns>*</patterns>\n    <other-files/>\n    <text-files/>\n</action>\n<action>\n    <icon></icon>\n    <name>Run</name>\n    <submenu></submenu>\n    <unique-id>1718112833938847-2</unique-id>\n    <command>terminator -e &apos;%f &amp;&amp; (read -t 3 -p &quot;Done, closing in 3 seconds.&quot;; exit 0) || read -n1 -rsp &quot;Failed, press any key.&quot;&apos;</command>\n    <description></description>\n    <range>*</range>\n    <patterns>*</patterns>\n    <other-files/>\n    <text-files/>\n</action>\n</actions>\n' > $HOME/.config/Thunar/uca.xml
 }
 
 function setup_vlc() {
 	mkdir -p $HOME/.config/vlc
-	echo -e "[qt4]\nqt-recentplay=0\nqt-privacy-ask=0\n\n[core]\nvideo-title-show=0\nplay-and-exit=1\none-instance-when-started-from-file=0\nsnapshot-path=$HOME/Pictures\nsnapshot-prefix=$N_[$T]_\nsnapshot-sequential=1\nkey-vol-up=Ctrl+Up\nkey-vol-down=Ctrl+Down\nkey-vol-mute=m\nkey-stop=\nkey-snapshot=s\nstats=0\nstereo-mode=1" > $HOME/.config/vlc/vlcrc
+	echo -e "[qt4]\nqt-recentplay=0\nqt-privacy-ask=0\n\n[core]\nvideo-title-show=0\nplay-and-exit=1\none-instance-when-started-from-file=0\nsnapshot-path=$HOME/Pictures\nsnapshot-prefix=\$N_[\$T]_\nsnapshot-sequential=1\nkey-vol-up=Ctrl+Up\nkey-vol-down=Ctrl+Down\nkey-vol-mute=m\nkey-stop=\nkey-snapshot=s\nstats=0\nstereo-mode=1" > $HOME/.config/vlc/vlcrc
+	#echo -e "vout=xcb_xv" > $HOME/.config/vlc/vlcrc
 	echo -e '[MainWindow]\nstatus-bar-visible=true' > $HOME/.config/vlc/vlc-qt-interface.conf
 }
 
 function setup_scite() {
-	
 	echo '' > $HOME/.SciTEUser.properties
 
 	echo -e 'check.if.already.open=1\nload.on.activate=1\nquit.on.close.last=1\n' >> $HOME/.SciTEUser.properties
@@ -151,36 +159,30 @@ function setup_scite() {
 	echo -e '\nstatusbar.text.1=pos=$(CurrentPos),li=$(LineNumber), co=$(ColumnNumber) [$(EOLMode)]\next.lua.startup.script=$(SciteUserHome)/.SciTEStartup.lua\n' >> $HOME/.SciTEUser.properties
 	echo -e 'function OnUpdateUI() props["CurrentPos"]=editor.CurrentPos end' > $HOME/.SciTEStartup.lua
 
-	#echo -e 'selection.back=#CCBDFF\nselection.alpha=50\nselection.layer=1\n' >> $HOME/.SciTEUser.properties
-	#echo -e 'caret.line.back=#CCDDFF\ncaret.fore=#FFFFFF\n' >> $HOME/.SciTEUser.properties
-	#echo -e 'highlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#FFBBDD,fillalpha:255,under\nstyle.*.34=back:#51DAEA\n' >> $HOME/.SciTEUser.properties
+	echo -e '\n###darkmode' >> $HOME/.SciTEUser.properties
+	echo -e '\nimports.exclude=perl sql markdown conf cmake cpp lisp lua css html json python rust tcl yaml' >> $HOME/.SciTEUser.properties
+	echo -e '\nselection.back=#227733\nselection.inactive.back=#227733\nselection.layer=1' >> $HOME/.SciTEUser.properties
+	echo -e '\ncaret.line.back=#444444\ncaret.fore=#FFFFFF\ncaret.period=0\ncaret.width=2\n#caret.style=2' >> $HOME/.SciTEUser.properties
+	echo -e '\nhighlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#777777,fillalpha:255,under\nstyle.*.34=back:#22AAFF' >> $HOME/.SciTEUser.properties
+	echo -e '\nstyle.*.32=$(font.base),back:#101010,fore:#BBBBDD\nstyle.*.33=$(font.base),back:#101010' >> $HOME/.SciTEUser.properties
+	echo -e '\nfont.base=font:Verdana,size:16\nfont.small=font:Verdana,size:14\nfont.comment=font:Georgia,size:16' >> $HOME/.SciTEUser.properties
 
-	echo -e 'selection.back=#227733\nselection.alpha=50\nselection.layer=1\n' >> $HOME/.SciTEUser.properties
-	echo -e 'caret.line.back=#444444\n' >> $HOME/.SciTEUser.properties
-	echo -e 'highlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#777777,fillalpha:255,under\nstyle.*.34=back:#22AAFF\n' >> $HOME/.SciTEUser.properties
-	echo -e 'style.*.32=$(font.base),back:#101010,fore:#BBBBDD\nstyle.*.33=$(font.base),back:#101010\n' >> $HOME/.SciTEUser.properties
-	echo -e 'font.base=font:Verdana,size:16\nfont.small=font:Verdana,size:14\nfont.comment=font:Georgia,size:16\n' >> $HOME/.SciTEUser.properties
-
-	sed -i "s/\(file\.patterns\.cpp=.*\)/\1;*.glsl/g" /usr/share/scite/cpp.properties
-	sed -i "s/\(file\.patterns\.lisp=.*\)/\1;*.el/g" /usr/share/scite/lisp.properties
-	sed -i "s/\(file\.patterns\.scheme=.*\)/\1;*.rkt/g" /usr/share/scite/lisp.properties
-
-	mkdir -p /usr/local/share/applications
-	echo -e '[Desktop Entry]\nName=SciTE New Window\nType=Application\nExec=SciTE -check.if.already.open=0 %F\nIcon=Sci48M\nMimeType=text/plain;' > /usr/local/share/applications/scitenew.desktop
-	echo -e '[Desktop Entry]\nName=SciTE as Root\nType=Application\nExec=gksudo -k "SciTE -check.if.already.open=0 %F"\nIcon=Sci48M\nMimeType=text/plain;' > /usr/local/share/applications/sciteroot.desktop
-	sed -i 's/rust //g' /usr/share/scite/SciTEGlobal.properties
+	echo -e '\n###lightmode' >> $HOME/.SciTEUser.properties
+	echo -e '\n#selection.back=#CCBDFF\n#selection.alpha=250\n#selection.layer=1' >> $HOME/.SciTEUser.properties
+	echo -e '\n#caret.line.back=#CCDDFF\n#caret.fore=#FFFFFF' >> $HOME/.SciTEUser.properties
+	echo -e '\n#highlight.current.word=1\n#highlight.current.word.indicator=style:straightbox,colour:#FFBBDD,fillalpha:255,under\n#style.*.34=back:#51DAEA' >> $HOME/.SciTEUser.properties
 }
 
 function setup_gtk() {
 	mkdir -p  $HOME/.config/gtk-2.0 $HOME/.config/gtk-3.0
-	mkdir -p $HOME/Desktop $HOME/Documents $HOME/Downloads $HOME/Pictures $HOME/Videos
-	
-	echo 'gtk-recent-files-max-age=0' >> $HOME/.config/gtk-2.0/gtkrc
-	echo -e '[Settings]\ngtk-recent-files-max-age=0\ngtk-recent-files-limit=0' > $HOME/.config/gtk-3.0/settings.ini
-	echo -e "file://$HOME/Documents Documents\nfile://$HOME/Downloads Downloads\nfile://$HOME/Pictures Pictures\nfile://$HOME/Videos Videos\nfile:///tmp tmp" >> $HOME/.config/gtk-3.0/bookmarks	
-	
- 	#for d in /mnt/* ; do echo "file://$d $(basename "$d")" >> $HOME/.config/gtk-3.0/bookmarks; done
-	
+	mkdir -p $HOME/Desktop $HOME/Documents $HOME/Downloads $HOME/Pictures $HOME/Videos $HOME/Music
+
+	#echo '' >> $HOME/.config/gtk-2.0/gtkrc
+	echo 'gtk-recent-files-max-age=0\n\ngtk-theme-name="Adwaita-dark"\ngtk-icon-theme-name="PiXflat"\ngtk-cursor-theme-name="Adwaita-dark"\n\ngtk-xft-antialias=1\ngtk-xft-hinting=1\ngtk-xft-hintstyle="hintslight"\ngtk-xft-rgba="rgb"\n\ngtk-font-name="Sans 12"\n' >> $HOME/.gtkrc-2.0
+
+	echo -e '[Settings]\n\ngtk-recent-files-max-age=0\ngtk-recent-files-limit=0\n\ngtk-theme-name=Adwaita-dark\ngtk-icon-theme-name=PiXflat\ngtk-cursor-theme-name=Adwaita-dark\n\ngtk-xft-antialias=1\ngtk-xft-hinting=1\ngtk-xft-hintstyle=hintfull\ngtk-xft-rgba=rgb\n\ngtk-font-name=Sans 12' > $HOME/.config/gtk-3.0/settings.ini
+
+	echo -e "file://$HOME/Documents Documents\nfile://$HOME/Downloads Downloads\nfile://$HOME/Pictures Pictures\nfile://$HOME/Videos Videos\nfile://$HOME/Music Music\nfile:///tmp tmp" >> $HOME/.config/gtk-3.0/bookmarks
 	echo -e '[Filechooser Settings]\nLocationMode=path-bar\nShowHidden=true\nShowSizeColumn=true\nSortColumn=name\nSortOrder=ascending\nStartupMode=recent' > $HOME/.config/gtk-2.0/gtkfilechooser.ini
 }
 
@@ -192,8 +194,11 @@ function setup_shortcuts() {
 	echo -e '"scite"\nMod4+s\n' >> $HOME/.xbindkeysrc
 	echo -e '"lxtask"\nControl+Shift+Escape\n' >> $HOME/.xbindkeysrc
 	
-	echo -e '"moonlight"\nMod4+m\n' >> $HOME/.xbindkeysrc	
+	echo -e '"moonlight"\nMod4+m\n' >> $HOME/.xbindkeysrc
 	echo -e '"imlib2_grab ~/Pictures/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nMod4+p\n' >> $HOME/.xbindkeysrc
+	
+	#echo -e '"scrot ~/Pictures/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nMod4+p\n' >> $HOME/.xbindkeysrc
+	#echo -e '"scrot ~/Pictures/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nControl+p\n' >> $HOME/.xbindkeysrc
 }
 
 function setup_viewnior() {

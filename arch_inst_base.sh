@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 grub_disk=/dev/sda
 boot_diskpart=${grub_disk}1
@@ -55,6 +55,7 @@ function install_os() {
 
 function setup_packages() {
 	packages=""
+	packages+=" linux mkinitcpio dhcpcd"
 	packages+=" grub memtest86+"
 	packages+=" networkmanager openssh ntp"
 	packages+=" pulseaudio pulseaudio-alsa alsa-utils"
@@ -264,7 +265,7 @@ function setup_grub() {
 			swapuuid=`get_uuid $swap_diskpart2`
 			sed -i "s/\(GRUB_CMDLINE_LINUX_DEFAULT=\"\)\([^\"]*\"\)/\1resume=UUID=$swapuuid resume_offset=$resoff \2/g" /etc/default/grub
 		elif [ $swap_diskpart ]; then
-			swapuuid=`get_uuid $swap_diskpart`		
+			swapuuid=`get_uuid $swap_diskpart`
 			sed -i "s/\(GRUB_CMDLINE_LINUX_DEFAULT=\"\)\([^\"]*\"\)/\1resume=UUID=$swapuuid \2/g" /etc/default/grub
 		fi
 		
@@ -328,7 +329,7 @@ function setup_power() {
 function setup_bluetooth() {
 	systemctl enable bluetooth.service
 	
-	#echo 1 > /sys/module/bluetooth/parameters/disable_ertm  
+	#echo 1 > /sys/module/bluetooth/parameters/disable_ertm
 	echo 'options bluetooth disable_ertm=Y' > /etc/modprobe.d/mybluetooth.conf
 	
 	#sed -i "s/#\(AutoEnable=\)false/\1true/g" /etc/bluetooth/main.conf
