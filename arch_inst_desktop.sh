@@ -312,8 +312,8 @@ function install_all() {
 	setup_shortcuts
 	setup_viewnior
 	setup_cups
-    #setup_autostart
-    #setup_dpi
+	#setup_autostart
+	#setup_dpi
 	#setup_wine
 	#setup_mount_iso_shortcut
 	#setup_tmpcache
