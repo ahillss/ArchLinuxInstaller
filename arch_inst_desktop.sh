@@ -159,7 +159,7 @@ function setup_scite() {
 	echo -e '\nstatusbar.text.1=pos=$(CurrentPos),li=$(LineNumber), co=$(ColumnNumber) [$(EOLMode)]\next.lua.startup.script=$(SciteUserHome)/.SciTEStartup.lua\n' >> $HOME/.SciTEUser.properties
 	echo -e 'function OnUpdateUI() props["CurrentPos"]=editor.CurrentPos end' > $HOME/.SciTEStartup.lua
 
-	echo -e '\nimports.exclude=perl sql markdown conf cmake cpp lisp lua css html json python rust tcl yaml' >> $HOME/.SciTEUser.properties
+	echo -e '\nimports.exclude=abaqus abbrev ada asciidoc asl asm asn1 au3 ave avs baan blitzbasic bullant caml cil cmake cobol coffeescript conf cpp csound css d dataflex ecl eiffel erlang escript flagship forth fortran freebasic fsharp gap haskell hex html inno json kix latex lisp lot lout lua markdown matlab maxima metapost mmixal modula3 nim nimrod nncrontab nsis opal oscript others pascal perl pov powerpro powershell ps purebasic python r raku rebol registry ruby rust sas scriptol smalltalk sorcins specman spice sql tacl tal tcl tex txt2tags vb verilog vhdl visualprolog yaml' >> $HOME/.SciTEUser.properties
 	echo -e '\nselection.back=#227733\nselection.inactive.back=#227733\nselection.layer=1' >> $HOME/.SciTEUser.properties
 	echo -e '\ncaret.line.back=#444444\ncaret.fore=#FFFFFF\ncaret.period=0\ncaret.width=2\n#caret.style=2' >> $HOME/.SciTEUser.properties
 	echo -e '\nhighlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#777777,fillalpha:255,under\nstyle.*.34=back:#22AAFF' >> $HOME/.SciTEUser.properties
