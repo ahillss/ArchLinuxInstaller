@@ -10,9 +10,6 @@ function setup_lightdm() {
 	sed -i 's/#\(pam-service=lightdm\)/\1/g' /etc/lightdm/lightdm.conf
 	sed -i 's/#\(pam-autologin-service=lightdm-autologin\)/\1/g' /etc/lightdm/lightdm.conf
 	sed -i 's/#\(autologin-user-timeout=0\)/\1/g' /etc/lightdm/lightdm.conf
-    
-    
-	#sudo sed -i 's/\(autologin-session=\)\(.*\)/#\1\2\n\1i3/g' /etc/lightdm/lightdm.conf
 }
 
 function setup_mousepad() {
@@ -73,9 +70,19 @@ function setup_xserver() {
 	echo '#unclutter -idle 2 -jitter 2 -root &' >> $HOME/.xprofile
 }
 
+function setup_autostart() {
+    echo "xbindkeys -p &" >> $HOME/autostart.sh
+    echo "solaar -w hide &" >> $HOME/autostart.sh
+    echo "#unclutter -idle 2 -jitter 2 -root &" >> $HOME/autostart.sh
+    echo "thunar --daemon &" >> $HOME/autostart.sh
+    echo "#blueman-applet &" >> $HOME/autostart.sh
+    sudo chmod +xr $HOME/autostart.sh
+}
+
 function setup_i3wm() {
 	echo -e "#exec i3" >> $HOME/.xinitrc
 	echo -e "[Desktop]\nSession=i3\n" > $HOME/.dmrc
+	#sed -i 's/\(autologin-session=\)\(.*\)/#\1\2\n\1i3/g' /etc/lightdm/lightdm.conf
 	
 	mkdir -p $HOME/.config/i3
 	cp -f /etc/i3/config $HOME/.config/i3/
@@ -100,12 +107,11 @@ function setup_i3wm() {
 	echo 'assign [class="Moonlight"] 3' >> $HOME/.config/i3/config
 	echo 'assign [class="Chromium"] 1' >> $HOME/.config/i3/config
 
-	echo -e '\n#\n#exec --no-startup-id ~/autostart.sh' >> $HOME/.config/i3/config
-
 	echo 'bindsym Mod1+Shift+s exec sleep 1 && xset dpms force off' >> $HOME/.config/i3/config
-	
 	echo 'bindsym Mod1+Control+Shift+s exec systemctl suspend' >> $HOME/.config/i3/config
 	echo 'bindsym Mod1+Control+Shift+h exec systemctl hibernate' >> $HOME/.config/i3/config
+    
+	#echo -e '\n#\nexec --no-startup-id ~/autostart.sh' >> $HOME/.config/i3/config
 }
 
 function setup_i3blocks() {
@@ -147,8 +153,12 @@ function setup_vlc() {
 	echo -e '[MainWindow]\nstatus-bar-visible=true' > $HOME/.config/vlc/vlc-qt-interface.conf
 	echo -e "[qt4]\nqt-recentplay=0\nqt-privacy-ask=0\n\n[core]\nvideo-title-show=0\nplay-and-exit=1\none-instance-when-started-from-file=0\nsnapshot-path=$HOME/Pictures\nsnapshot-prefix=\$N_[\$T]_\nsnapshot-sequential=1\nkey-vol-up=Ctrl+Up\nkey-vol-down=Ctrl+Down\nkey-vol-mute=m\nkey-stop=\nkey-snapshot=s\nstats=0\nstereo-mode=1" > $HOME/.config/vlc/vlcrc
 	
-	#echo -e "vout=xcb_xv" > $HOME/.config/vlc/vlcrc
-	#echo 'export QT_SCALE_FACTOR=0.7' >> $HOME/.profile
+	#echo -e "vout=xcb_xv" >> $HOME/.config/vlc/vlcrc
+}
+
+function setup_dpi() {
+	echo 'Xft.dpi: 150' >> $HOME/.Xresources
+	echo 'export QT_SCALE_FACTOR=0.7' >> $HOME/.profile
 }
 
 function setup_scite() {
@@ -189,16 +199,19 @@ function setup_gtk() {
 function setup_shortcuts() {
 	echo 'xbindkeys -p &' >> $HOME/.xprofile
 	
-	echo -e '"chromium"\nMod4+b\n' >> $HOME/.xbindkeysrc
 	echo -e '"thunar"\nMod4+f\n' >> $HOME/.xbindkeysrc
 	echo -e '"scite"\nMod4+s\n' >> $HOME/.xbindkeysrc
 	echo -e '"lxtask"\nControl+Shift+Escape\n' >> $HOME/.xbindkeysrc
-	
-	echo -e '"moonlight"\nMod4+m\n' >> $HOME/.xbindkeysrc
+    
 	#echo -e '"imlib2_grab ~/Pictures/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nMod4+p\n' >> $HOME/.xbindkeysrc
-	
 	echo -e '"scrot ~/Pictures/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nMod4+p\n' >> $HOME/.xbindkeysrc
 	echo -e '"scrot ~/Pictures/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nControl+p\n' >> $HOME/.xbindkeysrc
+    
+	echo -e '"chromium"\nMod4+b\n' >> $HOME/.xbindkeysrc
+	echo -e '"moonlight"\nMod4+m\n' >> $HOME/.xbindkeysrc
+    
+	#echo -e '"moonlight-qt"\nMod4+m\n' >> $HOME/.xbindkeysrc	
+	#echo -e '"chromium-browser"\nMod4+b\n' >> $HOME/.xbindkeysrc
 }
 
 function setup_viewnior() {
@@ -299,6 +312,8 @@ function install_all() {
 	setup_shortcuts
 	setup_viewnior
 	setup_cups
+    #setup_autostart
+    #setup_dpi
 	#setup_wine
 	#setup_mount_iso_shortcut
 	#setup_tmpcache
