@@ -76,7 +76,12 @@ function setup_autostart() {
     echo "#unclutter -idle 2 -jitter 2 -root &" >> $HOME/autostart.sh
     echo "thunar --daemon &" >> $HOME/autostart.sh
     echo "#blueman-applet &" >> $HOME/autostart.sh
+    echo "#xscreensaver -nosplash &" >> $HOME/autostart.sh
     sudo chmod +xr $HOME/autostart.sh
+}
+
+function setup_screensaver() {
+    echo -e "timeout:	0:10:00\ncycle:		0:10:00\nlock:		False\nlockTimeout:	0:00:00\npasswdTimeout:	0:00:30\nvisualID:	default\ninstallColormap:    True\nverbose:	False\nsplash:		True\nsplashDuration:	0:00:05\ndemoCommand:	xscreensaver-settings\nnice:		10\nfade:		False\nunfade:		False\nfadeSeconds:	0:00:03\nignoreUninstalledPrograms:False\ndpmsEnabled:	False\ndpmsQuickOff:	False\ndpmsStandby:	0:25:00\ndpmsSuspend:	0:25:00\ndpmsOff:	0:25:00\ngrabDesktopImages:  False\ngrabVideoFrames:    False\nchooseRandomImages: False\npointerHysteresis:  10\nauthWarningSlack:   20\nmode:		one\nselected:	1\nprograms:								      \\n-				substrate --root			    \n\\n				wormhole --root --delay 51639 --zspeed 30     \\n				  --stars 20				    \n\\n				maze --root				    \n\\n" > $HOME/.xscreensaver
 }
 
 function setup_i3wm() {
@@ -106,8 +111,11 @@ function setup_i3wm() {
 	echo -e '\n#' >> $HOME/.config/i3/config
 	echo 'assign [class="Moonlight"] 3' >> $HOME/.config/i3/config
 	echo 'assign [class="Chromium"] 1' >> $HOME/.config/i3/config
+    
+    echo 'for_window [all] border pixel 0' >> $HOME/.config/i3/config
 
 	echo 'bindsym Mod1+Shift+s exec sleep 1 && xset dpms force off' >> $HOME/.config/i3/config
+	echo '#bindsym Mod1+Shift+s exec sleep 1 && xset s activate' >> $HOME/.config/i3/config
 	echo 'bindsym Mod1+Control+Shift+s exec systemctl suspend' >> $HOME/.config/i3/config
 	echo 'bindsym Mod1+Control+Shift+h exec systemctl hibernate' >> $HOME/.config/i3/config
     
@@ -175,10 +183,10 @@ function setup_scite() {
 	echo -e 'function OnUpdateUI() props["CurrentPos"]=editor.CurrentPos end' > $HOME/.SciTEStartup.lua
 
 	echo -e '\nimports.exclude=abaqus abbrev ada asciidoc asl asm asn1 au3 ave avs baan blitzbasic bullant caml cil cmake cobol coffeescript conf cpp csound css d dataflex ecl eiffel erlang escript flagship forth fortran freebasic fsharp gap haskell hex html inno json kix latex lisp lot lout lua markdown matlab maxima metapost mmixal modula3 nim nimrod nncrontab nsis opal oscript others pascal perl pov powerpro powershell ps purebasic python r raku rebol registry ruby rust sas scriptol smalltalk sorcins specman spice sql tacl tal tcl tex txt2tags vb verilog vhdl visualprolog yaml' >> $HOME/.SciTEUser.properties
-	echo -e '\nselection.back=#227733\nselection.inactive.back=#227733\nselection.layer=1' >> $HOME/.SciTEUser.properties
-	echo -e '\ncaret.line.back=#444444\ncaret.fore=#FFFFFF\ncaret.period=0\ncaret.width=2\n#caret.style=2' >> $HOME/.SciTEUser.properties
-	echo -e '\nhighlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#777777,fillalpha:255,under\nstyle.*.34=back:#22AAFF' >> $HOME/.SciTEUser.properties
-	echo -e '\nstyle.*.32=$(font.base),back:#202020,fore:#DCDCDC\nstyle.*.33=$(font.base),back:#303030' >> $HOME/.SciTEUser.properties
+	echo -e '\nselection.back=#228763\nselection.inactive.back=#227733\nselection.layer=1' >> $HOME/.SciTEUser.properties
+	echo -e '\ncaret.line.back=#555555\ncaret.fore=#FFFFFF\ncaret.period=0\ncaret.width=2\n#caret.style=2' >> $HOME/.SciTEUser.properties
+	echo -e '\nhighlight.current.word=1\nhighlight.current.word.indicator=style:straightbox,colour:#8722CC,fillalpha:255,under\nstyle.*.34=back:#22AAFF' >> $HOME/.SciTEUser.properties
+	echo -e '\nstyle.*.32=$(font.base),back:#151515,fore:#DCDCDC\nstyle.*.33=$(font.base),back:#202020' >> $HOME/.SciTEUser.properties
 	echo -e '\nfont.base=font:Verdana,size:16\nfont.small=font:Verdana,size:14\nfont.comment=font:Georgia,size:16' >> $HOME/.SciTEUser.properties
 	echo -e '\nfold.margin.width=0' >> $HOME/.SciTEUser.properties
 }
@@ -271,6 +279,8 @@ function setup_packages() {
 	packages+=" thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman"
 	packages+=" ffmpegthumbnailer tumbler gvfs-smb polkit-gnome"
 	packages+=" file-roller viewnior evince chromium vlc"
+    
+    #packages+=" xscreensaver"
 
 	#packages+=" imlib2"
 	packages+=" scrot"
@@ -312,6 +322,7 @@ function install_all() {
 	setup_shortcuts
 	setup_viewnior
 	setup_cups
+    #setup_screensaver
 	#setup_autostart
 	#setup_dpi
 	#setup_wine
