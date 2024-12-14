@@ -81,10 +81,10 @@ function setup_autostart() {
 }
 
 function setup_screensaver() {
-    echo -e "timeout: 0:10:00\ncycle: 0:10:00\nlock: False\nlockTimeout: 0:00:00\npasswdTimeout: 0:00:30\nvisualID: default\ninstallColormap: True\nverbose: False\nsplash: True\nsplashDuration: 0:00:05\ndemoCommand: xscreensaver-settings\nnice: 10\nfade: False\nunfade: False\nfadeSeconds: 0:00:03\nignoreUninstalledPrograms:False\ndpmsEnabled: False\ndpmsQuickOff: False\ndpmsStandby: 0:20:00\ndpmsSuspend: 0:20:00\ndpmsOff: 0:20:00\ngrabDesktopImages: False\ngrabVideoFrames: False\nchooseRandomImages: False\nimageDirectory: \n\ntextMode: url\ntextLiteral: XScreenSaver\ntextFile: \ntextProgram: fortune\ntextURL: https://planet.debian.org/rss20.xml\ndialogTheme: default\nsettingsGeom: 0,48 -1,-1\n\npointerHysteresis: 10\nauthWarningSlack: 20\n" > $HOME/.xscreensaver
+    echo -e "timeout: 0:10:00\ncycle: 0:10:00\nlock: False\nlockTimeout: 0:00:00\npasswdTimeout: 0:00:30\nvisualID: default\ninstallColormap: True\nverbose: False\nsplash: True\nsplashDuration: 0:00:05\ndemoCommand: xscreensaver-settings\nnice: 10\nfade: False\nunfade: False\nfadeSeconds: 0:00:03\nignoreUninstalledPrograms:False\ndpmsEnabled: True\ndpmsQuickOff: False\ndpmsStandby: 0:20:00\ndpmsSuspend: 0:20:00\ndpmsOff: 0:20:00\ngrabDesktopImages: False\ngrabVideoFrames: False\nchooseRandomImages: False\nimageDirectory: \n\ntextMode: date\ntextLiteral: XScreenSaver\ntextFile: \ntextProgram: fortune\ntextURL: https://planet.debian.org/rss20.xml\ndialogTheme: default\nsettingsGeom: 0,0 88,256\n\npointerHysteresis: 10\nauthWarningSlack: 20\n\n" > $HOME/.xscreensaver
     #echo -e "mode: blank\nselected:	0\nprograms:" >> $HOME/.xscreensaver
-    #echo -e "mode: one\nselected: 0\n\nprograms: - wormhole --root --delay 51639 --zspeed 30 --stars 20" >> $HOME/.xscreensaver
-    echo -e "mode: random\nselected: 2\n\nprograms: \\\n pyro --root --delay 13934 --count 434 --frequency 100 --scatter 400 \\n\\\n galaxy --root --count 3 --cycles 221 --ncolors 255 \\n\\\n wormhole --root --delay 51639 --zspeed 30 --stars 20 \\n\\" >> $HOME/.xscreensaver
+    echo -e "mode: random\nselected: 0\n\nprograms: \\\n    galaxy --root --count 2 --cycles 221 --ncolors 255 \\n\\\n    wormhole --root --delay 51639 --zspeed 30 --stars 20 \\n\\\n\n\n" >> $HOME/.xscreensaver
+
 }
 
 function setup_i3wm() {
