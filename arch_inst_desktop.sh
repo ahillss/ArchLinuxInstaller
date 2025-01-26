@@ -71,19 +71,19 @@ function setup_xserver() {
 }
 
 function setup_autostart() {
-    echo "xbindkeys -p &" >> $HOME/autostart.sh
-    echo "solaar -w hide &" >> $HOME/autostart.sh
-    echo "#unclutter -idle 2 -jitter 2 -root &" >> $HOME/autostart.sh
-    echo "thunar --daemon &" >> $HOME/autostart.sh
-    echo "#blueman-applet &" >> $HOME/autostart.sh
-    echo "#xscreensaver -nosplash &" >> $HOME/autostart.sh
-    sudo chmod +xr $HOME/autostart.sh
+	echo "xbindkeys -p &" >> $HOME/autostart.sh
+	echo "solaar -w hide &" >> $HOME/autostart.sh
+	echo "#unclutter -idle 2 -jitter 2 -root &" >> $HOME/autostart.sh
+	echo "thunar --daemon &" >> $HOME/autostart.sh
+	echo "#blueman-applet &" >> $HOME/autostart.sh
+	echo "#xscreensaver -nosplash &" >> $HOME/autostart.sh
+	sudo chmod +xr $HOME/autostart.sh
 }
 
 function setup_screensaver() {
-    echo -e "timeout: 0:10:00\ncycle: 0:10:00\nlock: False\nlockTimeout: 0:00:00\npasswdTimeout: 0:00:30\nvisualID: default\ninstallColormap: True\nverbose: False\nsplash: True\nsplashDuration: 0:00:05\ndemoCommand: xscreensaver-settings\nnice: 10\nfade: False\nunfade: False\nfadeSeconds: 0:00:03\nignoreUninstalledPrograms:False\ndpmsEnabled: True\ndpmsQuickOff: False\ndpmsStandby: 0:20:00\ndpmsSuspend: 0:20:00\ndpmsOff: 0:20:00\ngrabDesktopImages: False\ngrabVideoFrames: False\nchooseRandomImages: False\nimageDirectory: \n\ntextMode: date\ntextLiteral: XScreenSaver\ntextFile: \ntextProgram: fortune\ntextURL: https://planet.debian.org/rss20.xml\ndialogTheme: default\nsettingsGeom: 0,0 88,256\n\npointerHysteresis: 10\nauthWarningSlack: 20\n\n" > $HOME/.xscreensaver
-    #echo -e "mode: blank\nselected:	0\nprograms:" >> $HOME/.xscreensaver
-    echo -e "mode: random\nselected: 0\n\nprograms: \\\n    galaxy --root --count 2 --cycles 221 --ncolors 255 \\n\\\n    wormhole --root --delay 51639 --zspeed 30 --stars 20 \\n\\\n\n\n" >> $HOME/.xscreensaver
+	echo -e "timeout: 0:10:00\ncycle: 0:10:00\nlock: False\nlockTimeout: 0:00:00\npasswdTimeout: 0:00:30\nvisualID: default\ninstallColormap: True\nverbose: False\nsplash: True\nsplashDuration: 0:00:05\ndemoCommand: xscreensaver-settings\nnice: 10\nfade: False\nunfade: False\nfadeSeconds: 0:00:03\nignoreUninstalledPrograms:False\ndpmsEnabled: True\ndpmsQuickOff: False\ndpmsStandby: 0:20:00\ndpmsSuspend: 0:20:00\ndpmsOff: 0:20:00\ngrabDesktopImages: False\ngrabVideoFrames: False\nchooseRandomImages: False\nimageDirectory: \n\ntextMode: date\ntextLiteral: XScreenSaver\ntextFile: \ntextProgram: fortune\ntextURL: https://planet.debian.org/rss20.xml\ndialogTheme: default\nsettingsGeom: 0,0 88,256\n\npointerHysteresis: 10\nauthWarningSlack: 20\n\n" > $HOME/.xscreensaver
+	#echo -e "mode: blank\nselected:	0\nprograms:" >> $HOME/.xscreensaver
+	echo -e "mode: random\nselected: 0\n\nprograms: \\\n    galaxy --root --count 2 --cycles 221 --ncolors 255 \\n\\\n    wormhole --root --delay 51639 --zspeed 30 --stars 20 \\n\\\n\n\n" >> $HOME/.xscreensaver
 
 }
 
@@ -114,16 +114,16 @@ function setup_i3wm() {
 	echo -e '\n#' >> $HOME/.config/i3/config
 	echo 'assign [class="Moonlight"] 3' >> $HOME/.config/i3/config
 	echo 'assign [class="Chromium"] 1' >> $HOME/.config/i3/config
-    
-    echo '#for_window [all] default_border pixel 0' >> $HOME/.config/i3/config
-    echo '#hide_edge_borders both' >> $HOME/.config/i3/config
-    echo 'default_border none' >> $HOME/.config/i3/config
+	
+	echo '#for_window [all] default_border pixel 0' >> $HOME/.config/i3/config
+	echo '#hide_edge_borders both' >> $HOME/.config/i3/config
+	echo 'default_border none' >> $HOME/.config/i3/config
 
 	echo 'bindsym Mod1+Shift+s exec sleep 1 && xset dpms force off' >> $HOME/.config/i3/config
 	echo '#bindsym Mod1+Shift+s exec sleep 1 && xset s activate' >> $HOME/.config/i3/config
 	echo 'bindsym Mod1+Control+Shift+s exec systemctl suspend' >> $HOME/.config/i3/config
 	echo 'bindsym Mod1+Control+Shift+h exec systemctl hibernate' >> $HOME/.config/i3/config
-    
+	
 	#echo -e '\n#\nexec --no-startup-id ~/autostart.sh' >> $HOME/.config/i3/config
 }
 
@@ -162,9 +162,11 @@ function setup_thunar() {
 }
 
 function setup_vlc() {
+	mkdir -p $HOME/Pictures/vlc
+
 	mkdir -p $HOME/.config/vlc
 	echo -e '[MainWindow]\nstatus-bar-visible=true' > $HOME/.config/vlc/vlc-qt-interface.conf
-	echo -e "[qt4]\nqt-recentplay=0\nqt-privacy-ask=0\n\n[core]\nvideo-title-show=0\nplay-and-exit=1\none-instance-when-started-from-file=0\nsnapshot-path=$HOME/Pictures\nsnapshot-prefix=\$N_[\$T]_\nsnapshot-sequential=1\nkey-vol-up=Ctrl+Up\nkey-vol-down=Ctrl+Down\nkey-vol-mute=m\nkey-stop=\nkey-snapshot=s\nstats=0\nstereo-mode=1" > $HOME/.config/vlc/vlcrc
+	echo -e "[qt4]\nqt-recentplay=0\nqt-privacy-ask=0\n\n[core]\nvideo-title-show=0\nplay-and-exit=1\none-instance-when-started-from-file=0\nsnapshot-path=$HOME/Pictures/vlc\nsnapshot-prefix=\$N_[\$T]_\nsnapshot-sequential=1\nkey-vol-up=Ctrl+Up\nkey-vol-down=Ctrl+Down\nkey-vol-mute=m\nkey-stop=\nkey-snapshot=s\nstats=0\nstereo-mode=1" > $HOME/.config/vlc/vlcrc
 	
 	#echo -e "vout=xcb_xv" >> $HOME/.config/vlc/vlcrc
 }
@@ -215,14 +217,16 @@ function setup_shortcuts() {
 	echo -e '"thunar"\nMod4+f\n' >> $HOME/.xbindkeysrc
 	echo -e '"scite"\nMod4+s\n' >> $HOME/.xbindkeysrc
 	echo -e '"lxtask"\nControl+Shift+Escape\n' >> $HOME/.xbindkeysrc
-    
-	#echo -e '"imlib2_grab ~/Pictures/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nMod4+p\n' >> $HOME/.xbindkeysrc
-	echo -e '"scrot ~/Pictures/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nMod4+p\n' >> $HOME/.xbindkeysrc
-	echo -e '"scrot ~/Pictures/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nControl+p\n' >> $HOME/.xbindkeysrc
-    
+	
+	
+	mkdir -p $HOME/Pictures/screenshot
+	#echo -e '"imlib2_grab ~/Pictures/screenshot/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nMod4+p\n' >> $HOME/.xbindkeysrc
+	echo -e '"scrot ~/Pictures/screenshot/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nMod4+p\n' >> $HOME/.xbindkeysrc
+	echo -e '"scrot ~/Pictures/screenshot/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nControl+p\n' >> $HOME/.xbindkeysrc
+	
 	echo -e '"chromium"\nMod4+b\n' >> $HOME/.xbindkeysrc
 	echo -e '"moonlight"\nMod4+m\n' >> $HOME/.xbindkeysrc
-    
+	
 	#echo -e '"moonlight-qt"\nMod4+m\n' >> $HOME/.xbindkeysrc	
 	#echo -e '"chromium-browser"\nMod4+b\n' >> $HOME/.xbindkeysrc
 }
@@ -256,10 +260,13 @@ function setup_mount_iso_shortcut() {
 }
 
 function setup_chrome() {
-	echo -e '{\n\t"browser":{\n\t\t"custom_chrome_frame":false,\n\t\t"default_browser_infobar_last_declined":"1"\n\t},\n\t"search":{\n\t    "suggest_enabled":false\n\t},\n\t"bookmark_bar":{"show_on_all_tabs": true},\n\t"session" : { "restore_on_startup" : 1 },\n\t"browser" : { "theme": { "color_scheme": 2 } },\n\t"first_run_tabs":["chrome://newtab"]\n}' > /usr/lib/chromium/master_preferences
-
 	mkdir -p /$HOME/.config/chromium/Default
-	echo '{"browser":{"enabled_labs_experiments":["enable-force-dark@6"],"first_run_finished":true}}' > "/$HOME/.config/chromium/Local State"
+
+	#echo -e '{\n\t"browser":{\n\t\t"custom_chrome_frame":false,\n\t\t"default_browser_infobar_last_declined":"1"\n\t},\n\t"search":{\n\t    "suggest_enabled":false\n\t},\n\t"bookmark_bar":{"show_on_all_tabs": true},\n\t"session" : { "restore_on_startup" : 1 },\n\t"browser" : { "theme": { "color_scheme": 2 } },\n\t"first_run_tabs":["chrome://newtab"]\n}' > /usr/lib/chromium/master_preferences
+
+	echo -e '{"browser":{"custom_chrome_frame":false,"default_browser_infobar_last_declined":"1"},"search":{"suggest_enabled":false},"bookmark_bar":{"show_on_all_tabs":true},"session":{"restore_on_startup":1},"browser":{"theme":{"color_scheme":2,"color_variant":2}},"first_run_tabs":["chrome://newtab"]}'> "$HOME/.config/chromium/Default/Preferences"
+
+	echo '{"browser":{"enabled_labs_experiments":["enable-force-dark@6"],"first_run_finished":true}}' > "$HOME/.config/chromium/Local State"
 }
 
 function setup_packages() {
@@ -284,8 +291,8 @@ function setup_packages() {
 	packages+=" thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman"
 	packages+=" ffmpegthumbnailer tumbler gvfs-smb polkit-gnome"
 	packages+=" file-roller viewnior evince chromium vlc"
-    
-    #packages+=" xscreensaver"
+	
+	#packages+=" xscreensaver"
 
 	#packages+=" imlib2"
 	packages+=" scrot"
@@ -327,7 +334,7 @@ function install_all() {
 	setup_shortcuts
 	setup_viewnior
 	setup_cups
-    #setup_screensaver
+	#setup_screensaver
 	#setup_autostart
 	#setup_dpi
 	#setup_wine
