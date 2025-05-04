@@ -54,43 +54,50 @@ function setup_xserver() {
 	echo -e '#!/bin/sh\n\nif [ -d /etc/X11/xinit/xinitrc.d ]; then\n\tfor f in /etc/X11/xinit/xinitrc.d/*; do\n\t\t[ -x "$f" ] && . "$f"\n\tdone\n\tunset f\nfi\n\n' > $HOME/.xinitrc
 	
 	echo -e '[[ -f ~/.bashrc ]] && . ~/.bashrc\n#[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx' > $HOME/.bash_profile
-	
-	echo "#xmodmap -e 'pointer = 1 10 3 4 5 6 7 8 9 2 11 12 13 14 15 16 17 18 19 20 21 22 23 24' &" >> $HOME/.xprofile
-	echo '#xrandr --output HDMI1 --auto --primary --output HDMI2 --auto --right-of HDMI1 &' >> $HOME/.xprofile
-	echo '#xrandr --output HDMI-2 --auto --primary --output HDMI-1 --auto --right-of HDMI-2 --rotate inverted &' >> $HOME/.xprofile
-	echo '#xrandr -s 0 &' >> $HOME/.xprofile
-	echo "#xautolock -detectsleep -time 45 -locker 'systemctl hybrid-sleep' &" >> $HOME/.xprofile
-	echo '#system-config-printer-applet &' >> $HOME/.xprofile
-	echo '#nm-applet &' >> $HOME/.xprofile
-	echo '#x11vnc &' >> $HOME/.xprofile
-	echo '#autocutsel -fork &' >> $HOME/.xprofile
-	echo '#start-pulseaudio-x11 &' >> $HOME/.xprofile
-	echo '#blueberry-tray &' >> $HOME/.xprofile
-	echo '#setxkbmap -option caps:ctrl_modifier &' >> $HOME/.xprofile
-	echo '#unclutter -idle 2 -jitter 2 -root &' >> $HOME/.xprofile
+
+    #echo -e "\n~/autostart.sh &" >> $HOME/.xprofile
 }
 
 function setup_autostart() {
-	echo "xbindkeys -p &" >> $HOME/autostart.sh
 	echo "solaar -w hide &" >> $HOME/autostart.sh
+    
+    
+    echo "" >> $HOME/.xprofile
 	echo "#unclutter -idle 2 -jitter 2 -root &" >> $HOME/autostart.sh
-	echo "thunar --daemon &" >> $HOME/autostart.sh
 	echo "#blueman-applet &" >> $HOME/autostart.sh
-	echo "#xscreensaver -nosplash &" >> $HOME/autostart.sh
+	echo '#blueberry-tray &' >> $HOME/autostart.sh
+	
+    echo "" >> $HOME/.xprofile
+	echo "#xmodmap -e 'pointer = 1 10 3 4 5 6 7 8 9 2 11 12 13 14 15 16 17 18 19 20 21 22 23 24' &" >> $HOME/autostart.sh
+    echo '#xrandr --output HDMI1 --auto --primary --output HDMI2 --auto --right-of HDMI1 &' >> $HOME/autostart.sh
+	echo '#xrandr --output HDMI-2 --auto --primary --output HDMI-1 --auto --right-of HDMI-2 --rotate inverted &' >> $HOME/autostart.sh
+	echo '#xrandr -s 0 &' >> $HOME/autostart.sh
+    
+    echo "" >> $HOME/.xprofile
+    echo "#xautolock -detectsleep -time 45 -locker 'systemctl hybrid-sleep' &" >> $HOME/autostart.sh
+	echo '#system-config-printer-applet &' >> $HOME/autostart.sh
+	echo '#nm-applet &' >> $HOME/autostart.sh
+	echo '#x11vnc &' >> $HOME/autostart.sh
+	echo '#autocutsel -fork &' >> $HOME/autostart.sh
+	echo '#start-pulseaudio-x11 &' >> $HOME/autostart.sh
+	echo '#setxkbmap -option caps:ctrl_modifier &' >> $HOME/autostart.sh
+    
 	sudo chmod +xr $HOME/autostart.sh
 }
 
 function setup_screensaver() {
+    echo "xscreensaver -nosplash &" >> $HOME/autostart.sh
+    
 	echo -e "timeout: 0:10:00\ncycle: 0:10:00\nlock: False\nlockTimeout: 0:00:00\npasswdTimeout: 0:00:30\nvisualID: default\ninstallColormap: True\nverbose: False\nsplash: True\nsplashDuration: 0:00:05\ndemoCommand: xscreensaver-settings\nnice: 10\nfade: False\nunfade: False\nfadeSeconds: 0:00:03\nignoreUninstalledPrograms:False\ndpmsEnabled: True\ndpmsQuickOff: False\ndpmsStandby: 0:20:00\ndpmsSuspend: 0:20:00\ndpmsOff: 0:20:00\ngrabDesktopImages: False\ngrabVideoFrames: False\nchooseRandomImages: False\nimageDirectory: \n\ntextMode: date\ntextLiteral: XScreenSaver\ntextFile: \ntextProgram: fortune\ntextURL: https://planet.debian.org/rss20.xml\ndialogTheme: default\nsettingsGeom: 0,0 88,256\n\npointerHysteresis: 10\nauthWarningSlack: 20\n\n" > $HOME/.xscreensaver
+    
 	#echo -e "mode: blank\nselected:	0\nprograms:" >> $HOME/.xscreensaver
 	echo -e "mode: random\nselected: 0\n\nprograms: \\\n    galaxy --root --count 2 --cycles 221 --ncolors 255 \\n\\\n    wormhole --root --delay 51639 --zspeed 30 --stars 20 \\n\\\n\n\n" >> $HOME/.xscreensaver
-
 }
 
 function setup_i3wm() {
 	echo -e "#exec i3" >> $HOME/.xinitrc
 	echo -e "[Desktop]\nSession=i3\n" > $HOME/.dmrc
-	#sed -i 's/\(autologin-session=\)\(.*\)/#\1\2\n\1i3/g' /etc/lightdm/lightdm.conf
+	#sudo sed -i 's/\(autologin-session=\)\(.*\)/#\1\2\n\1i3/g' /etc/lightdm/lightdm.conf
 	
 	mkdir -p $HOME/.config/i3
 	cp -f /etc/i3/config $HOME/.config/i3/
@@ -154,6 +161,7 @@ function setup_terminator() {
 }
 
 function setup_thunar() {
+	echo "thunar --daemon &" >> $HOME/autostart.sh
 	mkdir -p $HOME/.config/xfce4/xfconf/xfce-perchannel-xml $HOME/.config/Thunar
 
 	echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<channel name="thunar" version="1.0">\n  <property name="last-view" type="string" value="ThunarDetailsView"/>\n  <property name="misc-show-delete-action" type="bool" value="true"/>\n  <property name="misc-parallel-copy-mode" type="string" value="THUNAR_PARALLEL_COPY_MODE_NEVER"/>\n  <property name="last-show-hidden" type="bool" value="true"/>\n  <property name="last-view" type="string" value="ThunarDetailsView"/>\n</channel>' >> $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml
@@ -166,12 +174,13 @@ function setup_vlc() {
 
 	mkdir -p $HOME/.config/vlc
 	echo -e '[MainWindow]\nstatus-bar-visible=true' > $HOME/.config/vlc/vlc-qt-interface.conf
-	echo -e "[qt4]\nqt-recentplay=0\nqt-privacy-ask=0\n\n[core]\nvideo-title-show=0\nplay-and-exit=1\none-instance-when-started-from-file=0\nsnapshot-path=$HOME/Pictures/vlc\nsnapshot-prefix=\$N_[\$T]_\nsnapshot-sequential=1\nkey-vol-up=Ctrl+Up\nkey-vol-down=Ctrl+Down\nkey-vol-mute=m\nkey-stop=\nkey-snapshot=s\nstats=0\nstereo-mode=1" > $HOME/.config/vlc/vlcrc
+	echo -e "[qt4]\nqt-recentplay=0\nqt-privacy-ask=0\n\n[core]\nvideo-title-show=0\nplay-and-exit=1\none-instance-when-started-from-file=0\nsnapshot-path=$HOME/Pictures/vlc\nsnapshot-prefix=\$N_[\$T]_\nsnapshot-sequential=1\nkey-vol-up=Ctrl+Up\nkey-vol-down=Ctrl+Down\nkey-vol-mute=m\nkey-stop=\nkey-snapshot=s\nstats=0\nstereo-mode=1\n#vout=xcb_xv" > $HOME/.config/vlc/vlcrc
 	
 	#echo -e "vout=xcb_xv" >> $HOME/.config/vlc/vlcrc
 }
 
 function setup_dpi() {
+    #echo -e "\n[screen]\nscale = 1.5" >> $HOME/.config/wayfire.ini
 	echo 'Xft.dpi: 150' >> $HOME/.Xresources
 	echo 'export QT_SCALE_FACTOR=0.7' >> $HOME/.profile
 }
@@ -207,20 +216,20 @@ function setup_gtk() {
 
 	echo -e '[Settings]\n\ngtk-recent-files-max-age=0\ngtk-recent-files-limit=0\n\ngtk-theme-name=Adwaita-dark\ngtk-icon-theme-name=PiXflat\ngtk-cursor-theme-name=Adwaita-dark\n\ngtk-xft-antialias=1\ngtk-xft-hinting=1\ngtk-xft-hintstyle=hintfull\ngtk-xft-rgba=rgb\n\ngtk-font-name=Sans 12' > $HOME/.config/gtk-3.0/settings.ini
 
-	echo -e "file://$HOME/Documents Documents\nfile://$HOME/Downloads Downloads\nfile://$HOME/Pictures Pictures\nfile://$HOME/Videos Videos\nfile://$HOME/Music Music\nfile:///tmp tmp" >> $HOME/.config/gtk-3.0/bookmarks
+	echo -e "file://$HOME/Documents Documents\nfile://$HOME/Downloads Downloads\nfile://$HOME/Pictures Pictures\nfile://$HOME/Videos Videos\nfile://$HOME/Music Music\nfile:///tmp tmp" > $HOME/.config/gtk-3.0/bookmarks
 	echo -e '[Filechooser Settings]\nLocationMode=path-bar\nShowHidden=true\nShowSizeColumn=true\nSortColumn=name\nSortOrder=ascending\nStartupMode=recent' > $HOME/.config/gtk-2.0/gtkfilechooser.ini
 }
 
 function setup_shortcuts() {
-	echo 'xbindkeys -p &' >> $HOME/.xprofile
+	echo "xbindkeys -p &" >> $HOME/autostart.sh
 	
 	echo -e '"thunar"\nMod4+f\n' >> $HOME/.xbindkeysrc
 	echo -e '"scite"\nMod4+s\n' >> $HOME/.xbindkeysrc
 	echo -e '"lxtask"\nControl+Shift+Escape\n' >> $HOME/.xbindkeysrc
-	
-	
+		
 	mkdir -p $HOME/Pictures/screenshot
-	#echo -e '"imlib2_grab ~/Pictures/screenshot/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nMod4+p\n' >> $HOME/.xbindkeysrc
+	
+    echo -e '#"imlib2_grab ~/Pictures/screenshot/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nMod4+p\n' >> $HOME/.xbindkeysrc
 	echo -e '"scrot ~/Pictures/screenshot/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nMod4+p\n' >> $HOME/.xbindkeysrc
 	echo -e '"scrot ~/Pictures/screenshot/screenshot_$(date +%Y_%m_%d_%H_%M_%S_%3N).png"\nControl+p\n' >> $HOME/.xbindkeysrc
 	
@@ -264,7 +273,7 @@ function setup_chrome() {
 
 	#echo -e '{\n\t"browser":{\n\t\t"custom_chrome_frame":false,\n\t\t"default_browser_infobar_last_declined":"1"\n\t},\n\t"search":{\n\t    "suggest_enabled":false\n\t},\n\t"bookmark_bar":{"show_on_all_tabs": true},\n\t"session" : { "restore_on_startup" : 1 },\n\t"browser" : { "theme": { "color_scheme": 2 } },\n\t"first_run_tabs":["chrome://newtab"]\n}' > /usr/lib/chromium/master_preferences
 
-	echo -e '{"browser":{"custom_chrome_frame":false,"default_browser_infobar_last_declined":"1"},"search":{"suggest_enabled":false},"bookmark_bar":{"show_on_all_tabs":true},"session":{"restore_on_startup":1},"browser":{"theme":{"color_scheme":2,"color_variant":2}},"first_run_tabs":["chrome://newtab"]}'> "$HOME/.config/chromium/Default/Preferences"
+	echo -e '{"browser":{"has_seen_welcome_page": true, "custom_chrome_frame":false,"default_browser_infobar_last_declined":"1"},"search":{"suggest_enabled":false},"bookmark_bar":{"show_on_all_tabs":true},"session":{"restore_on_startup":1},"browser":{"theme":{"color_scheme":2,"color_variant":2}},"first_run_tabs":["chrome://newtab"]}'> "$HOME/.config/chromium/Default/Preferences"
 
 	echo '{"browser":{"enabled_labs_experiments":["enable-force-dark@6"],"first_run_finished":true}}' > "$HOME/.config/chromium/Local State"
 }
@@ -279,7 +288,7 @@ function setup_packages() {
 	#packages+=" xf86-video-nouveau"
 	#packages+=" xf86-video-ati"
 
-	packages+=" xorg-xprop xclip numlockx xautolock xcursor-vanilla-dmz pavucontrol xbindkeys unclutter"
+	packages+=" xorg-xprop xclip numlockx xcursor-vanilla-dmz pavucontrol xbindkeys unclutter"
 
 	packages+=" tigervnc"
 	packages+=" x11vnc tk"
