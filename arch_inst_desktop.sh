@@ -10,6 +10,10 @@ function setup_lightdm() {
 	sed -i 's/#\(pam-service=lightdm\)/\1/g' /etc/lightdm/lightdm.conf
 	sed -i 's/#\(pam-autologin-service=lightdm-autologin\)/\1/g' /etc/lightdm/lightdm.conf
 	sed -i 's/#\(autologin-user-timeout=0\)/\1/g' /etc/lightdm/lightdm.conf
+        
+    sed -i 's/\(greeter-session=\)\(.*\)/#\1\2\n\1lightdm-gtk-greeter/g' /etc/lightdm/lightdm.conf
+    
+    echo -e "#screensaver-timeout=\ntheme-name=Adwaita-dark\nicon-theme-name=PiXflat\nbackground=#000000" >> /etc/lightdm/lightdm-gtk-greeter.conf
 }
 
 function setup_mousepad() {
@@ -85,19 +89,27 @@ function setup_autostart() {
 	sudo chmod +xr $HOME/autostart.sh
 }
 
-function setup_screensaver() {
+function setup_xscreensaver() {
     echo "xscreensaver -nosplash &" >> $HOME/autostart.sh
     
 	echo -e "timeout: 0:10:00\ncycle: 0:10:00\nlock: False\nlockTimeout: 0:00:00\npasswdTimeout: 0:00:30\nvisualID: default\ninstallColormap: True\nverbose: False\nsplash: True\nsplashDuration: 0:00:05\ndemoCommand: xscreensaver-settings\nnice: 10\nfade: False\nunfade: False\nfadeSeconds: 0:00:03\nignoreUninstalledPrograms:False\ndpmsEnabled: True\ndpmsQuickOff: False\ndpmsStandby: 0:20:00\ndpmsSuspend: 0:20:00\ndpmsOff: 0:20:00\ngrabDesktopImages: False\ngrabVideoFrames: False\nchooseRandomImages: False\nimageDirectory: \n\ntextMode: date\ntextLiteral: XScreenSaver\ntextFile: \ntextProgram: fortune\ntextURL: https://planet.debian.org/rss20.xml\ndialogTheme: default\nsettingsGeom: 0,0 88,256\n\npointerHysteresis: 10\nauthWarningSlack: 20\n\n" > $HOME/.xscreensaver
     
 	#echo -e "mode: blank\nselected:	0\nprograms:" >> $HOME/.xscreensaver
 	echo -e "mode: random\nselected: 0\n\nprograms: \\\n    galaxy --root --count 2 --cycles 221 --ncolors 255 \\n\\\n    wormhole --root --delay 51639 --zspeed 30 --stars 20 \\n\\\n\n\n" >> $HOME/.xscreensaver
+    
+    
+}
+
+function setup_dpms() {
+    echo -e 'Section "ServerFlags"\n    Option "StandbyTime" "0"\n    Option "SuspendTime" "0"\n    Option "OffTime" "30"\n    Option "BlankTime" "15"\nEndSection' > /etc/X11/xorg.conf.d/10-serverflags.conf
 }
 
 function setup_i3wm() {
 	echo -e "#exec i3" >> $HOME/.xinitrc
 	echo -e "[Desktop]\nSession=i3\n" > $HOME/.dmrc
-	#sudo sed -i 's/\(autologin-session=\)\(.*\)/#\1\2\n\1i3/g' /etc/lightdm/lightdm.conf
+	#sudo sed -i 's/^\(autologin-session=\)\(.*\)/#\1\2\n\1i3/g' /etc/lightdm/lightdm.conf
+	#sudo sed -i 's/^\(user-session=\)\(.*\)/#\1\2\n\1i3/g' /etc/lightdm/lightdm.conf
+    
 	
 	mkdir -p $HOME/.config/i3
 	cp -f /etc/i3/config $HOME/.config/i3/
@@ -341,7 +353,8 @@ function install_all() {
 	setup_shortcuts
 	setup_viewnior
 	setup_cups
-	#setup_screensaver
+    setup_dpms
+	#setup_xscreensaver
 	#setup_autostart
 	#setup_dpi
 	#setup_wine
