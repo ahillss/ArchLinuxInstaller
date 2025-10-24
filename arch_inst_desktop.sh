@@ -104,13 +104,15 @@ function setup_dpms() {
     echo -e 'Section "ServerFlags"\n    Option "BlankTime" "15"\n    Option "StandbyTime" "25"\n    Option "SuspendTime" "30"\n    Option "OffTime" "35"\nEndSection' > /etc/X11/xorg.conf.d/10-serverflags.conf
 }
 
-function setup_i3wm() {
+function setup_i3wm_start() {
 	echo -e "#exec i3" >> $HOME/.xinitrc
 	echo -e "[Desktop]\nSession=i3\n" > $HOME/.dmrc
 	#sudo sed -i 's/^\(autologin-session=\)\(.*\)/#\1\2\n\1i3/g' /etc/lightdm/lightdm.conf
-	#sudo sed -i 's/^\(user-session=\)\(.*\)/#\1\2\n\1i3/g' /etc/lightdm/lightdm.conf
-    
-	
+    #sudo sed -i 's/^\(user-session=.*\)/#\1/g' /etc/lightdm/lightdm.conf
+	##sudo sed -i 's/^\(user-session=\)\(.*\)/#\1\2\n\1i3/g' /etc/lightdm/lightdm.conf
+}
+
+function setup_i3wm() {
 	mkdir -p $HOME/.config/i3
 	cp -f /etc/i3/config $HOME/.config/i3/
 
@@ -127,23 +129,29 @@ function setup_i3wm() {
 
 	echo 'bindsym Mod1+Shift+h bar mode toggle' >> $HOME/.config/i3/config
 	echo -e '\n#\nworkspace_layout tabbed\ndefault_orientation vertical' >> $HOME/.config/i3/config
-	echo -e '\n#' >> $HOME/.config/i3/config
+
 	echo 'for_window [window_role="pop-up"] floating enable' >> $HOME/.config/i3/config
 	echo 'for_window [title="File Operation Progress"] floating enable' >> $HOME/.config/i3/config
 	echo -e '\n#' >> $HOME/.config/i3/config
+    
 	echo 'assign [class="Moonlight"] 3' >> $HOME/.config/i3/config
+	echo 'assign [class="Scite"] 2' >> $HOME/.config/i3/config
 	echo 'assign [class="Chromium"] 1' >> $HOME/.config/i3/config
 	
-	echo '#for_window [all] default_border pixel 0' >> $HOME/.config/i3/config
 	echo '#hide_edge_borders both' >> $HOME/.config/i3/config
+	echo 'default_border pixel 0' >> $HOME/.config/i3/config
 	echo 'default_border none' >> $HOME/.config/i3/config
-
+    
 	echo 'bindsym Mod1+Shift+s exec sleep 1 && xset dpms force off' >> $HOME/.config/i3/config
 	echo '#bindsym Mod1+Shift+s exec sleep 1 && xset s activate' >> $HOME/.config/i3/config
 	echo 'bindsym Mod1+Control+Shift+s exec systemctl suspend' >> $HOME/.config/i3/config
 	echo 'bindsym Mod1+Control+Shift+h exec systemctl hibernate' >> $HOME/.config/i3/config
 	
 	#echo -e '\n#\nexec --no-startup-id ~/autostart.sh' >> $HOME/.config/i3/config
+    
+	echo 'exec --no-startup-id /usr/bin/scite' >> $HOME/.config/i3/config
+	echo 'exec --no-startup-id /usr/bin/moonlight-qt' >> $HOME/.config/i3/config
+	echo "exec --no-startup-id i3-msg 'workspace 2; exec /usr/bin/thunar; workspace 1'" >> $HOME/.config/i3/config
 }
 
 function setup_i3blocks() {
@@ -344,6 +352,7 @@ function install_all() {
 	setup_tigervnc
 	setup_scite
 	setup_xserver
+    setup_i3wm_start
 	setup_i3wm
 	setup_i3blocks
 	setup_terminator
