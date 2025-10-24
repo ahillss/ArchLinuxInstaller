@@ -101,7 +101,7 @@ function setup_xscreensaver() {
 }
 
 function setup_dpms() {
-    echo -e 'Section "ServerFlags"\n    Option "StandbyTime" "0"\n    Option "SuspendTime" "0"\n    Option "OffTime" "30"\n    Option "BlankTime" "15"\nEndSection' > /etc/X11/xorg.conf.d/10-serverflags.conf
+    echo -e 'Section "ServerFlags"\n    Option "BlankTime" "15"\n    Option "StandbyTime" "25"\n    Option "SuspendTime" "30"\n    Option "OffTime" "35"\nEndSection' > /etc/X11/xorg.conf.d/10-serverflags.conf
 }
 
 function setup_i3wm() {
