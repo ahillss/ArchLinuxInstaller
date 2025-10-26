@@ -94,15 +94,14 @@ function setup_xscreensaver() {
     
 	echo -e "timeout: 0:10:00\ncycle: 0:10:00\nlock: False\nlockTimeout: 0:00:00\npasswdTimeout: 0:00:30\nvisualID: default\ninstallColormap: True\nverbose: False\nsplash: True\nsplashDuration: 0:00:05\ndemoCommand: xscreensaver-settings\nnice: 10\nfade: False\nunfade: False\nfadeSeconds: 0:00:03\nignoreUninstalledPrograms:False\ngrabDesktopImages: False\ngrabVideoFrames: False\nchooseRandomImages: False\nimageDirectory: \n\ntextMode: date\ntextLiteral: XScreenSaver\ntextFile: \ntextProgram: fortune\ntextURL: https://planet.debian.org/rss20.xml\ndialogTheme: default\nsettingsGeom: 0,0 88,256\n\npointerHysteresis: 10\nauthWarningSlack: 20\n\n" > $HOME/.xscreensaver
 
-	echo -e "dpmsEnabled: False\ndpmsQuickOff: False\ndpmsStandby: 0:20:00\ndpmsSuspend: 0:20:00\ndpmsOff: 0:20:00\n\n" > $HOME/.xscreensaver
-	#echo -e "dpmsEnabled: True\ndpmsQuickOff: False\ndpmsStandby: 0:20:00\ndpmsSuspend: 0:20:00\ndpmsOff: 0:20:00\n\n" > $HOME/.xscreensaver
+	echo -e "dpmsEnabled: True\ndpmsQuickOff: False\ndpmsStandby: 0:20:00\ndpmsSuspend: 0:20:00\ndpmsOff: 0:20:00\n\n" > $HOME/.xscreensaver
     
 	#echo -e "mode: blank\nselected:	0\nprograms:" >> $HOME/.xscreensaver
 	echo -e "mode: random\nselected: 0\n\nprograms: \\\n    galaxy --root --count 2 --cycles 221 --ncolors 255 \\n\\\n    wormhole --root --delay 51639 --zspeed 30 --stars 20 \\n\\\n\n\n" >> $HOME/.xscreensaver
 }
 
 function setup_dpms() {
-    echo -e 'Section "ServerFlags"\n    Option "BlankTime" "15"\n    Option "StandbyTime" "25"\n    Option "SuspendTime" "30"\n    Option "OffTime" "35"\nEndSection' > /etc/X11/xorg.conf.d/10-serverflags.conf
+    echo -e 'Section "ServerFlags"\n    Option "BlankTime" "10"\n    Option "StandbyTime" "20"\n    Option "SuspendTime" "25"\n    Option "OffTime" "30"\nEndSection' > /etc/X11/xorg.conf.d/10-serverflags.conf
 }
 
 function setup_i3wm_start() {
