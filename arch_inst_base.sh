@@ -69,6 +69,9 @@ function setup_packages() {
 	#packages+=" archlinux-keyring"
 	
 	#packages+=" lighttpd fcgi php php-cgi"
+    
+	packages+=" udisks2"
+    
 
 	#dirmngr < /dev/null
 	#pacman -Scc
@@ -107,7 +110,13 @@ function install_os2() {
 	setup_misc_scripts
 	#disable_coredump
 	#setup_lighttpd
+    setup_udisks2
 	
+}
+
+function setup_udisks2() {
+    mkdir -p /etc/udisks2/
+    echo -e "[defaults]\noptions=noatime" > /etc/udisks2/mount_options.conf
 }
 
 function setup_misc_scripts() {
