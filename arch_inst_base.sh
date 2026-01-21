@@ -1,10 +1,19 @@
 #!/bin/bash
 
 grub_disk=/dev/sda
-boot_diskpart=${grub_disk}1
-root_diskpart=${grub_disk}2
-home_diskpart=${grub_disk}3
 
+#either
+boot_diskpart=${grub_disk}1
+# --- or ---
+#uefi_diskpart=${grub_disk}1
+
+#
+root_diskpart=${grub_disk}2
+
+#optional
+#home_diskpart=${grub_disk}3
+
+#optional
 #swap_diskpart=${grub_disk}4
 # --- or ---
 #swap_filesize=8G
@@ -72,6 +81,10 @@ function setup_packages() {
     
 	packages+=" udisks2"
     
+    
+	if [ $uefi_diskpart ]; then
+        packages+=" efibootmgr os-prober"
+    fi
 
 	#dirmngr < /dev/null
 	#pacman -Scc
@@ -134,7 +147,9 @@ function get_escaped() {
 
 function format_partitions() {
 	#boot
-	if [ $boot_diskpart ]; then
+	if [ $uefi_diskpart ]; then
+		mkfs.fat -F 32 $uefi_diskpart
+	elif [ $boot_diskpart ]; then
 		mkfs.ext2 $boot_diskpart
 	fi
 
@@ -152,15 +167,19 @@ function mount_partitions() {
 	mount $root_diskpart /mnt
 	
 	#
-	mkdir -p /mnt/home /mnt/boot
 
 	#boot
-	if [ $boot_diskpart ]; then
+	if [ $uefi_diskpart ]; then
+        mkdir -p /mnt/efi
+		mount $uefi_diskpart /mnt/efi
+	elif [ $boot_diskpart ]; then
+        mkdir -p /mnt/boot
 		mount $boot_diskpart /mnt/boot
 	fi
 	
 	#home
 	if [ $home_diskpart ]; then
+        mkdir -p /mnt/home
 		mount $home_diskpart /mnt/home
 	fi
 }
@@ -257,8 +276,13 @@ function add_grub_boot() {
 }
 
 function setup_grub() {
-	if [ $grub_disk ]; then
-		grub-install $grub_disk
+    if [[ $grub_disk && (( $boot_diskpart || $uefi_diskpart )) ]]; then
+    	if [ $uefi_diskpart ]; then
+            grub-install --target=x86_64-efi --bootloader-id=grub --efi-directory=/efi
+        elif [ $boot_diskpart ]; then
+            grub-install $grub_disk
+        fi
+		
 		sed -i "s/\(GRUB_DEFAULT=\)0/\1saved/g" /etc/default/grub
 		sed -i "s/\(GRUB_TIMEOUT=\)5/\12/g" /etc/default/grub
 		#echo "GRUB_DISABLE_OS_PROBER=true" >> /etc/default/grub

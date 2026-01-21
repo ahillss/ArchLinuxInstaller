@@ -86,7 +86,7 @@ function setup_autostart() {
 	echo '#start-pulseaudio-x11 &' >> $HOME/autostart.sh
 	echo '#setxkbmap -option caps:ctrl_modifier &' >> $HOME/autostart.sh
     
-	sudo chmod +xr $HOME/autostart.sh
+	#sudo chmod +xr $HOME/autostart.sh
 }
 
 function setup_xscreensaver() {
@@ -147,11 +147,11 @@ function setup_i3wm() {
 	echo 'bindsym Mod1+Control+Shift+s exec systemctl suspend' >> $HOME/.config/i3/config
 	echo 'bindsym Mod1+Control+Shift+h exec systemctl hibernate' >> $HOME/.config/i3/config
 	
-	#echo -e '\n#\nexec --no-startup-id ~/autostart.sh' >> $HOME/.config/i3/config
+	#echo -e '\n#\nexec --no-startup-id bash ~/autostart.sh' >> $HOME/.config/i3/config
     
-	echo 'exec --no-startup-id /usr/bin/scite' >> $HOME/.config/i3/config
-	echo 'exec --no-startup-id /usr/bin/moonlight-qt' >> $HOME/.config/i3/config
-	echo "exec --no-startup-id i3-msg 'workspace 2; exec /usr/bin/thunar; workspace 1'" >> $HOME/.config/i3/config
+	echo '#exec --no-startup-id /usr/bin/scite' >> $HOME/.config/i3/config
+	echo '#exec --no-startup-id /usr/bin/moonlight-qt' >> $HOME/.config/i3/config
+	echo "#exec --no-startup-id i3-msg 'workspace 2; exec /usr/bin/thunar; workspace 1'" >> $HOME/.config/i3/config
 }
 
 function setup_i3blocks() {
@@ -164,7 +164,7 @@ function setup_i3blocks() {
 	echo -e '\n[cpu_hertz]\ncolor=#E9C5A1\ncommand=find /sys/devices/system/cpu/cpu[0-3]/cpufreq/scaling_cur_freq  -type f |xargs cat | awk '"'"'{printf "%.0f ",$1/100000}'"'"'|xargs\ninterval=5' >> $HOME/.config/i3blocks/config
 	echo -e '\n[memory_free]\ncolor=#E1E9A5\ncommand=awk '"'"'/MemAvailable/ {printf("%d\\xcb\\x96\\n", ($2/1000))}'"'"' /proc/meminfo\ninterval=2' >> $HOME/.config/i3blocks/config
 	echo -e '\n#[memory_used]\n#color=#FFDDCC\n#command=awk '"'"'/MemTotal|MemAvailable/ {print $2}'"'"' /proc/meminfo | paste -sd'"'"' '"'"' | awk '"'"'{printf "%d\\xcb\\x97\\n",($1-$2)/1000}'"'"'\n#interval=2' >> $HOME/.config/i3blocks/config
-	echo -e '\n#[swap_free]\n#command=awk '"'"'/SwapTotal|SwapFree/ {print $2}'"'"' /proc/meminfo | paste -sd'"'"' '"'"' | awk '"'"'{printf "<span color=\\"%s\\">%d\\xcb\\x96</span>\\n",$1=="0"?"#555555":"#FFDDCC",$2/1000}'"'"'\n#interval=2\n#markup=pango' >> $HOME/.config/i3blocks/config
+	echo -e '\n[swap_free]\ncommand=awk '"'"'/SwapTotal|SwapFree/ {print $2}'"'"' /proc/meminfo | paste -sd'"'"' '"'"' | awk '"'"'{printf "<span color=\\"%s\\">%d\\xcb\\x96</span>\\n",$1=="0"?"#555555":"#FFDDCC",$2/1000}'"'"'\ninterval=2\nmarkup=pango' >> $HOME/.config/i3blocks/config
 	echo -e '\n#[swap_used]\n#command=awk '"'"'/SwapTotal|SwapFree/ {print $2}'"'"' /proc/meminfo | paste -sd'"'"' '"'"' | awk '"'"'{printf "<span color=\\"%s\\">%d\\xcb\\x97</span>\\n",$1=="0"?"#555555":"#FFDDCC",($1-$2)/1000}'"'"'\n#interval=2\n#markup=pango' >> $HOME/.config/i3blocks/config
 	echo -e '\n[temp]\ncolor=#85C1E9\ncommand=cat /sys/class/thermal/thermal_zone*/temp | awk '"'"'$1 {printf "%.0f\\xc2\\xb0 ",$1/1000}'"'"'|awk '"'"'$1=$1'"'"'\ninterval=2' >> $HOME/.config/i3blocks/config
 	echo -e '\n[fan]\ncolor=#85E9C1\ncommand=cat /sys/devices/platform/cooling_fan/hwmon/*/fan1_input | xargs\ninterval=2' >> $HOME/.config/i3blocks/config
