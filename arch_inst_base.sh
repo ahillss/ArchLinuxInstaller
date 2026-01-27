@@ -80,6 +80,7 @@ function setup_packages() {
 	#packages+=" lighttpd fcgi php php-cgi"
     
 	packages+=" udisks2"
+	packages+=" ethtool"
     
     
 	if [ $uefi_diskpart ]; then
@@ -124,6 +125,7 @@ function install_os2() {
 	#disable_coredump
 	#setup_lighttpd
     setup_udisks2
+    setup_wol
 	
 }
 
@@ -463,6 +465,10 @@ function setup_lighttpd() {
 	
 	#sed -i 's/;\(extension=mysql.so\)/\1/g' /etc/php/php.ini
 	#sed -i "s/\(open_basedir = .*\)/\1:\/bin\/:\/usr\/bin\//g" /etc/php/php.ini
+}
+
+function setup_wol() {
+    echo -e "[Unit]\nDescription=Wake-on-LAN for %i\nRequires=network.target\nAfter=network.target\n\n[Service]\nType=oneshot\nExecStart=/usr/bin/ethtool -s %i wol g\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/wol@.service
 }
 
 trap 'echo "Error on line $LINENO"' ERR
