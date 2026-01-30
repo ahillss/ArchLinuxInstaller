@@ -216,7 +216,9 @@ function add_fstab_mount() {
 	uuid=`get_uuid $part`
 	
 	#
-	echo -e "\nUUID=$uuid $mounting $fsys relatime,nofail 0 0"  >> /etc/fstab
+	echo -e "\nUUID=$uuid $mounting $fsys relatime,nofail,acl 0 0"  >> /etc/fstab
+    mkdir -p $mounting
+    setfacl -R -d -m o::rwx "$mounting"
 }
 
 function add_fstab_win_mount() {
@@ -383,7 +385,6 @@ function setup_pulseaudio() {
 
 function add_samba_share() {
 	echo -e "\n[$(basename $1)]\n path = $1\n guest ok = yes\n guest only = yes\n guest account = nobody\n writeable = yes\n browsable = yes\n create mask = 777\n force directory mode = 777"  >> /etc/samba/smb.conf
-	#setfacl -R -d -m o::rwx "$1"
 }
 
 function setup_samba() {
@@ -475,8 +476,16 @@ trap 'echo "Error on line $LINENO"' ERR
 set -e
 
 if [ $1 ]; then
-	eval $1
-	echo "'$1' completed successfully!"
+    if [ "$(type -t "$1")" == "function" ]; then
+        cmd=$1
+        shift
+        "$cmd" "$@"
+        #eval $1
+        echo "'$1' completed successfully!"
+    else
+        echo "'$1' not a function."
+        exit 1
+    fi
 else
 	eval install_os
 	echo "'install_os' completed successfully!"
