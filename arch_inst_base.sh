@@ -80,8 +80,8 @@ function setup_packages() {
 	#packages+=" lighttpd fcgi php php-cgi"
     
 	packages+=" udisks2"
-	packages+=" ethtool"
-    
+	#packages+=" ethtool"
+	packages+=" wakeonlan"
     
 	if [ $uefi_diskpart ]; then
         packages+=" efibootmgr os-prober"
@@ -125,7 +125,7 @@ function install_os2() {
 	#disable_coredump
 	#setup_lighttpd
     setup_udisks2
-    setup_wol
+    #setup_wol
 	
 }
 
@@ -216,7 +216,7 @@ function add_fstab_mount() {
 	uuid=`get_uuid $part`
 	
 	#
-	echo -e "\nUUID=$uuid $mounting $fsys relatime,nofail,acl 0 0"  >> /etc/fstab
+	echo -e "\nUUID=$uuid $mounting $fsys noatime,nofail,acl 0 0"  >> /etc/fstab
     mkdir -p $mounting
     setfacl -R -d -m o::rwx "$mounting"
 }
@@ -231,7 +231,8 @@ function add_fstab_win_mount() {
 	usegid=`id -g $mylogin`
 	
 	#
-	echo -e "\nUUID=$uuid $mounting $fsys relatime,nofail,umask=000,uid=$useuid,gid=$usegid 0 0"  >> /etc/fstab
+	echo -e "\nUUID=$uuid $mounting $fsys noatime,nofail,umask=000,uid=$useuid,gid=$usegid 0 0"  >> /etc/fstab
+    mkdir -p $mounting
 }
 
 function setup_networkmanager() {
