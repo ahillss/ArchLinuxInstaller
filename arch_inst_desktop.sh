@@ -59,12 +59,12 @@ function setup_xserver() {
 	
 	echo -e '[[ -f ~/.bashrc ]] && . ~/.bashrc\n#[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx' > $HOME/.bash_profile
 
-    #echo -e "\n~/autostart.sh &" >> $HOME/.xprofile
+    echo -e "\n#~/autostart.sh &" >> $HOME/.xprofile
 }
 
 function setup_autostart() {
-	echo "solaar -w hide &" >> $HOME/autostart.sh
-    
+	echo "#solaar -w hide &" >> $HOME/autostart.sh
+	echo "#thunar --daemon &" >> $HOME/autostart.sh
     
     echo "" >> $HOME/.xprofile
 	echo "#unclutter -idle 2 -jitter 2 -root &" >> $HOME/autostart.sh
@@ -85,6 +85,8 @@ function setup_autostart() {
 	echo '#autocutsel -fork &' >> $HOME/autostart.sh
 	echo '#start-pulseaudio-x11 &' >> $HOME/autostart.sh
 	echo '#setxkbmap -option caps:ctrl_modifier &' >> $HOME/autostart.sh
+    
+    echo "" >> $HOME/.xprofile
     
 	sudo chmod +xr $HOME/autostart.sh
 }
@@ -181,7 +183,6 @@ function setup_terminator() {
 }
 
 function setup_thunar() {
-	echo "thunar --daemon &" >> $HOME/autostart.sh
 	mkdir -p $HOME/.config/xfce4/xfconf/xfce-perchannel-xml $HOME/.config/Thunar
 
 	echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<channel name="thunar" version="1.0">\n  <property name="last-view" type="string" value="ThunarDetailsView"/>\n  <property name="misc-show-delete-action" type="bool" value="true"/>\n  <property name="misc-parallel-copy-mode" type="string" value="THUNAR_PARALLEL_COPY_MODE_NEVER"/>\n  <property name="last-show-hidden" type="bool" value="true"/>\n  <property name="last-view" type="string" value="ThunarDetailsView"/>\n</channel>' >> $HOME/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml
@@ -345,6 +346,7 @@ function setup_packages() {
 
 function install_all() {
 	setup_packages
+	setup_autostart
 	setup_lightdm
 	setup_mousepad
 	setup_theme
@@ -363,7 +365,6 @@ function install_all() {
 	setup_viewnior
     setup_dpms
 	setup_xscreensaver
-	setup_autostart
     
 	#setup_dpi
     
