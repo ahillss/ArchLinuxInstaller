@@ -50,8 +50,8 @@ function setup_tmpcache() {
 	echo "/tmp $HOME/.cache/thumbnails none defaults,bind 0 0" >> /etc/fstab
 	echo "/tmp $HOME/.cache/vlc none defaults,bind 0 0" >> /etc/fstab
 	
-	echo "#/tmp /$HOME/.cache/chromium none defaults,bind 0 0" >> /etc/fstab
-	echo "#/tmp /$HOME/.cache/mozilla none defaults,bind 0 0" >> /etc/fstab
+	echo "#/tmp $HOME/.cache/chromium none defaults,bind 0 0" >> /etc/fstab
+	echo "#/tmp $HOME/.cache/mozilla none defaults,bind 0 0" >> /etc/fstab
 }
 
 function setup_xserver() {
@@ -367,11 +367,11 @@ function install_all() {
 	setup_xscreensaver
     
 	#setup_dpi
+	#setup_tmpcache
     
 	#setup_cups
 	#setup_wine
 	#setup_mount_iso_shortcut
-	#setup_tmpcache
 
 	chown -R $USER $HOME
 }

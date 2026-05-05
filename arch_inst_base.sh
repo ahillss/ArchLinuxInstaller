@@ -122,12 +122,12 @@ function install_os2() {
     setup_udisks2
     
 	#setup_bluetooth
+	#setup_lighttpd
     
+    #setup_wol
 	#setup_autologin
 	#setup_misc_scripts
 	#disable_coredump
-	#setup_lighttpd
-    #setup_wol
 	
 }
 
@@ -274,7 +274,12 @@ function setup_fstab() {
 }
 
 function setup_mkinitcpio() {
-	sed -i 's/\(HOOKS=\).*/\1"base udev keymap autodetect modconf block resume filesystems keyboard fsck" /g' /etc/mkinitcpio.conf
+    if [[ -n "$swap_filename" || -n "$swap_diskpart" ]]; then
+        USE_RESUME='resume'
+    fi
+    
+	sed -i "s/\(HOOKS=\).*/\1(base udev keymap autodetect modconf block $USE_RESUME filesystems keyboard fsck) /g" /etc/mkinitcpio.conf
+    
 	mkinitcpio -p linux
 }
 
