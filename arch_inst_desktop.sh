@@ -319,7 +319,7 @@ function setup_packages() {
 	packages+=" ffmpegthumbnailer tumbler gvfs-smb polkit-gnome"
 	packages+=" file-roller viewnior evince chromium vlc"
 	
-	#packages+=" xscreensaver"
+	packages+=" xscreensaver"
 
 	#packages+=" imlib2"
 	packages+=" scrot"
@@ -327,7 +327,7 @@ function setup_packages() {
 	#packages+=" fbreader mcomix pinta libreoffice-en-GB"
 	#packages+=" vbindiff"
 
-	packages+=" cups system-config-printer"
+	#packages+=" cups system-config-printer"
 	#packages+=" foomatic-db-nonfree splix gutenprint hplip"
 	
 	#packages+=" ttf-dejavu ttf-sazanami"

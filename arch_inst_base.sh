@@ -120,11 +120,12 @@ function install_os2() {
 	setup_swap_sysctl
 	setup_aur_script
 	setup_acpi
+    setup_udisks2
+    
 	#setup_autologin
-	setup_misc_scripts
+	#setup_misc_scripts
 	#disable_coredump
 	#setup_lighttpd
-    setup_udisks2
     #setup_wol
 	
 }
