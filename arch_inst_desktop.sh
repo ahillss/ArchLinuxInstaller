@@ -361,11 +361,13 @@ function install_all() {
 	setup_gtk
 	setup_shortcuts
 	setup_viewnior
-	setup_cups
     setup_dpms
-	#setup_xscreensaver
-	#setup_autostart
+	setup_xscreensaver
+	setup_autostart
+    
 	#setup_dpi
+    
+	#setup_cups
 	#setup_wine
 	#setup_mount_iso_shortcut
 	#setup_tmpcache

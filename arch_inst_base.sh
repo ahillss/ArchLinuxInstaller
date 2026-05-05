@@ -263,6 +263,10 @@ function setup_fstab() {
 	elif [ $swap_diskpart ]; then
 		echo -e "\n# $swap_diskpart\nUUID=$(get_uuid $swap_diskpart) none swap defaults 0 0" >> /etc/fstab
 	fi
+    
+    echo -e '\n#\n#tmpfs   /tmp    tmpfs   defaults,size=4G,atime,mode=1777   0 0' >> /etc/fstab
+
+    echo -e '\n#\n' >> /etc/fstab
 
 	#
 	on_fstab
