@@ -112,7 +112,6 @@ function install_os2() {
 	setup_lib_path
 	setup_host
 	setup_power
-	#setup_bluetooth
 	setup_runasuser
 	setup_pulseaudio
 	setup_samba
@@ -121,6 +120,8 @@ function install_os2() {
 	setup_aur_script
 	setup_acpi
     setup_udisks2
+    
+	#setup_bluetooth
     
 	#setup_autologin
 	#setup_misc_scripts

@@ -86,7 +86,7 @@ function setup_autostart() {
 	echo '#start-pulseaudio-x11 &' >> $HOME/autostart.sh
 	echo '#setxkbmap -option caps:ctrl_modifier &' >> $HOME/autostart.sh
     
-	#sudo chmod +xr $HOME/autostart.sh
+	sudo chmod +xr $HOME/autostart.sh
 }
 
 function setup_xscreensaver() {
@@ -138,16 +138,16 @@ function setup_i3wm() {
 	echo 'assign [class="Scite"] 2' >> $HOME/.config/i3/config
 	echo 'assign [class="Chromium"] 1' >> $HOME/.config/i3/config
 	
-	echo '#hide_edge_borders both' >> $HOME/.config/i3/config
-	echo 'default_border pixel 0' >> $HOME/.config/i3/config
-	echo 'default_border none' >> $HOME/.config/i3/config
+	echo 'hide_edge_borders both' >> $HOME/.config/i3/config
+	echo '#default_border pixel 0' >> $HOME/.config/i3/config
+	echo '#default_border none' >> $HOME/.config/i3/config
     
 	echo 'bindsym Mod1+Shift+s exec sleep 1 && xset dpms force off' >> $HOME/.config/i3/config
 	echo '#bindsym Mod1+Shift+s exec sleep 1 && xset s activate' >> $HOME/.config/i3/config
 	echo 'bindsym Mod1+Control+Shift+s exec systemctl suspend' >> $HOME/.config/i3/config
 	echo 'bindsym Mod1+Control+Shift+h exec systemctl hibernate' >> $HOME/.config/i3/config
 	
-	#echo -e '\n#\nexec --no-startup-id bash ~/autostart.sh' >> $HOME/.config/i3/config
+	echo -e '\n#\nexec --no-startup-id bash ~/autostart.sh' >> $HOME/.config/i3/config
     
 	echo '#exec --no-startup-id /usr/bin/scite' >> $HOME/.config/i3/config
 	echo '#exec --no-startup-id /usr/bin/moonlight-qt' >> $HOME/.config/i3/config
