@@ -129,29 +129,38 @@ function setup_i3wm() {
 	sed -i 's/^\(font pango:.*\)/#\1\nfont pango:DejaVu Sans 18/g'  $HOME/.config/i3/config
 	sed -i 's/^\(bindsym Mod1+r.*\)/#\1/g'  $HOME/.config/i3/config
 
+    echo -e '\n#' >> $HOME/.config/i3/config
 	echo 'bindsym Mod1+Shift+h bar mode toggle' >> $HOME/.config/i3/config
 	echo -e '\n#\nworkspace_layout tabbed\ndefault_orientation vertical' >> $HOME/.config/i3/config
 
+    echo -e '\n#' >> $HOME/.config/i3/config
 	echo 'for_window [window_role="pop-up"] floating enable' >> $HOME/.config/i3/config
 	echo 'for_window [title="File Operation Progress"] floating enable' >> $HOME/.config/i3/config
 	echo -e '\n#' >> $HOME/.config/i3/config
     
+    echo -e '\n#' >> $HOME/.config/i3/config
 	echo 'assign [class="Moonlight"] 3' >> $HOME/.config/i3/config
 	echo 'assign [class="Scite"] 2' >> $HOME/.config/i3/config
 	echo 'assign [class="Chromium"] 1' >> $HOME/.config/i3/config
 	
+    echo -e '\n#' >> $HOME/.config/i3/config
 	echo 'hide_edge_borders both' >> $HOME/.config/i3/config
 	echo '#default_border pixel 0' >> $HOME/.config/i3/config
 	echo '#default_border none' >> $HOME/.config/i3/config
     
+    echo -e '\n#' >> $HOME/.config/i3/config
 	echo 'bindsym Mod1+Shift+s exec sleep 1 && xset dpms force off' >> $HOME/.config/i3/config
 	echo '#bindsym Mod1+Shift+s exec sleep 1 && xset s activate' >> $HOME/.config/i3/config
 	echo 'bindsym Mod1+Control+Shift+s exec systemctl suspend' >> $HOME/.config/i3/config
 	echo 'bindsym Mod1+Control+Shift+h exec systemctl hibernate' >> $HOME/.config/i3/config
 	
+    echo -e '\n#' >> $HOME/.config/i3/config
 	echo -e '\n#\nexec --no-startup-id bash ~/autostart.sh' >> $HOME/.config/i3/config
     
+    echo -e '\n#' >> $HOME/.config/i3/config
+	echo '#exec --no-startup-id /usr/bin/terminator' >> $HOME/.config/i3/config
 	echo '#exec --no-startup-id /usr/bin/scite' >> $HOME/.config/i3/config
+	echo '#exec --no-startup-id /usr/bin/thunar' >> $HOME/.config/i3/config
 	echo '#exec --no-startup-id /usr/bin/moonlight-qt' >> $HOME/.config/i3/config
 	echo "#exec --no-startup-id i3-msg 'workspace 2; exec /usr/bin/thunar; workspace 1'" >> $HOME/.config/i3/config
 }
