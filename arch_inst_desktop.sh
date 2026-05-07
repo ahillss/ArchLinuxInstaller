@@ -327,7 +327,8 @@ function setup_packages() {
 	packages+=" lxtask terminator scite gnome-themes-extra"
 	packages+=" thunar thunar-archive-plugin thunar-media-tags-plugin thunar-volman"
 	packages+=" ffmpegthumbnailer tumbler gvfs-smb polkit-gnome"
-	packages+=" file-roller viewnior evince chromium vlc"
+	packages+=" file-roller viewnior evince chromium"
+	packages+=" vlc vlc-plugins-all"
 	
 	packages+=" xscreensaver"
 
